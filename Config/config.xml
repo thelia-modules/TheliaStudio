@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<config xmlns="http://thelia.net/schema/dic/config"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://thelia.net/schema/dic/config http://thelia.net/schema/dic/config/thelia-1.0.xsd">
+
+    <loops>
+        <!-- sample definition
+        <loop name="MySuperLoop" class="TheliaStudio\Loop\MySuperLoop" />
+        -->
+    </loops>
+
+    <forms>
+        <!--
+        <form name="MyFormName" class="TheliaStudio\Form\MySuperForm" />
+        -->
+    </forms>
+
+    <commands>
+        <command class="TheliaStudio\Command\ModuleGenerateEverythingCommand" />
+    </commands>
+
+    <services>
+        <service id="action.thelia_studio.generate_everything" class="TheliaStudio\Action\GenerateEverything" scope="request">
+            <argument type="service" id="thelia.parser" />
+            <argument type="service" id="kernel" />
+
+            <tag name="kernel.event_subscriber" />
+        </service>
+    </services>
+
+    <!--
+    <hooks>
+        <hook id="theliastudio.hook" class="TheliaStudio\Hook\MySuperHook" scope="request">
+            <tag name="hook.event_listener" event="main.body.bottom" type="front|back|pdf|email" method="onMainBodyBottom" />
+        </hook>
+    </hooks>
+    -->
+
+    <!--
+    <exports>
+
+    </exports>
+    -->
+
+    <!--
+    <imports>
+
+    </imports>
+    -->
+</config>
