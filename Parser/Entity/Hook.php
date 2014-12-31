@@ -10,20 +10,15 @@
 /* file that was distributed with this source code.                                  */
 /*************************************************************************************/
 
-namespace TheliaStudio\Output;
+namespace TheliaStudio\Parser\Entity;
 
-use Symfony\Component\Console\Output\NullOutput as BaseNullOutput;
 
 /**
- * Class NullOutput
- * @package TheliaStudio\Output
+ * Class Hook
+ * @package TheliaStudio\Parser\Entity
  * @author Benjamin Perche <bperche9@gmail.com>
  */
-class NullOutput extends BaseNullOutput
+class Hook extends Service
 {
-    // ConsoleOutput compatibility
-    public function renderBlock() {}
 
-    // Sf 2.4 compatibility for php-cs-fixer
-    public function isVerbose() {}
 }

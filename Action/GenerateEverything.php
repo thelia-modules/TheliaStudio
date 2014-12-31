@@ -88,13 +88,14 @@ class GenerateEverything implements EventSubscriberInterface
      * 5. Compile the templates
      * 6. Copy raw files
      * 7. Apply rules
-     * 8. Fix cs
+     * 8. Add everything in config.xml
+     * 9. Fix cs
      */
     public function launchBuild(ModuleGenerateEvent $event)
     {
         // Backup trim level and set it to 0
         $this->previousTrimLevel = ConfigQuery::read("html_output_trim_level");
-        ConfigQuery::write("html_output_trim_level", 2);
+        ConfigQuery::write("html_output_trim_level", 0);
 
         $this->moduleCode = $moduleCode = $event->getModuleCode();
         $modulePath = $modulePath = THELIA_MODULE_DIR . $moduleCode . DS;
@@ -116,9 +117,12 @@ class GenerateEverything implements EventSubscriberInterface
             // 3. Build module classes
             $this->processModule($entities);
 
-            // 4. Build table classes
             foreach ($entities as $entity) {
+                $this->parser->assign("table", $entity);
+                // 4. Build table classes
                 $this->processTable($entity);
+                // 5. Build templates
+                $this->processTemplate($entity);
             }
 
             // 6. Process copy
@@ -150,6 +154,31 @@ class GenerateEverything implements EventSubscriberInterface
         if (null !== $e) {
             throw $e;
         }
+    }
+
+    protected function processTemplate(Table $table)
+    {
+        $previousLeft = $this->parser->left_delimiter;
+        $previousRight = $this->parser->right_delimiter;
+        $this->parser->left_delimiter = '[{';
+        $this->parser->right_delimiter = '}]';
+
+        foreach ($this->smartyTemplates as $template) {
+            $fetchedTemplate = $this->parser->fetch($template->getRealPath());
+            $fileName = str_replace("__TABLE__", str_replace("_", "-", $table->getRawTableName()), $template->getFilename());
+
+            $relativePath = str_replace($this->resourcesPath, "", $template->getPath() . DS);
+            $completeFilePath = THELIA_MODULE_DIR . $this->moduleCode . DS . $relativePath . DS  . $fileName;
+
+            if (!file_exists($completeFilePath)) {
+                @mkdir(dirname($completeFilePath), 0777, true);
+                @file_put_contents($completeFilePath, $fetchedTemplate);
+            }
+
+        }
+
+        $this->parser->left_delimiter = $previousLeft;
+        $this->parser->right_delimiter = $previousRight;
     }
 
     protected function processModule(array $entities)
@@ -200,8 +229,6 @@ class GenerateEverything implements EventSubscriberInterface
     protected function processTable(Table $table)
     {
         foreach ($this->tablePhpTemplates as $template) {
-            $this->parser->assign("table", $table);
-
             $fileName = str_replace("__TABLE__", $table->getTableName(), $template->getFilename());
             $fileName = str_replace("FIX", "", $fileName);
 
@@ -233,7 +260,7 @@ class GenerateEverything implements EventSubscriberInterface
 
         $this->tablePhpTemplates = $this->findInPath($resourcesPath, "/__TABLE__.*\.php$/");
         $this->modulePhpTemplates = $this->findInPath($resourcesPath, "/__MODULE__.*\.php$/");
-        $this->smartyTemplates = $this->findInPath($resourcesPath, "/\.html$/");
+        $this->smartyTemplates = $this->findInPath($resourcesPath, "/__TABLE__.*\.html$/");
         $this->rulesTemplates = $this->findInPath($resourcesPath, "/\.rule$/");
 
         $this->rawCopyTemplates = Finder::create()->files()->in($resourcesPath . "raw-copy");

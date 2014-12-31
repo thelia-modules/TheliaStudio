@@ -10,20 +10,34 @@
 /* file that was distributed with this source code.                                  */
 /*************************************************************************************/
 
-namespace TheliaStudio\Output;
+namespace TheliaStudio\Parser;
 
-use Symfony\Component\Console\Output\NullOutput as BaseNullOutput;
+use Symfony\Component\DependencyInjection\SimpleXMLElement;
+use TheliaStudio\Parser\Entity\Loop;
 
 /**
- * Class NullOutput
- * @package TheliaStudio\Output
+ * Class ConfigParser
+ * @package TheliaStudio\Parser
  * @author Benjamin Perche <bperche9@gmail.com>
  */
-class NullOutput extends BaseNullOutput
+class ConfigParser
 {
-    // ConsoleOutput compatibility
-    public function renderBlock() {}
+    public function parseXml(SimpleXMLElement $xml)
+    {
 
-    // Sf 2.4 compatibility for php-cs-fixer
-    public function isVerbose() {}
+    }
+
+    protected function parseLoops(SimpleXMLElement $xml)
+    {
+        $loops = array();
+
+        /** @var SimpleXmlElement $loopXml */
+        foreach ($xml->xpath("//config/loops") as $loopXml) {
+            $loops[] = new Loop($loopXml->getAttributeAsPhp("name"), $loopXml->getAttributeAsPhp("class"));
+        }
+
+        return $loops;
+    }
+
+    protected function parseForms(SimpleXMLElement $xml)
 }

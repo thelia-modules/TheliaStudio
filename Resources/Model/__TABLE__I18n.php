@@ -4,7 +4,7 @@
 namespace {$moduleCode}\Model;
 
 use {$moduleCode}\Model\Base\{$table->getTableName()}I18n as Base{$table->getTableName()}I18n;
-{if $table->hasI18nBehavior() && $table->hasTimestampableBehavior}
+{if $table->hasI18nBehavior() && $table->hasTimestampableBehavior()}
 use Thelia\Model\Tools\I18nTimestampableTrait;
 {/if}
 
@@ -14,7 +14,7 @@ use Thelia\Model\Tools\I18nTimestampableTrait;
  */
 class {$table->getTableName()}I18n extends Base{$table->getTableName()}I18n
 {
-    {if $table->hasI18nBehavior() && $table->hasTimestampableBehavior}
+{if $table->hasI18nBehavior() && $table->hasTimestampableBehavior()}
     use I18nTimestampableTrait;
-    {/if}
+{/if}
 }

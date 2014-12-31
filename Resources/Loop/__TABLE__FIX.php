@@ -1,5 +1,6 @@
 <?php
 {include "../includes/header.php"}
+
 namespace {$moduleCode}\Loop;
 
 use {$moduleCode}\Loop\Base\{$table->getTableName()} as Base{$table->getTableName()}Loop;

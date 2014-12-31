@@ -21,39 +21,56 @@ class {$table->getTableName()}CreateForm extends BaseForm
         $translationKeys = $this->getTranslationKeys();
         $fieldsIdKeys = $this->getFieldsIdKeys();
 
-        {foreach from=$table->getColumns() item=column}
-        {if $column->getFormType() && $column->getName() != 'id'}
+{foreach from=$table->getColumns() item=column}
+{if $column->getFormType() && $column->getName() != 'id'}
         $this->add{$column->getCamelizedName()}Field($translationKeys, $fieldsIdKeys);
-        {/if}
-        {/foreach}
+{/if}
+{/foreach}
+{if $table->hasI18nBehavior()}
+        $this->addLocaleField();
+{/if}
     }
+{if $table->hasI18nBehavior()}
 
-    {foreach from=$table->getColumns() item=column}
-    {assign type {$column->getFormType()}}
-    {if $type && $column->getName() != 'id'}
+    public function addLocaleField()
+    {
+        $this->formBuilder->add(
+            'locale',
+            'hidden',
+            [
+                'constraints' => [ new NotBlank() ],
+                'required'    => true,
+            ]
+        );
+    }
+{/if}
+
+{foreach from=$table->getColumns() item=column}
+{assign type {$column->getFormType()}}
+{if $type && $column->getName() != 'id'}
     protected function add{$column->getCamelizedName()}Field(array $translationKeys, array $fieldsIdKeys)
     {
         $this->formBuilder->add("{$column->getName()}", "{$type}", array(
             "label" => $this->translator->trans($this->readKey("{$column->getName()}", $translationKeys), [], {$moduleCode}::MESSAGE_DOMAIN),
             "label_attr" => ["for" => $this->readKey("{$column->getName()}", $fieldsIdKeys)],
-            {if $column->getRequired()}
+{if $column->getRequired()}
             "required" => true,
-            {/if}
+{/if}
             "constraints" => array(
-                {if $column->getRequired()}
+{if $column->getRequired()}
                 new NotBlank(),
-                {/if}
+{/if}
             ),
             "attr" => array(
-                {if $type == "number"}
+{if $type == "number"}
                 "step" => "0.01",
-                {/if}
+{/if}
             )
         ));
     }
 
-    {/if}
-    {/foreach}
+{/if}
+{/foreach}
     public function getName()
     {
         return static::FORM_NAME;
@@ -76,11 +93,11 @@ class {$table->getTableName()}CreateForm extends BaseForm
     public function getFieldsIdKeys()
     {
         return array(
-            {foreach from=$table->getColumns() item=column}
-            {if $column->getFormType() && $column->getName() != 'id'}
+{foreach from=$table->getColumns() item=column}
+{if $column->getFormType() && $column->getName() != 'id'}
             "{$column->getName()}" => "{$table->getRawTableName()}_{$column->getName()}",
-            {/if}
-            {/foreach}
+{/if}
+{/foreach}
         );
     }
 }

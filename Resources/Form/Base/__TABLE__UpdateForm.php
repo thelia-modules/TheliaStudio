@@ -4,6 +4,7 @@
 namespace {$moduleCode}\Form\Base;
 
 use Thelia\Form\BaseForm;
+use {$moduleCode}\Form\Type\{$table->getTableName()}IdType;
 
 /**
  * Class {$table->getTableName()}Form

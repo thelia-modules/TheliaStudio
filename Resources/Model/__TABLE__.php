@@ -15,7 +15,7 @@ use Thelia\Model\Tools\PositionManagementTrait;
  */
 class {$table->getTableName()} extends Base{$table->getTableName()}
 {
-    {if $table->hasPosition()}
+{if $table->hasPosition()}
     use ModelEventDispatcherTrait;
     use PositionManagementTrait;
 
@@ -25,5 +25,5 @@ class {$table->getTableName()} extends Base{$table->getTableName()}
 
         return true;
     }
-    {/if}
+{/if}
 }

@@ -46,15 +46,15 @@ class {$table->getTableName()}Action extends BaseAction implements EventSubscrib
         $con->beginTransaction();
 
         try {
-            {if $table->hasI18nBehavior()}
-                $model->setLocale($event->getLocale());
-            {/if}
+{if $table->hasI18nBehavior()}
+            $model->setLocale($event->getLocale());
+{/if}
 
-            {foreach from=$table->getColumns() item=column}
-            if (null !== ${$column->getName()} = $event->get{$column->getCamelizedName()}()) {
-                $model->set{$column->getCamelizedName()}(${$column->getName()});
+{foreach from=$table->getColumns() item=column}
+            if (null !== ${$column->getCamelizedName()|lcfirst} = $event->get{$column->getCamelizedName()}()) {
+                $model->set{$column->getCamelizedName()}(${$column->getCamelizedName()|lcfirst});
             }
-            {/foreach}
+{/foreach}
 
             $model->save($con);
 
@@ -80,39 +80,27 @@ class {$table->getTableName()}Action extends BaseAction implements EventSubscrib
         return $model;
     }
 
-    {if $table->hasPosition()}
+{if $table->hasPosition()}
     public function updatePosition(UpdatePositionEvent $event)
     {
         $this->genericUpdatePosition(new {$table->getQueryClass()}(), $event);
     }
-    {/if}
+{/if}
 
-    {if $table->hasVisible()}
+{if $table->hasVisible()}
     public function toggleVisibility(ToggleVisibilityEvent $event)
     {
         $this->genericToggleVisibility(new {$table->getQueryClass()}(), $event);
     }
-    {/if}
+{/if}
 
-    protected function beforeCreateFormBuild(TheliaFormEvent $event)
-    {
+    protected function beforeCreateFormBuild(TheliaFormEvent $event) {}
 
-    }
+    protected function beforeUpdateFormBuild(TheliaFormEvent $event) {}
 
-    protected function beforeUpdateFormBuild(TheliaFormEvent $event)
-    {
+    protected function afterCreateFormBuild(TheliaFormEvent $event) {}
 
-    }
-
-    protected function afterCreateFormBuild(TheliaFormEvent $event)
-    {
-
-    }
-
-    protected function afterUpdateFormBuild(TheliaFormEvent $event)
-    {
-
-    }
+    protected function afterUpdateFormBuild(TheliaFormEvent $event) {}
 
     /**
      * Returns an array of event names this subscriber wants to listen to.
@@ -140,16 +128,16 @@ class {$table->getTableName()}Action extends BaseAction implements EventSubscrib
             {$table->getTableName()}Events::CREATE => array("create", 128),
             {$table->getTableName()}Events::UPDATE => array("update", 128),
             {$table->getTableName()}Events::DELETE => array("delete", 128),
-            {if $table->hasPosition()}
+{if $table->hasPosition()}
             {$table->getTableName()}Events::UPDATE_POSITION => array("updatePosition", 128),
-            {/if}
-            {if $table->hasVisible()}
+{/if}
+{if $table->hasVisible()}
             {$table->getTableName()}Events::TOGGLE_VISIBILITY => array("toggleVisibility", 128),
-            {/if}
-            TheliaEvents::FORM_BEFORE_BUILD . ".{$table->getTableName()}_create" => array("beforeCreateFormBuild", 128),
-            TheliaEvents::FORM_BEFORE_BUILD . ".{$table->getTableName()}_update" => array("beforeUpdateFormBuild", 128),
-            TheliaEvents::FORM_AFTER_BUILD . ".{$table->getTableName()}_create" => array("afterCreateFormBuild", 128),
-            TheliaEvents::FORM_AFTER_BUILD . ".{$table->getTableName()}_update" => array("afterUpdateFormBuild", 128),
+{/if}
+            TheliaEvents::FORM_BEFORE_BUILD . ".{$table->getRawTableName()}_create" => array("beforeCreateFormBuild", 128),
+            TheliaEvents::FORM_BEFORE_BUILD . ".{$table->getRawTableName()}_update" => array("beforeUpdateFormBuild", 128),
+            TheliaEvents::FORM_AFTER_BUILD . ".{$table->getRawTableName()}_create" => array("afterCreateFormBuild", 128),
+            TheliaEvents::FORM_AFTER_BUILD . ".{$table->getRawTableName()}_update" => array("afterUpdateFormBuild", 128),
         );
     }
 }

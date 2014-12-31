@@ -21,6 +21,13 @@ use {$table->getFullQueryClass()};
  */
 class {$table->getTableName()} extends Base{if $table->hasI18nBehavior()}I18n{/if}Loop implements PropelSearchLoopInterface
 {
+{if $table->hasI18nBehavior()}
+    protected $timestampable = true;
+{/if}
+{if $table->hasBehavior('versionable')}
+    protected $versionable = true;
+{/if}
+
     /**
      * @param LoopResult $loopResult
      *
@@ -33,10 +40,12 @@ class {$table->getTableName()} extends Base{if $table->hasI18nBehavior()}I18n{/i
             $row = new LoopResultRow($entry);
 
             $row
-            {foreach from=$table->getColumns() item=column}
-            ->set("{$column->getNameAsSQL()}", $entry->get{if $column->isI18n()}VirtualColumn("i18n_{$column->getNameAsSQL()}"){else}{$column->getCamelizedName()}(){/if})
-            {/foreach}
+{foreach from=$table->getColumns() item=column}
+                ->set("{$column->getNameAsSQL()}", $entry->get{if $column->isI18n()}VirtualColumn("i18n_{$column->getNameAsSQL()}"){else}{$column->getCamelizedName()}(){/if})
+{/foreach}
             ;
+
+            $this->addMoreResults($row, $entry);
 
             $loopResult->addRow($row);
         }
@@ -71,23 +80,22 @@ class {$table->getTableName()} extends Base{if $table->hasI18nBehavior()}I18n{/i
     protected function getArgDefinitions()
     {
         return new ArgumentCollection(
-            {foreach from=$table->getColumns() item=column}
-            {if $column->getPhpType() == "int"}
+{foreach from=$table->getColumns() item=column}
+{if $column->getPhpType() == "int"}
             Argument::createIntListTypeArgument("{$column->getName()}"),
-            {elseif $column->getPhpType() == "bool"}
+{elseif $column->getPhpType() == "bool"}
             Argument::createBooleanOrBothTypeArgument("{$column->getName()}", BooleanOrBothType::ANY),
-            {elseif $column->getPhpType() == "text" || $column->getPhpType() == "double"}
+{elseif $column->getPhpType() == "text" || $column->getPhpType() == "double"}
             Argument::createAnyTypeArgument("{$column->getName()}"),
-            {/if}
-
-            {/foreach}
+{/if}
+{/foreach}
             Argument::createEnumListTypeArgument(
                 "order",
                 [
-                    {foreach from=$table->getColumns() item=column}
+{foreach from=$table->getColumns() item=column}
                     "{if $column->getName() == 'position'}manual{else}{$column->getName()}{/if}",
                     "{if $column->getName() == 'position'}manual{else}{$column->getName()}{/if}-reverse",
-                    {/foreach}
+{/foreach}
                 ],
                 "{if $table->has('position')}manual{else}id{/if}"
             )
@@ -102,48 +110,55 @@ class {$table->getTableName()} extends Base{if $table->hasI18nBehavior()}I18n{/i
     public function buildModelCriteria()
     {
         $query = new {$table->getQueryClass()}();
-        {if $table->hasI18nBehavior()}
+{if $table->hasI18nBehavior()}
         $this->configureI18nProcessing($query, [{foreach from=$table->getI18nColumns() item=column}"{$column->getNameAsSQL()}", {/foreach}]);
-        {/if}
+{/if}
 
-        {foreach from=$table->getColumns() item=column}
-        {if $column->getPhpType() == "int"}
+{foreach from=$table->getColumns() item=column}
+{if $column->getPhpType() == "int"}
         if (null !== ${$column->getName()} = $this->get{$column->getCamelizedName()}()) {
             $query->filterBy{$column->getCamelizedName()}(${$column->getName()});
         }
-        {elseif $column->getPhpType() == "bool"}
+
+{elseif $column->getPhpType() == "bool"}
         if (BooleanOrBothType::ANY !== ${$column->getName()} = $this->get{$column->getCamelizedName()}()) {
             $query->filterBy{$column->getCamelizedName()}(${$column->getName()});
         }
-        {elseif $column->getPhpType() == "text" || $column->getPhpType() == "double"}
+
+{elseif $column->getPhpType() == "text" || $column->getPhpType() == "double"}
         if (null !== ${$column->getName()} = $this->get{$column->getCamelizedName()}()) {
             ${$column->getName()} = array_map("trim", explode(",", ${$column->getName()}));
             $query->filterBy{$column->getCamelizedName()}(${$column->getName()});
         }
-        {/if}
-        {/foreach}
 
+{/if}
+{/foreach}
         foreach ($this->getOrder() as $order) {
             switch ($order) {
-                {foreach from=$table->getColumns() item=column}
+{foreach from=$table->getColumns() item=column}
                 case "{if $column->getName() == 'position'}manual{else}{$column->getName()}{/if}":
-                    {if $column->isI18n()}
+{if $column->isI18n()}
                     $query->addAscendingOrderBy("i18n_{$column->getNameAsSQL()}");
-                    {else}
+{else}
                     $query->orderBy{$column->getCamelizedName()}();
-                    {/if}
+{/if}
                     break;
                 case "{if $column->getName() == 'position'}manual{else}{$column->getName()}{/if}-reverse":
-                    {if $column->isI18n()}
+{if $column->isI18n()}
                     $query->addDescendingOrderBy("i18n_{$column->getNameAsSQL()}");
-                    {else}
+{else}
                     $query->orderBy{$column->getCamelizedName()}(Criteria::DESC);
-                    {/if}
+{/if}
                     break;
-                {/foreach}
+{/foreach}
             }
         }
 
         return $query;
+    }
+
+    protected function addMoreResults(LoopResultRow $row, $entryObject)
+    {
+
     }
 }

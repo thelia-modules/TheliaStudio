@@ -1,0 +1,294 @@
+{extends file="admin-layout.tpl"}
+{default_translation_domain domain='[{$moduleCode|lower}].bo.default'}
+
+{block name="no-return-functions"}
+    {$admin_current_location = 'tools'}
+{/block}
+
+{block name="page-title"}{intl l='[{$table->getTableName()}]'}{/block}
+
+{block name="check-resource"}admin.module{/block}
+{block name="check-access"}view{/block}
+{block name="check-module"}[{$moduleCode}]{/block}
+
+{block name="main-content"}
+    <div id="wrapper" class="container">
+
+        {if $general_error}
+            <div class="alert alert-danger">
+                {$general_error}
+            </div>
+        {/if}
+
+        <!-- [{$table->getTableName()}] list -->
+        <div class="general-block-decorator">
+            <div class="table-responsive">
+                <table class="table table-striped table-condensed" id="[{$table->getRawTableName()}]-table">
+                    <caption class="clearfix">
+                        {intl l="[{$table->getTableName()}]"}
+
+                        {loop name="auth-create" type="auth" role="ADMIN" resource="admin.module" access="CREATE" module="[{$moduleCode}]"}
+                            <div class="pull-right">
+                                <a class="btn btn-default btn-primary" title="{intl l='Create a new [{$table->getTableName()}] entry' d='[{$moduleCode|lower}].bo.default'}" data-target="#[{$table->getRawTableName()}]-create" data-toggle="modal">
+                                    <i class="glyphicon glyphicon-plus-sign"></i>
+                                </a>
+                            </div>
+                        {/loop}
+                    </caption>
+
+                    <thead>
+                    <tr>
+[{foreach from=$table->getColumns() item=column}]
+                        <th>
+                            {admin_sortable_header
+                                current_order=$order
+                                order='[{$column->getName()}]'
+                                reverse_order='[{$column->getName()}]-reverse'
+                                path={url path='/admin/module/[{$moduleCode}]/[{$table->getRawTableName()}]' target='[{$table->getRawTableName()}]-table'}
+                                label="{intl l='[{$column->getCamelizedName()}]' d='[{$moduleCode|lower}].bo.default'}"
+                            }
+                        </th>
+[{/foreach}]
+                        <th>
+                            {intl l="Actions"}
+                        </th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {loop name="[{$table->getLoopType()}]-list" type="[{$table->getLoopType()}]" order=$order}
+                        <tr>
+[{foreach from=$table->getColumns() item=column}]
+[{if $column->getName() == 'visible'}]
+                            <td>
+                                {loop type="auth" name="can_change" role="ADMIN" resource="admin.module" module="[{$moduleCode}]" access="UPDATE"}
+                                    <div class="make-switch visibleToggle" data-id="{$ID}"  data-on="success" data-off="danger" data-on-label="<i class='glyphicon glyphicon-ok'></i>" data-off-label="<i class='glyphicon glyphicon-remove'></i>">
+                                        <input type="checkbox" class="visibleToggle" {if $VISIBLE}checked="checked"{/if}>
+                                    </div>
+                                {/loop}
+
+                                {elseloop rel="can_change"}
+                                    <div class="make-switch switch-small" data-on="success" data-off="danger" data-on-label="<i class='glyphicon glyphicon-ok'></i>" data-off-label="<i class='glyphicon glyphicon-remove'></i>">
+                                        <input type="checkbox" class="disabled" disabled="disabled" {if $VISIBLE}checked="checked"{/if}>
+                                    </div>
+                                {/elseloop}
+                            </td>
+[{elseif $column->getName() == 'position'}]
+                            <td>
+                                {admin_position_block
+                                    resource="admin.module"
+                                    access="UPDATE"
+                                    module="[{$moduleCode}]"
+                                    path="/admin/module/[{$moduleCode}]/[{$table->getRawTableName()}]/updatePosition"
+                                    url_parameter="[{$table->getRawTableName()}]_id"
+                                    in_place_edit_class="[{$table->getRawTableName()}]-position-change"
+                                    position="$POSITION"
+                                    id="$ID"
+                                }
+                            </td>
+[{elseif $column->getName() == 'id' || $column->getName() == 'title' || $column->getName() == 'name' || $column->getName() == 'code'}]
+                            <td>
+                                <a href="{url path='/admin/module/[{$moduleCode}]/[{$table->getRawTableName()}]/edit' [{$table->getRawTableName()}]_id=$ID}">{$[{$column->getNameAsSQL()}]}</a>
+                            </td>
+[{elseif $column->getFormType() == 'checkbox'}]
+                            <td>
+                                <div class="make-switch switch-small" data-id="{$ID}" data-on="success" data-off="danger" data-on-label="<i class='glyphicon glyphicon-ok'></i>" data-off-label="<i class='glyphicon glyphicon-remove'></i>">
+                                    <input type="checkbox" disabled readonly {if $[{$column->getNameAsSQL()}]}checked="checked"{/if}>
+                                </div>
+                            </td>
+[{else}]
+                            <td>
+                                {$[{$column->getNameAsSQL()}]}
+                            </td>
+[{/if}]
+[{/foreach}]
+                            {* Actions *}
+                            <td>
+                                <div class="btn-group">
+                                    {loop name="auth-edit" type="auth" role="ADMIN" resource="admin.module" access="UPDATE" module="[{$moduleCode}]"}
+                                        <a class="btn btn-default btn-xs" title="{intl l='Edit this [{$table->getTableName()}]' d='[{$moduleCode|lower}].bo.default'}"  href="{url path='/admin/module/[{$moduleCode}]/[{$table->getRawTableName()}]/edit' [{$table->getRawTableName()}]_id=$ID}">
+                                            <i class="glyphicon glyphicon-edit"></i>
+                                        </a>
+                                    {/loop}
+                                    {loop name="auth-delete" type="auth" role="ADMIN" resource="admin.module" access="DELETE" module="[{$moduleCode}]"}
+                                        <a class="btn btn-default btn-xs [{$table->getRawTableName()}]-delete" title="{intl l='Delete this [{$table->getTableName()}]' d='[{$moduleCode|lower}].bo.default'}" data-target="#[{$table->getRawTableName()}]-delete" data-toggle="modal" data-id="{$ID}">
+                                            <i class="glyphicon glyphicon-trash"></i>
+                                        </a>
+                                    {/loop}
+                                </div>
+                            </td>
+                        </tr>
+                    {/loop}
+                    {elseloop rel="[{$table->getLoopType()}]-list"}
+                        <tr>
+                            <td colspan="6">
+                                <div class="alert alert-info">
+                                    {intl l="There is no [{$table->getTableName()}]" d="[{$moduleCode|lower}].bo.default"}
+                                </div>
+                            </td>
+                        </tr>
+                    {/elseloop}
+                    </tbody>
+
+                    {ifloop rel="[{$table->getLoopType()}]-list"}
+                    <tfoot>
+                        <tr>
+                            <td colspan="7">
+                                {include
+                                file           = "includes/pagination.html"
+
+                                loop_ref       = "[{$table->getLoopType()}]-list"
+                                max_page_count = 20
+                                page_url       = "{url path="/admin/module/[{$moduleCode}]/[{$table->getRawTableName()}]" order=$order target='[{$table->getRawTableName()}]-table'}"
+                                }
+                            </td>
+                        </tr>
+                    </tfoot>
+                    {/ifloop}
+
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+    {* CREATE Modal *}
+
+    {form name="[{$table->getRawTableName()}]_create"}
+    {capture "[{$table->getRawTableName()}]_create"}
+        {form_hidden_fields form=$form}
+
+[{if $table->hasI18nBehavior()}]
+        {form_field form=$form field="locale"}
+            <input type="hidden" name="{$name}" value="{$edit_language_locale}" />
+        {/form_field}
+[{/if}]
+
+        {render_form_field form=$form field="success_url" value={url path='/admin/module/[{$moduleCode}]/[{$table->getRawTableName()}]/edit?[{$table->getRawTableName()}]_id=_ID_'}}
+
+[{foreach from=$table->getColumns() item=column}]
+[{if $column->getName() != 'id'}]
+        {form_field form=$form field="[{$column->getName()}]"}
+            <div class="form-group"">
+                <label class="control-label" for="{$label_attr.for}">
+                    {$label}
+                    {if $required}<span class="required">*</span>{/if}
+                </label>
+
+                {form_error form=$form field="[{$column->getName()}]"}{$message}{/form_error}
+
+[{if $column->getFormType() == 'checkbox'}]
+                <input type="checkbox" class="form-control" name="{$name}" id="{$label_attr.for}" {if $[{$column->getNameAsSQL()}]}checked{/if} {form_field_attributes form=$form field="[{$column->getName()}]"} placeholder="{intl l='The [{$table->getTableName()}] [{$column->getName()}]'}" />
+[{elseif $column->getFormType() == 'text'}]
+                <input type="text" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$[{$column->getNameAsSQL()}]}" {form_field_attributes form=$form field="[{$column->getName()}]"} placeholder="{intl l='The [{$table->getTableName()}] [{$column->getName()}]'}" />
+[{elseif $column->getFormType() == 'textarea'}]
+                <textarea class="form-control" name="{$name}" id="{$label_attr.for}"{form_field_attributes form=$form field="[{$column->getName()}]"} placeholder="{intl l='The [{$table->getTableName()}] [{$column->getName()}]'}">{$[{$column->getNameAsSQL()}]}</textarea>
+[{elseif $column->getFormType() == 'integer'}]
+                <input type="integer" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$[{$column->getNameAsSQL()}]}" {form_field_attributes form=$form field="[{$column->getName()}]"} placeholder="{intl l='The [{$table->getTableName()}] [{$column->getName()}]'}" />
+[{elseif $column->getFormType() == 'number'}]
+                <input type="number" class="form-control" name="{$name}" id="{$label_attr.for}" step="0.01" value="{$[{$column->getNameAsSQL()}]}" {form_field_attributes form=$form field="[{$column->getName()}]"} placeholder="{intl l='The [{$table->getTableName()}] [{$column->getName()}]'}" />
+[{elseif $column->getFormType() == 'datetime' or $column->getFormType() == 'date' or $column->getFormType() == 'time'}]
+[{assign include_datetime 1}]
+                    <div class='input-group date do-picker-[{$column->getFormType()}]'>
+                        <input type="text" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$[{$column->getNameAsSQL()}]}" {form_field_attributes form=$form field="[{$column->getName()}]"} placeholder="{intl l='The [{$table->getTableName()}] [{$column->getName()}]'}" />
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+[{/if}]
+            </div>
+        {/form_field}
+[{/if}]
+[{/foreach}]
+    {/capture}
+
+    {include file="includes/generic-create-dialog.html"
+
+
+        dialog_id       = "[{$table->getRawTableName()}]-create"
+        dialog_title    = {intl l="Create an entry of [{$table->getTableName()}]" d="[{$moduleCode|lower}].bo.default"}
+        dialog_body     = {$smarty.capture.[{$table->getRawTableName()}]_create nofilter}
+
+        dialog_ok_label     = {intl l="Create"}
+        dialog_cancel_label = {intl l="Cancel"}
+
+        form_action        = {$current_url}
+        form_enctype       = {form_enctype form=$form}
+    }
+    {/form}
+
+
+    {* DELETE modal *}
+
+    {capture "[{$table->getRawTableName()}]_delete"}
+        {intl l="Do you really want to delete this [{$table->getTableName()}] entry ?" d="[{$moduleCode|lower}].bo.default"}
+        <input type="hidden" name="[{$table->getRawTableName()}]_id" id="[{$table->getRawTableName()}]_delete_id" value="" />
+    {/capture}
+
+    {include file="includes/generic-confirm-dialog.html"
+
+        dialog_id       = "[{$table->getRawTableName()}]-delete"
+        dialog_title    = {intl l="Delete an entry of [{$table->getTableName()}]" d="[{$moduleCode|lower}].bo.default"}
+        dialog_message  = {$smarty.capture.[{$table->getRawTableName()}]_delete nofilter}
+
+        dialog_ok_label     = {intl l="Delete"}
+        dialog_cancel_label = {intl l="Cancel"}
+
+        form_action         = {token_url path='/admin/module/[{$moduleCode}]/[{$table->getRawTableName()}]/delete'}
+    }
+{/block}
+
+{block name="javascript-initialization"}
+[{if $table->hasPosition()}]
+    {javascripts file='assets/js/bootstrap-switch/bootstrap-switch.js'}
+        <script src="{$asset_url}"></script>
+    {/javascripts}
+[{/if}]
+[{if $table->hasVisible()}]
+    {javascripts file='assets/js/bootstrap-editable/bootstrap-editable.js'}
+        <script src="{$asset_url}"></script>
+    {/javascripts}
+[{/if}]
+    <script>
+        $(function() {
+            $('a.[{$table->getRawTableName()}]-delete').click(function(ev) {
+                $('#[{$table->getRawTableName()}]_delete_id').val($(this).data('id'));
+            });
+[{if $table->hasPosition()}]
+
+            {* Inline editing of object position using bootstrap-editable *}
+
+            $('.[{$table->getRawTableName()}]-position-change').editable({
+                type        : 'text',
+                title       : '{{intl l="Enter new [{$table->getTableName()}] position" d="[{$moduleCode|lower}].bo.default"}|addslashes nofilter}',
+                mode        : 'popup',
+                inputclass  : 'input-mini',
+                placement   : 'left',
+                success     : function(response, newValue) {
+                    // The URL template
+                    var url = "{url noamp='1' path='/admin/module/[{$moduleCode}]/[{$table->getRawTableName()}]/updatePosition' [{$table->getRawTableName()}]_id='__ID__' position='__POS__'}";
+
+                    // Perform subtitutions
+                    url = url.replace('__ID__', $(this).data('id')).replace('__POS__', newValue);
+
+                    // Reload the page
+                    location.href = url;
+                }
+            });
+[{/if}]
+[{if $table->hasVisible()}]
+
+            {* Visibility toggle *}
+
+            $(".visibleToggle").on('switch-change', function(event, data) {
+                $.ajax({
+                    url : "{url path='admin/module/[{$moduleCode}]/[{$table->getRawTableName()}]/toggleVisibility'}",
+                    data : {
+                        [{$table->getRawTableName()}]_id : $(this).data('id'),
+                        action : 'visibilityToggle'
+                    }
+                });
+            });
+[{/if}]
+        });
+    </script>
+{/block}

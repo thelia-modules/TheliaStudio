@@ -7,7 +7,6 @@ use Thelia\Module\BaseModule;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Thelia\Install\Database;
 
-
 /**
  * Class {$moduleCode}
  * @package {$moduleCode}

@@ -146,4 +146,34 @@ class Table
 
         return $collection;
     }
+
+    public function getListTemplateName()
+    {
+        return str_replace("_", "-", $this->tableName) . "s";
+    }
+
+    public function getEditionTemplateName()
+    {
+        return str_replace("_", "-", $this->tableName) . "-edit";
+    }
+
+    public function getModuleCode()
+    {
+        return explode("\\", $this->namespace)[0];
+    }
+
+    public function getListPathInfo()
+    {
+        return "/admin/module/" . $this->getModuleCode() . "/" . $this->tableName;
+    }
+
+    public function getEditionPathInfo()
+    {
+        return $this->getListPathInfo() . "/edit";
+    }
+
+    public function getLoopType()
+    {
+        return str_replace("_", "-", strtolower($this->tableName));
+    }
 }

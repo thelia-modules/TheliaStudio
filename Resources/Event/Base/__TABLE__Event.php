@@ -1,5 +1,6 @@
 <?php
 {include "../../includes/header.php"}
+
 namespace {$moduleCode}\Event\Base;
 
 use Thelia\Core\Event\ActionEvent;
@@ -11,12 +12,11 @@ use {$table->getFullModelClass()};
 */
 class {$table->getTableName()}Event extends ActionEvent
 {
-    {foreach from=$table->getColumns() item=column}
-    protected ${$column->getName()};
-    {/foreach}
-    protected ${$table->getRawTableName()};
-
-    {if $table->hasI18nBehavior()}
+{foreach from=$table->getColumns() item=column}
+    protected ${$column->getCamelizedName()|lcfirst};
+{/foreach}
+    protected ${$table->getTableName()|lcfirst};
+{if $table->hasI18nBehavior()}
     protected $locale;
 
     public function getLocale()
@@ -30,30 +30,30 @@ class {$table->getTableName()}Event extends ActionEvent
 
         return $this;
     }
-    {/if}
+{/if}
 
-    {foreach from=$table->getColumns() item=column}
+{foreach from=$table->getColumns() item=column}
     public function get{$column->getCamelizedName()}()
     {
-        return $this->{$column->getName()};
+        return $this->{$column->getCamelizedName()|lcfirst};
     }
 
-    public function set{$column->getCamelizedName()}($v)
+    public function set{$column->getCamelizedName()}(${$column->getCamelizedName()|lcfirst})
     {
-        $this->{$column->getName()} = $v;
+        $this->{$column->getCamelizedName()|lcfirst} = ${$column->getCamelizedName()|lcfirst};
 
         return $this;
     }
-    {/foreach}
 
+{/foreach}
     public function get{$table->getTableName()}()
     {
-        return $this->{$table->getRawTableName()};
+        return $this->{$table->getTableName()|lcfirst};
     }
 
-    public function set{$table->getTableName()}({$table->getModelClass()} $v)
+    public function set{$table->getTableName()}({$table->getModelClass()} ${$table->getTableName()|lcfirst})
     {
-        $this->{$table->getRawTableName()} = $v;
+        $this->{$table->getTableName()|lcfirst} = ${$table->getTableName()|lcfirst};
 
         return $this;
     }
