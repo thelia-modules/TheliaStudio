@@ -25,10 +25,14 @@ class Route
     protected $defaults = array();
     protected $requirements = array();
 
-    public function __construct($id, $path)
+    public function __construct($id, $path, $methods = null, array $defaults = array(), array $requirements = array())
     {
         $this->id = $id;
         $this->path = $path;
+        $this->methods = $methods;
+
+        $this->defaults = $defaults;
+        $this->requirements = $requirements;
     }
 
 

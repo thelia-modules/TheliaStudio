@@ -14,9 +14,12 @@ class ModuleGenerateEvent extends Event
 {
     protected $moduleCode;
 
-    public function __construct($moduleCode)
+    protected $tables;
+
+    public function __construct($moduleCode, $tables)
     {
         $this->moduleCode = $moduleCode;
+        $this->tables = $tables;
     }
 
     /**
@@ -34,6 +37,24 @@ class ModuleGenerateEvent extends Event
     public function setModuleCode($moduleCode)
     {
         $this->moduleCode = $moduleCode;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTables()
+    {
+        return $this->tables;
+    }
+
+    /**
+     * @param mixed $tables
+     * @return $this
+     */
+    public function setTables($tables)
+    {
+        $this->tables = $tables;
         return $this;
     }
 }

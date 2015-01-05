@@ -11,6 +11,12 @@ use Thelia\Tools\URL;
 use {$moduleCode}\Event\{$table->getTableName()}Event;
 use {$moduleCode}\Event\{$table->getTableName()}Events;
 use {$table->getFullQueryClass()};
+{if $table->hasVisible()}
+use Thelia\Core\Event\ToggleVisibilityEvent;
+{/if}
+{if $table->hasPosition()}
+use Thelia\Core\Event\UpdatePositionEvent;
+{/if}
 
 /**
  * Class {$table->getTableName()}Controller
@@ -192,7 +198,7 @@ class {$table->getTableName()}Controller extends AbstractCrudController
      */
     protected function renderEditionTemplate()
     {
-        $this->getParserContext
+        $this->getParserContext()
             ->set(
                 "{$table->getRawTableName()}_id",
                 $this->getRequest()->query->get("{$table->getRawTableName()}_id")
@@ -225,4 +231,22 @@ class {$table->getTableName()}Controller extends AbstractCrudController
             URL::getInstance()->absoluteUrl("{$table->getListPathInfo()}")
         );
     }
+{if $table->hasVisible()}
+
+    protected function createToggleVisibilityEvent()
+    {
+        return new ToggleVisibilityEvent($this->getRequest()->query->get("{$table->getRawTableName()}_id"));
+    }
+{/if}
+{if $table->hasPosition()}
+    
+    protected function createUpdatePositionEvent($positionChangeMode, $positionValue)
+    {
+        return new UpdatePositionEvent(
+            $this->getRequest()->query->get("{$table->getRawTableName()}_id"),
+            $positionChangeMode,
+            $positionValue
+        );
+    }
+{/if}
 }

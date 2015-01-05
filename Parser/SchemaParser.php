@@ -16,7 +16,7 @@ class SchemaParser
      * @param SimpleXMLElement $xml
      * @return Table[]
      */
-    public function parseXml(SimpleXMLElement $xml)
+    public function parseXml(SimpleXMLElement $xml, array $whiteList = array())
     {
         $entities = array();
         $defaultNamespace = '';
@@ -32,10 +32,13 @@ class SchemaParser
         /** @var SimpleXmlElement $table */
         foreach ($xml->xpath("//database/table") as $table) {
             $tableName = $table->getAttributeAsPhp('name');
-            $entities[] = $tableInstance = new Table($tableName, $defaultNamespace . $table->getAttributeAsPhp("namespace"));
 
-            $this->readColumns($table, $tableInstance);
-            $this->readBehaviors($table, $tableInstance);
+            if (!$whiteList || in_array($tableName, $whiteList)) {
+                $entities[] = $tableInstance = new Table($tableName, $defaultNamespace . $table->getAttributeAsPhp("namespace"));
+
+                $this->readColumns($table, $tableInstance);
+                $this->readBehaviors($table, $tableInstance);
+            }
         }
 
         return $entities;

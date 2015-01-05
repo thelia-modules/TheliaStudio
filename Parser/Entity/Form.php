@@ -24,7 +24,7 @@ class Form
 
     protected $class;
 
-    protected function __construct($name, $class)
+    public function __construct($name, $class)
     {
         $this->name = $name;
         $this->class = $class;

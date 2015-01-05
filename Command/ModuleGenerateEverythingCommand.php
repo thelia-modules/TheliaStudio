@@ -31,10 +31,10 @@ class ModuleGenerateEverythingCommand extends ContainerAwareCommand
                 "The module code"
             )
             ->addOption(
-                "force-template",
-                "f",
+                "tables",
+                "t",
                 InputArgument::OPTIONAL,
-                "Force to overwrite templates files if they exist"
+                "Only generate for those tables"
             )
         ;
     }
@@ -42,7 +42,6 @@ class ModuleGenerateEverythingCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $container = $this->getContainer();
-
 
         $container->set("request", new Request());
         $container->get("request")->setSession(new Session(new MockArraySessionStorage()));
@@ -53,7 +52,7 @@ class ModuleGenerateEverythingCommand extends ContainerAwareCommand
             $container->get("event_dispatcher")
                 ->dispatch(
                     TheliaStudioEvents::LAUNCH_MODULE_BUILD,
-                    new ModuleGenerateEvent($input->getArgument("moduleCode"))
+                    new ModuleGenerateEvent($input->getArgument("moduleCode"), $input->getOption("tables"))
                 );
         } catch (\Exception $e) {
             $output->writeln($e->getMessage());

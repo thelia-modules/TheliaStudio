@@ -28,6 +28,13 @@ class Service
 
     protected $tags = array();
 
+    public function __construct($id, $class, $scope = '')
+    {
+        $this->id = $id;
+        $this->class = $class;
+        $this->scope = $scope;
+    }
+
     /**
      * @return mixed
      */
@@ -83,7 +90,7 @@ class Service
     }
 
     /**
-     * @return array
+     * @return Tag[]
      */
     public function getTags()
     {
