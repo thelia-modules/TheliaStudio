@@ -11,5 +11,4 @@ use {$moduleCode}\Event\Base\{$table->getTableName()}Event as Base{$table->getTa
  */
 class {$table->getTableName()}Event extends Base{$table->getTableName()}Event
 {
-
 }

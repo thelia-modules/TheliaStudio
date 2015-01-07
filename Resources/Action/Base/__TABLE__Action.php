@@ -48,14 +48,14 @@ class {$table->getTableName()}Action extends BaseAction implements EventSubscrib
         try {
 {if $table->hasI18nBehavior()}
             $model->setLocale($event->getLocale());
-{/if}
 
+{/if}
 {foreach from=$table->getColumns() item=column}
             if (null !== ${$column->getCamelizedName()|lcfirst} = $event->get{$column->getCamelizedName()}()) {
                 $model->set{$column->getCamelizedName()}(${$column->getCamelizedName()|lcfirst});
             }
-{/foreach}
 
+{/foreach}
             $model->save($con);
 
             $con->commit();
@@ -85,22 +85,30 @@ class {$table->getTableName()}Action extends BaseAction implements EventSubscrib
     {
         $this->genericUpdatePosition(new {$table->getQueryClass()}(), $event);
     }
-{/if}
 
+{/if}
 {if $table->hasVisible()}
     public function toggleVisibility(ToggleVisibilityEvent $event)
     {
         $this->genericToggleVisibility(new {$table->getQueryClass()}(), $event);
     }
+
 {/if}
+    protected function beforeCreateFormBuild(TheliaFormEvent $event)
+    {
+    }
 
-    protected function beforeCreateFormBuild(TheliaFormEvent $event) {}
+    protected function beforeUpdateFormBuild(TheliaFormEvent $event)
+    {
+    }
 
-    protected function beforeUpdateFormBuild(TheliaFormEvent $event) {}
+    protected function afterCreateFormBuild(TheliaFormEvent $event)
+    {
+    }
 
-    protected function afterCreateFormBuild(TheliaFormEvent $event) {}
-
-    protected function afterUpdateFormBuild(TheliaFormEvent $event) {}
+    protected function afterUpdateFormBuild(TheliaFormEvent $event)
+    {
+    }
 
     /**
      * Returns an array of event names this subscriber wants to listen to.

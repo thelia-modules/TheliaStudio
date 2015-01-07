@@ -11,5 +11,4 @@ use {$moduleCode}\Form\Type\Base\{$table->getTableName()}IdType as Base{$table->
  */
 class {$table->getTableName()}IdType extends Base{$table->getTableName()}IdType
 {
-
 }

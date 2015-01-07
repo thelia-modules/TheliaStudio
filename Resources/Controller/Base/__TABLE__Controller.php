@@ -7,7 +7,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Thelia\Controller\Admin\AbstractCrudController;
 use Thelia\Core\Security\Resource\AdminResources;
 use Thelia\Tools\URL;
-
 use {$moduleCode}\Event\{$table->getTableName()}Event;
 use {$moduleCode}\Event\{$table->getTableName()}Events;
 use {$table->getFullQueryClass()};

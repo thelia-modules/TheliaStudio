@@ -13,7 +13,6 @@ use Thelia\Core\Template\Loop\Argument\ArgumentCollection;
 use Thelia\Type\BooleanOrBothType;
 use {$table->getFullQueryClass()};
 
-
 /**
  * Class {$table->getTableName()}
  * @package {$moduleCode}\Loop\Base
@@ -159,6 +158,5 @@ class {$table->getTableName()} extends Base{if $table->hasI18nBehavior()}I18n{/i
 
     protected function addMoreResults(LoopResultRow $row, $entryObject)
     {
-
     }
 }

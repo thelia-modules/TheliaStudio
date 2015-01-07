@@ -12,7 +12,6 @@
 
 namespace TheliaStudio\Parser\Entity;
 
-
 /**
  * Class Config
  * @package TheliaStudio\Parser\Entity

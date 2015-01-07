@@ -23,7 +23,4 @@ class NullOutput extends BaseNullOutput
 {
     // ConsoleOutput compatibility
     public function renderBlock() {}
-
-    // Sf 2.4 compatibility for php-cs-fixer
-    public function isVerbose() {}
 }

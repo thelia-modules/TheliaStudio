@@ -11,5 +11,4 @@ use {$moduleCode}\Controller\Base\{$table->getTableName()}Controller as Base{$ta
  */
 class {$table->getTableName()}Controller extends Base{$table->getTableName()}Controller
 {
-
 }

@@ -12,7 +12,6 @@
 
 namespace TheliaStudio\Parser\Entity;
 
-
 /**
  * Class Service
  * @package TheliaStudio\Parser\Entity

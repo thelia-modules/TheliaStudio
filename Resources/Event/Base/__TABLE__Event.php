@@ -5,6 +5,7 @@ namespace {$moduleCode}\Event\Base;
 
 use Thelia\Core\Event\ActionEvent;
 use {$table->getFullModelClass()};
+
 /**
 * Class {$table->getTableName()}Event
 * @package {$moduleCode}\Event\Base

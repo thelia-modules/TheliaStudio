@@ -10,22 +10,27 @@
 /* file that was distributed with this source code.                                  */
 /*************************************************************************************/
 
-namespace TheliaStudio\Events;
+namespace TheliaStudio\Generator;
+
+use TheliaStudio\Events\ModuleGenerateEvent;
+use Symfony\Component\Finder\Finder;
+
 
 /**
- * Class TheliaStudioEvents
- * @package TheliaStudio\Events
+ * Class RawCopyGenerator
+ * @package TheliaStudio\Generator
  * @author Benjamin Perche <bperche9@gmail.com>
  */
-class TheliaStudioEvents
+class RawCopyGenerator extends BaseGenerator
 {
-    /**
-     * Self-build the event with the whitelist and the module code
-     */
-    const LAUNCH_MODULE_BUILD = "thelia_studio.launch.module_build";
+    public function generate(ModuleGenerateEvent $event)
+    {
+        /** @var \SplFileInfo $file */
+        foreach (Finder::create()->files()->in($event->getResourcesPath() . "raw-copy") as $file) {
+            $relativePath = $relativePath = str_replace($event->getResourcesPath() . "raw-copy", "", $file->getRealPath());
+            $completePath = $event->getModulePath() . $relativePath;
 
-    /**
-     * Run all the generators
-     */
-    const RUN_GENERATORS = "thelia_studio.run_generators";
+            @copy($file->getRealPath(), $completePath);
+        }
+    }
 }

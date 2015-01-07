@@ -11,5 +11,4 @@ use {$moduleCode}\Action\Base\{$table->getTableName()} as  Base{$table->getTable
  */
 class {$table->getTableName()}Action extends Base{$table->getTableName()}Action
 {
-
 }
