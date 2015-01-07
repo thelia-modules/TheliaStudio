@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<routes xmlns="http://symfony.com/schema/routing"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
+    <route id="foo" path="/a/path" />
+    <route id="bar" path="/another/path/{baz}" methods="get">
+        <default key="_controller">A:B:C</default>
+        <requirement key="baz">\d+</requirement>
+    </route>
+</routes>
