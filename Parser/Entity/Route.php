@@ -35,7 +35,6 @@ class Route
         $this->requirements = $requirements;
     }
 
-
     /**
      * @return mixed
      */
@@ -45,12 +44,13 @@ class Route
     }
 
     /**
-     * @param mixed $id
+     * @param  mixed $id
      * @return $this
      */
     public function setId($id)
     {
         $this->id = $id;
+
         return $this;
     }
 
@@ -63,12 +63,13 @@ class Route
     }
 
     /**
-     * @param mixed $path
+     * @param  mixed $path
      * @return $this
      */
     public function setPath($path)
     {
         $this->path = $path;
+
         return $this;
     }
 
@@ -81,12 +82,13 @@ class Route
     }
 
     /**
-     * @param mixed $methods
+     * @param  mixed $methods
      * @return $this
      */
     public function setMethods($methods)
     {
         $this->methods = $methods;
+
         return $this;
     }
 
@@ -99,12 +101,13 @@ class Route
     }
 
     /**
-     * @param array $defaults
+     * @param  array $defaults
      * @return $this
      */
     public function setDefaults(array $defaults)
     {
         $this->defaults = $defaults;
+
         return $this;
     }
 
@@ -117,12 +120,13 @@ class Route
     }
 
     /**
-     * @param array $requirements
+     * @param  array $requirements
      * @return $this
      */
     public function setRequirements(array $requirements)
     {
         $this->requirements = $requirements;
+
         return $this;
     }
 

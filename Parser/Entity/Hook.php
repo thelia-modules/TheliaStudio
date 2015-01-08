@@ -12,7 +12,6 @@
 
 namespace TheliaStudio\Parser\Entity;
 
-
 /**
  * Class Hook
  * @package TheliaStudio\Parser\Entity
@@ -20,5 +19,4 @@ namespace TheliaStudio\Parser\Entity;
  */
 class Hook extends Service
 {
-
 }

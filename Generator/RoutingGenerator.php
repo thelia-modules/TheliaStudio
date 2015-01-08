@@ -32,7 +32,7 @@ class RoutingGenerator extends BaseGenerator
 
     protected function processRouting(array $tables, $modulePath)
     {
-        $routingData = @file_get_contents($routingPath = $modulePath . "Config" . DS . "routing.xml");
+        $routingData = @file_get_contents($routingPath = $modulePath."Config".DS."routing.xml");
 
         if (false === $routingData) {
             $routingData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><routes xmlns=\"http://symfony.com/schema/routing\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd\"></routes>";
@@ -57,9 +57,8 @@ class RoutingGenerator extends BaseGenerator
         $this->writeRouting($routing, $routingPath, $xml);
     }
 
-
     /**
-     * @param Route[] $routes
+     * @param Route[]          $routes
      * @param $routingPath
      * @param SimpleXMLElement $xml
      */
@@ -90,7 +89,7 @@ class RoutingGenerator extends BaseGenerator
         $this->saveXml($xml, $routingPath);
     }
     /**
-     * @param Table[] $tables
+     * @param  Table[] $tables
      * @return array
      */
     public function generateRouting(array $tables, $moduleCode)
@@ -99,75 +98,75 @@ class RoutingGenerator extends BaseGenerator
 
         foreach ($tables as $table) {
             // List
-            $routes[$table->getRawTableName() . ".list"] = new Route(
-                $table->getRawTableName() . ".list",
-                "/admin/module/" . $moduleCode . "/" . $table->getRawTableName(),
+            $routes[$table->getRawTableName().".list"] = new Route(
+                $table->getRawTableName().".list",
+                "/admin/module/".$moduleCode."/".$table->getRawTableName(),
                 "get",
                 [
-                    "_controller" => $moduleCode . ":" . $table->getTableName() . ":default"
+                    "_controller" => $moduleCode.":".$table->getTableName().":default"
                 ]
             );
 
             // Create
-            $routes[$table->getRawTableName() . ".create"] = new Route(
-                $table->getRawTableName() . ".create",
-                "/admin/module/" . $moduleCode . "/" . $table->getRawTableName(),
+            $routes[$table->getRawTableName().".create"] = new Route(
+                $table->getRawTableName().".create",
+                "/admin/module/".$moduleCode."/".$table->getRawTableName(),
                 "post",
                 [
-                    "_controller" => $moduleCode . ":" . $table->getTableName() . ":create"
+                    "_controller" => $moduleCode.":".$table->getTableName().":create"
                 ]
             );
 
             // View
-            $routes[$table->getRawTableName() . ".view"] = new Route(
-                $table->getRawTableName() . ".view",
-                "/admin/module/" . $moduleCode . "/" . $table->getRawTableName() . "/edit",
+            $routes[$table->getRawTableName().".view"] = new Route(
+                $table->getRawTableName().".view",
+                "/admin/module/".$moduleCode."/".$table->getRawTableName()."/edit",
                 "get",
                 [
-                    "_controller" => $moduleCode . ":" . $table->getTableName() . ":update"
+                    "_controller" => $moduleCode.":".$table->getTableName().":update"
                 ]
             );
 
             // Edit
-            $routes[$table->getRawTableName() . ".edit"] = new Route(
-                $table->getRawTableName() . ".edit",
-                "/admin/module/" . $moduleCode . "/" . $table->getRawTableName() . "/edit",
+            $routes[$table->getRawTableName().".edit"] = new Route(
+                $table->getRawTableName().".edit",
+                "/admin/module/".$moduleCode."/".$table->getRawTableName()."/edit",
                 "post",
                 [
-                    "_controller" => $moduleCode . ":" . $table->getTableName() . ":processUpdate"
+                    "_controller" => $moduleCode.":".$table->getTableName().":processUpdate"
                 ]
             );
 
             // Delete
-            $routes[$table->getRawTableName() . ".delete"] = new Route(
-                $table->getRawTableName() . ".delete",
-                "/admin/module/" . $moduleCode . "/" . $table->getRawTableName(),
+            $routes[$table->getRawTableName().".delete"] = new Route(
+                $table->getRawTableName().".delete",
+                "/admin/module/".$moduleCode."/".$table->getRawTableName(),
                 "post",
                 [
-                    "_controller" => $moduleCode . ":" . $table->getTableName() . ":delete"
+                    "_controller" => $moduleCode.":".$table->getTableName().":delete"
                 ]
             );
 
             // Update position
             if ($table->hasPosition()) {
-                $routes[$table->getRawTableName() . ".update_position"] = new Route(
-                    $table->getRawTableName() . ".update_position",
-                    "/admin/module/" . $moduleCode . "/" . $table->getRawTableName() . "/updatePosition",
+                $routes[$table->getRawTableName().".update_position"] = new Route(
+                    $table->getRawTableName().".update_position",
+                    "/admin/module/".$moduleCode."/".$table->getRawTableName()."/updatePosition",
                     "get",
                     [
-                        "_controller" => $moduleCode . ":" . $table->getTableName() . ":updatePosition"
+                        "_controller" => $moduleCode.":".$table->getTableName().":updatePosition"
                     ]
                 );
             }
 
             // Toggle visibility
             if ($table->hasVisible()) {
-                $routes[$table->getRawTableName() . ".toggle_visibility"] = new Route(
-                    $table->getRawTableName() . ".toggle_visibility",
-                    "/admin/module/" . $moduleCode . "/" . $table->getRawTableName() . "/toggleVisibility",
+                $routes[$table->getRawTableName().".toggle_visibility"] = new Route(
+                    $table->getRawTableName().".toggle_visibility",
+                    "/admin/module/".$moduleCode."/".$table->getRawTableName()."/toggleVisibility",
                     "get",
                     [
-                        "_controller" => $moduleCode . ":" . $table->getTableName() . ":setToggleVisibility"
+                        "_controller" => $moduleCode.":".$table->getTableName().":setToggleVisibility"
                     ]
                 );
             }

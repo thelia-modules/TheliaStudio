@@ -34,7 +34,7 @@ class PhpGenerator extends BaseGenerator
     }
 
     /**
-     * @param Table $table
+     * @param Table          $table
      * @param \SplFileInfo[] $templates
      * @param $resourcesPath
      * @param $moduleCode
@@ -47,8 +47,8 @@ class PhpGenerator extends BaseGenerator
             $fileName = str_replace("__TABLE__", $table->getTableName(), $template->getFilename());
             $fileName = str_replace("FIX", "", $fileName);
 
-            $relativePath = str_replace($resourcesPath, "", $template->getPath() . DS);
-            $completeFilePath = THELIA_MODULE_DIR . $moduleCode . DS . $relativePath . DS  . $fileName;
+            $relativePath = str_replace($resourcesPath, "", $template->getPath().DS);
+            $completeFilePath = THELIA_MODULE_DIR.$moduleCode.DS.$relativePath.DS.$fileName;
 
             $isFix = false !== strpos($template->getFilename(), "FIX");
             $isI18n = false !== strpos($template->getFilename(), "I18n");

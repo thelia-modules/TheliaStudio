@@ -15,7 +15,6 @@ namespace TheliaStudio\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\HttpFoundation\Session\Storage\Handler\NullSessionHandler;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Thelia\Command\ContainerAwareCommand;
 use Thelia\Core\HttpFoundation\Request;
@@ -49,6 +48,10 @@ class ModuleGenerateEverythingCommand extends ContainerAwareCommand
         ;
     }
 
+    /**
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $container = $this->getContainer();
@@ -64,8 +67,19 @@ class ModuleGenerateEverythingCommand extends ContainerAwareCommand
                     TheliaStudioEvents::LAUNCH_MODULE_BUILD,
                     new ModuleGenerateEvent($input->getArgument("moduleCode"), $input->getOption("tables"))
                 );
+
+            $output->renderBlock(array(
+                '',
+                'Everything has been generated successfuly',
+                'Files available in your module directory',
+                '',
+            ), 'bg=green;fg=black');
         } catch (\Exception $e) {
-            $output->writeln($e->getMessage());
+            $outputArray = explode("\n", $e->getMessage());
+            array_push($outputArray, '');
+            array_unshift($outputArray, '');
+
+            $output->renderBlock($outputArray, 'bg=red; fg=white');
         }
     }
 }

@@ -43,12 +43,13 @@ class Service
     }
 
     /**
-     * @param mixed $id
+     * @param  mixed $id
      * @return $this
      */
     public function setId($id)
     {
         $this->id = $id;
+
         return $this;
     }
 
@@ -61,12 +62,13 @@ class Service
     }
 
     /**
-     * @param mixed $class
+     * @param  mixed $class
      * @return $this
      */
     public function setClass($class)
     {
         $this->class = $class;
+
         return $this;
     }
 
@@ -79,12 +81,13 @@ class Service
     }
 
     /**
-     * @param mixed $scope
+     * @param  mixed $scope
      * @return $this
      */
     public function setScope($scope)
     {
         $this->scope = $scope;
+
         return $this;
     }
 
@@ -97,12 +100,13 @@ class Service
     }
 
     /**
-     * @param array $tags
+     * @param  array $tags
      * @return $this
      */
     public function setTags(array $tags)
     {
         $this->tags = $tags;
+
         return $this;
     }
 

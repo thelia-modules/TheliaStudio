@@ -12,35 +12,17 @@
 
 namespace TheliaStudio\Action;
 
-use Symfony\Component\Console\Output\ConsoleOutput;
-use Symfony\CS\Console\Application as PhpCsFixer;
-use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\DependencyInjection\SimpleXMLElement;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
-use Thelia\Command\ModuleGenerateModelCommand;
-use Thelia\Command\ModuleGenerateSqlCommand;
-use Thelia\Core\Application;
-use Thelia\Core\Template\ParserInterface;
 use Thelia\Core\Thelia;
 use Thelia\Model\ConfigQuery;
 use TheliaStudio\Events\ModuleGenerateEvent;
 use TheliaStudio\Events\TheliaStudioEvents;
-use TheliaStudio\Parser\ConfigParser;
 use TheliaStudio\Parser\Entity\Config;
-use TheliaStudio\Parser\Entity\Form;
-use TheliaStudio\Parser\Entity\Loop;
-use TheliaStudio\Parser\Entity\Route;
-use TheliaStudio\Parser\Entity\Service;
-use TheliaStudio\Parser\Entity\Tag;
-use TheliaStudio\Parser\RoutingParser;
-use TheliaStudio\Parser\Rule;
-use TheliaStudio\Parser\RuleReader;
 use TheliaStudio\Parser\SchemaParser;
 use TheliaStudio\Parser\Table;
 use TheliaStudio\TheliaStudio;
-use TheliaStudio\Output\NullOutput;
 
 /**
  * Class GenerateEverything
@@ -80,9 +62,9 @@ class GenerateEverything implements EventSubscriberInterface
         ConfigQuery::write("html_output_trim_level", 0);
 
         $moduleCode = $event->getModuleCode();
-        $modulePath = THELIA_MODULE_DIR . $moduleCode . DS;
+        $modulePath = THELIA_MODULE_DIR.$moduleCode.DS;
 
-        $resourcesPath = ConfigQuery::read(TheliaStudio::RESOURCE_PATH_CONFIG_NAME) . DS;
+        $resourcesPath = ConfigQuery::read(TheliaStudio::RESOURCE_PATH_CONFIG_NAME).DS;
 
         if (!is_dir($resourcesPath) || !is_readable($resourcesPath)) {
             throw new FileNotFoundException(sprintf(
@@ -105,7 +87,8 @@ class GenerateEverything implements EventSubscriberInterface
             ;
 
             $event->getDispatcher()->dispatch(TheliaStudioEvents::RUN_GENERATORS, $event);
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
 
         // Restore trim level
         ConfigQuery::write("html_output_trim_level", $previousTrimLevel);
@@ -121,7 +104,7 @@ class GenerateEverything implements EventSubscriberInterface
     protected function buildEntities($modulePath, $whiteList)
     {
         $entities = array();
-        $schemaFile = $modulePath . "Config" . DS . "schema.xml";
+        $schemaFile = $modulePath."Config".DS."schema.xml";
 
         $whiteList = trim($whiteList);
 
@@ -140,7 +123,6 @@ class GenerateEverything implements EventSubscriberInterface
 
         return $entities;
     }
-
 
     /**
      * Returns an array of event names this subscriber wants to listen to.

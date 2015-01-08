@@ -43,7 +43,7 @@ class ModulePhpGenerator extends BaseGenerator
     }
 
     /**
-     * @param \SplFileInfo[] $templates
+     * @param  \SplFileInfo[]   $templates
      * @param $resourcesPath
      * @param $moduleCode
      * @throws \Exception
@@ -54,8 +54,8 @@ class ModulePhpGenerator extends BaseGenerator
         foreach ($templates as $template) {
             $fileName = str_replace("__MODULE__", $moduleCode, $template->getFilename());
 
-            $relativePath = str_replace($resourcesPath, "", $template->getPath() . DS);
-            $completeFilePath = THELIA_MODULE_DIR . $moduleCode . DS . $relativePath . DS  . $fileName;
+            $relativePath = str_replace($resourcesPath, "", $template->getPath().DS);
+            $completeFilePath = THELIA_MODULE_DIR.$moduleCode.DS.$relativePath.DS.$fileName;
 
             $fetchedTemplate = $this->parser->fetch($template->getRealPath());
 

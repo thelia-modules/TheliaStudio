@@ -39,7 +39,7 @@ class PropelLauncherGenerator extends BaseGenerator
 
     protected function removeMapFile($modulePath)
     {
-        $files = (new Finder())->files()->in($modulePath . "Config")->name("*.map");
+        $files = (new Finder())->files()->in($modulePath."Config")->name("*.map");
 
         /** @var \SplFileInfo $file */
         foreach ($files as $file) {

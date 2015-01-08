@@ -14,7 +14,6 @@ namespace TheliaStudio\Parser;
 
 use Symfony\Component\DependencyInjection\SimpleXMLElement;
 
-
 /**
  * Class SchemaParser
  * @package TheliaStudio\Parser
@@ -23,7 +22,7 @@ use Symfony\Component\DependencyInjection\SimpleXMLElement;
 class SchemaParser
 {
     /**
-     * @param SimpleXMLElement $xml
+     * @param  SimpleXMLElement $xml
      * @return Table[]
      */
     public function parseXml(SimpleXMLElement $xml, array $whiteList = array())
@@ -35,7 +34,7 @@ class SchemaParser
             $currentNs = $database->getAttributeAsPhp("namespace");
 
             if (!empty($currentNs)) {
-                $defaultNamespace = $currentNs . "\\";
+                $defaultNamespace = $currentNs."\\";
             }
         }
 
@@ -44,7 +43,7 @@ class SchemaParser
             $tableName = $table->getAttributeAsPhp('name');
 
             if (!$whiteList || in_array($tableName, $whiteList)) {
-                $entities[] = $tableInstance = new Table($tableName, $defaultNamespace . $table->getAttributeAsPhp("namespace"));
+                $entities[] = $tableInstance = new Table($tableName, $defaultNamespace.$table->getAttributeAsPhp("namespace"));
 
                 $this->readColumns($table, $tableInstance);
                 $this->readBehaviors($table, $tableInstance);

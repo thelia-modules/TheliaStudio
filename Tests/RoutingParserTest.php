@@ -24,7 +24,7 @@ class RoutingParserTest extends \PHPUnit_Framework_TestCase
 {
     public function testConvertsSimpleXmlElementToObject()
     {
-        $xml = new SimpleXMLElement(file_get_contents(__DIR__ . DS . "fixtures" . DS . "routing.xml"));
+        $xml = new SimpleXMLElement(file_get_contents(__DIR__.DS."fixtures".DS."routing.xml"));
 
         $parser = new RoutingParser();
         $routes = $parser->parseRoutes($xml);

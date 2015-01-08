@@ -30,7 +30,7 @@ class TheliaStudio extends BaseModule
                 ->setHidden(0)
                 ->setSecured(0)
                 ->setName(static::RESOURCE_PATH_CONFIG_NAME)
-                ->setValue(__DIR__ . DS . "Resources")
+                ->setValue(__DIR__.DS."Resources")
 
                 ->getTranslation("fr_FR")
                     ->setTitle("Chemin de templates pour Thelia studio")

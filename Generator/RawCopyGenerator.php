@@ -15,7 +15,6 @@ namespace TheliaStudio\Generator;
 use TheliaStudio\Events\ModuleGenerateEvent;
 use Symfony\Component\Finder\Finder;
 
-
 /**
  * Class RawCopyGenerator
  * @package TheliaStudio\Generator
@@ -26,9 +25,9 @@ class RawCopyGenerator extends BaseGenerator
     public function generate(ModuleGenerateEvent $event)
     {
         /** @var \SplFileInfo $file */
-        foreach (Finder::create()->files()->in($event->getResourcesPath() . "raw-copy") as $file) {
-            $relativePath = $relativePath = str_replace($event->getResourcesPath() . "raw-copy", "", $file->getRealPath());
-            $completePath = $event->getModulePath() . $relativePath;
+        foreach (Finder::create()->files()->in($event->getResourcesPath()."raw-copy") as $file) {
+            $relativePath = $relativePath = str_replace($event->getResourcesPath()."raw-copy", "", $file->getRealPath());
+            $completePath = $event->getModulePath().$relativePath;
 
             @copy($file->getRealPath(), $completePath);
         }

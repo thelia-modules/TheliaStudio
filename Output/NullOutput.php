@@ -22,5 +22,7 @@ use Symfony\Component\Console\Output\NullOutput as BaseNullOutput;
 class NullOutput extends BaseNullOutput
 {
     // ConsoleOutput compatibility
-    public function renderBlock() {}
+    public function renderBlock()
+    {
+    }
 }

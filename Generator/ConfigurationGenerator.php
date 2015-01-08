@@ -22,7 +22,6 @@ use TheliaStudio\Parser\Entity\Service;
 use TheliaStudio\Parser\Entity\Tag;
 use TheliaStudio\Parser\Table;
 
-
 /**
  * Class ConfigurationGenerator
  * @package TheliaStudio\Generator
@@ -49,7 +48,6 @@ class ConfigurationGenerator extends BaseGenerator
         }
     }
 
-
     protected function addForms(SimpleXMLElement $xml, Config $config)
     {
         foreach ($config->getForms() as $form) {
@@ -59,7 +57,6 @@ class ConfigurationGenerator extends BaseGenerator
                 $element->addAttribute("class", $form->getClass());
             }
         }
-
     }
 
     protected function addLoops(SimpleXMLElement $xml, Config $config)
@@ -96,7 +93,6 @@ class ConfigurationGenerator extends BaseGenerator
         }
     }
 
-
     /**
      * @param Table[] $tables
      */
@@ -107,22 +103,22 @@ class ConfigurationGenerator extends BaseGenerator
         foreach ($tables as $table) {
             $config->addLoop(new Loop(
                 $table->getLoopType(),
-                $moduleCode . "\\Loop\\" . $table->getTableName()
+                $moduleCode."\\Loop\\".$table->getTableName()
             ));
 
             $config->addForm(new Form(
-                $table->getRawTableName() . "_create",
-                $moduleCode . "\\Form\\" . $table->getTableName() . "CreateForm"
+                $table->getRawTableName()."_create",
+                $moduleCode."\\Form\\".$table->getTableName()."CreateForm"
             ));
 
             $config->addForm(new Form(
-                $table->getRawTableName() . "_update",
-                $moduleCode . "\\Form\\" . $table->getTableName() . "UpdateForm"
+                $table->getRawTableName()."_update",
+                $moduleCode."\\Form\\".$table->getTableName()."UpdateForm"
             ));
 
             $service = new Service(
-                "action." . $table->getRawTableName() . "_table",
-                $moduleCode . "\\Action\\" . $table->getTableName() . "Action"
+                "action.".$table->getRawTableName()."_table",
+                $moduleCode."\\Action\\".$table->getTableName()."Action"
             );
 
             $service->addTag(new Tag("kernel.event_subscriber"));
@@ -131,7 +127,6 @@ class ConfigurationGenerator extends BaseGenerator
 
         return $config;
     }
-
 
     /**
      * @param Table[] $tables
@@ -142,7 +137,7 @@ class ConfigurationGenerator extends BaseGenerator
         /**
          * Get current configuration
          */
-        $configData = @file_get_contents($configPath = $modulePath . "Config" . DS . "config.xml");
+        $configData = @file_get_contents($configPath = $modulePath."Config".DS."config.xml");
 
         if (false === $configData) {
             throw new \Exception("missing file 'config.xml'");
@@ -171,7 +166,6 @@ class ConfigurationGenerator extends BaseGenerator
         $this->writeNewConfig($config, $configPath, $xml);
     }
 
-
     protected function writeNewConfig(Config $config, $configPath, SimpleXMLElement $xml)
     {
         $this->addForms($xml, $config);
@@ -180,7 +174,7 @@ class ConfigurationGenerator extends BaseGenerator
 
         // For now delete hooks node if it has no child
         if (!$xml->hooks->children()) {
-            unset ($xml->hooks);
+            unset($xml->hooks);
         }
 
         $this->saveXml($xml, $configPath);

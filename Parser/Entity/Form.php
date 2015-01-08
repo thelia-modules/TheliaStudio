@@ -12,7 +12,6 @@
 
 namespace TheliaStudio\Parser\Entity;
 
-
 /**
  * Class Form
  * @package TheliaStudio\Parser\Entity
@@ -39,12 +38,13 @@ class Form
     }
 
     /**
-     * @param mixed $name
+     * @param  mixed $name
      * @return $this
      */
     public function setName($name)
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -57,12 +57,13 @@ class Form
     }
 
     /**
-     * @param mixed $class
+     * @param  mixed $class
      * @return $this
      */
     public function setClass($class)
     {
         $this->class = $class;
+
         return $this;
     }
 }

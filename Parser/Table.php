@@ -90,12 +90,12 @@ class Table
 
     public function getQueryClass()
     {
-        return $this->getModelClass() . "Query";
+        return $this->getModelClass()."Query";
     }
 
     public function getFullQueryClass()
     {
-        return $this->getFullModelClass() . "Query";
+        return $this->getFullModelClass()."Query";
     }
 
     public function getModelClass()
@@ -105,7 +105,7 @@ class Table
 
     public function getFullModelClass()
     {
-        return  $this->getNamespace() . "\\" . $this->getModelClass();
+        return  $this->getNamespace()."\\".$this->getModelClass();
     }
 
     /**
@@ -160,12 +160,12 @@ class Table
 
     public function getListTemplateName()
     {
-        return str_replace("_", "-", $this->tableName) . "s";
+        return str_replace("_", "-", $this->tableName)."s";
     }
 
     public function getEditionTemplateName()
     {
-        return str_replace("_", "-", $this->tableName) . "-edit";
+        return str_replace("_", "-", $this->tableName)."-edit";
     }
 
     public function getModuleCode()
@@ -175,12 +175,12 @@ class Table
 
     public function getListPathInfo()
     {
-        return "/admin/module/" . $this->getModuleCode() . "/" . $this->tableName;
+        return "/admin/module/".$this->getModuleCode()."/".$this->tableName;
     }
 
     public function getEditionPathInfo()
     {
-        return $this->getListPathInfo() . "/edit";
+        return $this->getListPathInfo()."/edit";
     }
 
     public function getLoopType()

@@ -76,12 +76,13 @@ class Config
     }
 
     /**
-     * @param array $loops
+     * @param  array $loops
      * @return $this
      */
     public function setLoops(array $loops)
     {
         $this->loops = $loops;
+
         return $this;
     }
 
@@ -94,12 +95,13 @@ class Config
     }
 
     /**
-     * @param array $forms
+     * @param  array $forms
      * @return $this
      */
     public function setForms(array $forms)
     {
         $this->forms = $forms;
+
         return $this;
     }
 
@@ -112,12 +114,13 @@ class Config
     }
 
     /**
-     * @param array $services
+     * @param  array $services
      * @return $this
      */
     public function setServices(array $services)
     {
         $this->services = $services;
+
         return $this;
     }
 
@@ -130,18 +133,19 @@ class Config
     }
 
     /**
-     * @param array $hooks
+     * @param  array $hooks
      * @return $this
      */
     public function setHooks(array $hooks)
     {
         $this->hooks = $hooks;
+
         return $this;
     }
 
     /**
      * @param $name
-     * @param mixed $default
+     * @param  mixed $default
      * @return Form
      */
     public function getForm($name, $default = null)
@@ -155,7 +159,7 @@ class Config
 
     /**
      * @param $name
-     * @param mixed $default
+     * @param  mixed $default
      * @return Hook
      */
     public function getHook($name, $default = null)
@@ -169,7 +173,7 @@ class Config
 
     /**
      * @param $name
-     * @param mixed $default
+     * @param  mixed   $default
      * @return Service
      */
     public function getService($name, $default = null)
@@ -183,7 +187,7 @@ class Config
 
     /**
      * @param $name
-     * @param mixed $default
+     * @param  mixed $default
      * @return Loop
      */
     public function getLoop($name, $default = null)
@@ -194,7 +198,7 @@ class Config
 
         return $default;
     }
-    
+
     public function mergeConfig(Config $config)
     {
         foreach ($config->getForms() as $form) {

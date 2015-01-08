@@ -24,7 +24,7 @@ class RuleReaderTest extends \PHPUnit_Framework_TestCase
     public function testReadValidRule()
     {
         $reader = new RuleReader();
-        $rule = $reader->readRules(__DIR__ . DS . "fixtures" . DS . "valid.rule");
+        $rule = $reader->readRules(__DIR__.DS."fixtures".DS."valid.rule");
 
         $this->assertEquals("thelia.sql", $rule->getSource());
 
@@ -32,7 +32,7 @@ class RuleReaderTest extends \PHPUnit_Framework_TestCase
 
         $this->assertCount(2, $collection);
         $this->assertEquals(
-            [["/DROP TABLE[^;]+;.*\n*/",""], ["/CREATE TABLE/", "CREATE TABLE IF NOT EXISTS"]],
+            [["/DROP TABLE[^;]+;.*\n*/", ""], ["/CREATE TABLE/", "CREATE TABLE IF NOT EXISTS"]],
             $collection
         );
     }
@@ -43,13 +43,13 @@ class RuleReaderTest extends \PHPUnit_Framework_TestCase
     public function testThrowExceptionIfNoFileKey()
     {
         $reader = new RuleReader();
-        $reader->readRules(__DIR__ . DS . "fixtures" . DS . "nofile.rule");
+        $reader->readRules(__DIR__.DS."fixtures".DS."nofile.rule");
     }
 
     public function testIsEmptyIfTheJsonIsNotValid()
     {
         $reader = new RuleReader();
-        $rule = $reader->readRules(__DIR__ . DS . "fixtures" . DS . "broken.rule");
+        $rule = $reader->readRules(__DIR__.DS."fixtures".DS."broken.rule");
 
         $this->assertEmpty($rule->getSource());
         $this->assertEmpty($rule->getRuleCollection());

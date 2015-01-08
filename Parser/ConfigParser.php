@@ -43,7 +43,7 @@ class ConfigParser
     {
         /** @var SimpleXmlElement $loopXml */
         foreach ($xml->xpath("//config:loops/config:loop") as $loopXml) {
-             $config->addLoop(new Loop($loopXml->getAttributeAsPhp("name"), $loopXml->getAttributeAsPhp("class")));
+            $config->addLoop(new Loop($loopXml->getAttributeAsPhp("name"), $loopXml->getAttributeAsPhp("class")));
         }
     }
 

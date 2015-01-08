@@ -12,7 +12,6 @@
 
 namespace TheliaStudio\Parser;
 
-
 /**
  * Class Rule
  * @package TheliaStudio\Parser
@@ -33,12 +32,13 @@ class Rule
     }
 
     /**
-     * @param mixed $source
+     * @param  mixed $source
      * @return $this
      */
     public function setSource($source)
     {
         $this->source = $source;
+
         return $this;
     }
 
@@ -51,12 +51,13 @@ class Rule
     }
 
     /**
-     * @param mixed $ruleCollection
+     * @param  mixed $ruleCollection
      * @return $this
      */
     public function setRuleCollection($ruleCollection)
     {
         $this->ruleCollection = $ruleCollection;
+
         return $this;
     }
 

@@ -12,7 +12,6 @@
 
 namespace TheliaStudio\Parser\Entity;
 
-
 /**
  * Class Tag
  * @package TheliaStudio\Parser\Entity
@@ -37,15 +36,15 @@ class Tag
     }
 
     /**
-     * @param array $parameters
+     * @param  array $parameters
      * @return $this
      */
     public function setParameters(array $parameters)
     {
         $this->parameters = $parameters;
+
         return $this;
     }
-
 
     public function has($name)
     {

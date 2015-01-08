@@ -55,12 +55,13 @@ class ModuleGenerateEvent extends Event
     }
 
     /**
-     * @param mixed $moduleCode
+     * @param  mixed $moduleCode
      * @return $this
      */
     public function setModuleCode($moduleCode)
     {
         $this->moduleCode = $moduleCode;
+
         return $this;
     }
 
@@ -73,12 +74,13 @@ class ModuleGenerateEvent extends Event
     }
 
     /**
-     * @param mixed $tables
+     * @param  mixed $tables
      * @return $this
      */
     public function setTables($tables)
     {
         $this->tables = $tables;
+
         return $this;
     }
 
@@ -91,12 +93,13 @@ class ModuleGenerateEvent extends Event
     }
 
     /**
-     * @param \TheliaStudio\Parser\Table[] $entites
+     * @param  \TheliaStudio\Parser\Table[] $entites
      * @return $this
      */
     public function setEntities(array $entities)
     {
         $this->entities = $entities;
+
         return $this;
     }
 
@@ -109,12 +112,13 @@ class ModuleGenerateEvent extends Event
     }
 
     /**
-     * @param \Thelia\Core\Thelia $kernel
+     * @param  \Thelia\Core\Thelia $kernel
      * @return $this
      */
     public function setKernel(Thelia $kernel)
     {
         $this->kernel = $kernel;
+
         return $this;
     }
 
@@ -127,12 +131,13 @@ class ModuleGenerateEvent extends Event
     }
 
     /**
-     * @param mixed $modulePath
+     * @param  mixed $modulePath
      * @return $this
      */
     public function setModulePath($modulePath)
     {
         $this->modulePath = $modulePath;
+
         return $this;
     }
 
@@ -145,12 +150,13 @@ class ModuleGenerateEvent extends Event
     }
 
     /**
-     * @param mixed $resourcesPath
+     * @param  mixed $resourcesPath
      * @return $this
      */
     public function setResourcesPath($resourcesPath)
     {
         $this->resourcesPath = $resourcesPath;
+
         return $this;
     }
 }

@@ -14,7 +14,6 @@ namespace TheliaStudio\Parser;
 
 use Symfony\Component\DependencyInjection\Container;
 
-
 /**
  * Class Column
  * @package TheliaStudio\Parser
@@ -54,7 +53,7 @@ class Column
         "time" => "time",
         "datetime" => "datetime",
     );
-    
+
     protected $name;
 
     protected $type;
@@ -94,12 +93,13 @@ class Column
     }
 
     /**
-     * @param mixed $name
+     * @param  mixed $name
      * @return $this
      */
     public function setName($name)
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -112,12 +112,13 @@ class Column
     }
 
     /**
-     * @param mixed $type
+     * @param  mixed $type
      * @return $this
      */
     public function setType($type)
     {
         $this->type = $type;
+
         return $this;
     }
 
@@ -130,12 +131,13 @@ class Column
     }
 
     /**
-     * @param mixed $required
+     * @param  mixed $required
      * @return $this
      */
     public function setRequired($required)
     {
         $this->required = $required;
+
         return $this;
     }
 
@@ -148,12 +150,13 @@ class Column
     }
 
     /**
-     * @param boolean $i18n
+     * @param  boolean $i18n
      * @return $this
      */
     public function setI18n($i18n)
     {
         $this->i18n = $i18n;
+
         return $this;
     }
 
