@@ -137,14 +137,14 @@ class {$table->getTableName()} extends Base{if $table->hasI18nBehavior()}I18n{/i
 {foreach from=$table->getColumns() item=column}
                 case "{if $column->getName() == 'position'}manual{else}{$column->getName()}{/if}":
 {if $column->isI18n()}
-                    $query->addAscendingOrderBy("i18n_{$column->getNameAsSQL()}");
+                    $query->addAscendingOrderByColumn("i18n_{$column->getNameAsSQL()}");
 {else}
                     $query->orderBy{$column->getCamelizedName()}();
 {/if}
                     break;
                 case "{if $column->getName() == 'position'}manual{else}{$column->getName()}{/if}-reverse":
 {if $column->isI18n()}
-                    $query->addDescendingOrderBy("i18n_{$column->getNameAsSQL()}");
+                    $query->addDescendingOrderByColumn("i18n_{$column->getNameAsSQL()}");
 {else}
                     $query->orderBy{$column->getCamelizedName()}(Criteria::DESC);
 {/if}

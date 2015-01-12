@@ -69,7 +69,7 @@ class {$table->getTableName()}Controller extends AbstractCrudController
     {
         $data = array(
 {foreach from=$table->getColumns() item=column}
-            "{$column->getName()}" => {if $column->getFormType() == 'checkbox'}(bool) {/if}$object->get{$column->getName()}(),
+            "{$column->getName()}" => {if $column->getFormType() == 'checkbox'}(bool) {/if}$object->get{$column->getCamelizedName()}(),
 {/foreach}
         );
 
