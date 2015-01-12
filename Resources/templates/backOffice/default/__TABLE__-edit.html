@@ -64,6 +64,8 @@
                                                 <input type="checkbox" class="form-control" name="{$name}" id="{$label_attr.for}" {if $[{$column->getNameAsSQL()}]}checked{/if} {form_field_attributes form=$form field="[{$column->getName()}]"} placeholder="{intl l='The [{$table->getTableName()}] [{$column->getName()}]'}" />
 [{elseif $column->getFormType() == 'text'}]
                                                 <input type="text" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$[{$column->getNameAsSQL()}]}" {form_field_attributes form=$form field="[{$column->getName()}]"} placeholder="{intl l='The [{$table->getTableName()}] [{$column->getName()}]'}" />
+[{elseif $column->getFormType() == 'textarea'}]
+                                                <textarea class="form-control" name="{$name}" id="{$label_attr.for}" {form_field_attributes form=$form field="[{$column->getName()}]"} placeholder="{intl l='The [{$table->getTableName()}] [{$column->getName()}]'}">{$[{$column->getNameAsSQL()}]}</textarea>
 [{elseif    $column->getFormType() == 'integer'}]
                                                 <input type="number" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$[{$column->getNameAsSQL()}]}" {form_field_attributes form=$form field="[{$column->getName()}]"} placeholder="{intl l='The [{$table->getTableName()}] [{$column->getName()}]'}" />
 [{elseif $column->getFormType() == 'number'}]

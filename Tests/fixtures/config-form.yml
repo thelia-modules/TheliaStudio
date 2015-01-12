@@ -1,8 +1,7 @@
 config:
   varName: text
-  varName2: int
-  varName3: @table_name
-  varName4:
+  varName2: integer
+  varName3:
     type:  text
     required: true
     regex: "a-z+"

@@ -163,32 +163,9 @@ class ConfigFormEntry
         );
     }
 
-    public function  getRealType()
+    public function getRealType()
     {
-        if ($this->isTypeReference()) {
-            return "integer";
-        }
-
         return $this->type;
-    }
-
-    public function isTypeReference()
-    {
-        return $this->type[0] === '@';
-    }
-
-    public function getReference()
-    {
-        if ($this->isTypeReference()) {
-            return substr($this->type, 1);
-        }
-
-        return null;
-    }
-
-    public function getCamelizedReference()
-    {
-        return $this->camelize($this->getReference());
     }
 
     public function getConstantName()

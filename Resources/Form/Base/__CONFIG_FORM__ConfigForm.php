@@ -103,6 +103,7 @@ class {$moduleCode}ConfigForm extends BaseForm
             ))
         ;
     }
+
 {/foreach}
     public function getName()
     {
