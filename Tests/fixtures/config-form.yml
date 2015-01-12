@@ -1,0 +1,11 @@
+config:
+  varName: text
+  varName2: int
+  varName3: @table_name
+  varName4:
+    type:  text
+    required: true
+    regex: "a-z+"
+    size:
+      min: 5
+      max: 20

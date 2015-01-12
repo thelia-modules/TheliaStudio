@@ -23,39 +23,27 @@ use TheliaStudio\Events\ModuleGenerateEvent;
 use TheliaStudio\Events\TheliaStudioEvents;
 
 /**
- * Class ModuleGenerateEverythingCommand
+ * Class ModuleGenerateConfigForm
  * @package TheliaStudio\Command
  * @author Benjamin Perche <bperche9@gmail.com>
  */
-class ModuleGenerateEverythingCommand extends ContainerAwareCommand
+class ModuleGenerateConfigFormCommand extends  ContainerAwareCommand
 {
     protected function configure()
     {
         $this
-            ->setName("module:generate:everything")
-            ->setDescription("Generate actions, model, forms, controllers, events, templates from schema.xml")
+            ->setName("module:generate:config-form")
+            ->setDescription("Generate module configuration form from 'config-form.yml'")
             ->addArgument(
                 "moduleCode",
                 InputArgument::REQUIRED,
                 "The module code"
             )
-            ->addOption(
-                "tables",
-                "t",
-                InputArgument::OPTIONAL,
-                "Only generate for those tables"
-            )
-            ->addOption(
-                "generators",
-                "g",
-                InputArgument::OPTIONAL,
-                "Only use those generators"
-            )
         ;
     }
 
     /**
-     * @param InputInterface  $input
+     * @param InputInterface $input
      * @param OutputInterface $output
      */
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -71,20 +59,15 @@ class ModuleGenerateEverythingCommand extends ContainerAwareCommand
             $container->get("event_dispatcher")
                 ->dispatch(
                     TheliaStudioEvents::LAUNCH_MODULE_BUILD,
-                    new ModuleGenerateEvent(
-                        $input->getArgument("moduleCode"),
-                        $input->getOption("tables"),
-                        $input->getOption("generators")
-                    )
+                    new ModuleGenerateEvent($input->getArgument("moduleCode"), [], ['config-form'])
                 );
 
             $output->renderBlock(array(
                 '',
-                'The config form has been correcly generated',
+                'Everything has been generated successfully',
                 'Files available in your module directory',
                 '',
             ), 'bg=green;fg=black');
-
         } catch (\Exception $e) {
             $outputArray = explode("\n", $e->getMessage());
             array_push($outputArray, '');

@@ -14,7 +14,7 @@ namespace TheliaStudio\Generator;
 
 use Thelia\Core\Template\ParserInterface;
 use TheliaStudio\Events\ModuleGenerateEvent;
-use TheliaStudio\Parser\Table;
+use TheliaStudio\Parser\Entity\Table;
 
 /**
  * Class SmartyGenerator
@@ -54,7 +54,7 @@ class SmartyGenerator extends BaseGenerator
     }
 
     /**
-     * @param  Table            $table
+     * @param  \TheliaStudio\Parser\Entity\Table            $table
      * @param  \SplFileInfo[]   $templates
      * @param $resourcesPath
      * @param $moduleCode
@@ -74,5 +74,10 @@ class SmartyGenerator extends BaseGenerator
 
             $this->writeFile($completeFilePath, $fetchedTemplate, false, true);
         }
+    }
+
+    public function getName()
+    {
+        return "smarty";
     }
 }

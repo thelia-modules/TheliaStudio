@@ -1,0 +1,111 @@
+{extends file="admin-layout.tpl"}
+
+{block name="no-return-functions"}
+    {$admin_current_location = 'modules'}
+{/block}
+
+{block name="page-title"}{intl d="[{$moduleCode|lower}].bo.default" l='[{$moduleCode}] configuration'}{/block}
+
+{block name="check-resource"}admin.module{/block}
+{block name="check-access"}view{/block}
+{block name="check-module"}[{$moduleCode}]{/block}
+
+{block name="main-content"}
+    <div class="container" id="wrapper">
+        <ul class="breadcrumb">
+            <li><a href="{url path='/admin'}">{intl l="Home" d="[{$moduleCode|lower}].bo.default"}</a></li>
+            <li><a href="{url path='/admin/modules'}">{intl l="Modules" d="[{$moduleCode|lower}].bo.default"}</a></li>
+            <li>{intl l="[{$moduleCode}] configuration" d="[{$moduleCode|lower}].bo.default"}</li>
+        </ul>
+
+        <div class="general-block-decorator">
+            <div class="title title-without-tabs">
+                {intl l="Configure [{$moduleCode|lower}]"}
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    {if $success}
+                        <div class="alert alert-success">
+                            {intl l="Configuration correctly saved" d="[{$moduleCode|lower}].bo.default"}
+                        </div>
+                    {/if}
+
+                    {form name="[{$moduleCode|lower}].configuration"}
+                        <form action="{$current_url}" method="post">
+                            {include "includes/inner-form-toolbar.html" hide_flags = 1 close_url={url path='/admin/modules'}}
+                            <br/>
+
+                            {form_field form=$form field="success_url"}
+                            <input type="hidden" name="{$name}" value="{url path='/admin/modules'}" />
+                            {/form_field}
+
+                            {form_hidden_fields form=$form}
+
+[{foreach from=$form item=field}]
+                            {form_field form=$form field="[{$field->getName()}]"}
+                            <div class="form-group">
+                                <label class="control-label" for="{$label_attr.for}">
+                                    {$label}
+                                    {if $required}<span class="required">*</span>{/if}
+                                </label>
+
+                                {form_error form=$form field="[{$field->getName()}]"}{$message}{/form_error}
+
+[{if $field->getRealType() == 'checkbox'}]
+                                <input type="checkbox" class="form-control" name="{$name}" id="{$label_attr.for}" {if $value}checked{/if} {form_field_attributes form=$form field="[{$field->getName()}]"} placeholder="{intl l='The configuration value [{$field->getName()}]'}" />
+[{elseif $field->getRealType() == 'text'}]
+                                <input type="text" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$value}" {form_field_attributes form=$form field="[{$field->getName()}]"} placeholder="{intl l='The configuration value [{$field->getName()}]'}" />
+[{elseif    $field->getRealType() == 'integer'}]
+                                <input type="number" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$value}" {form_field_attributes form=$form field="[{$field->getName()}]"} placeholder="{intl l='The configuration value [{$field->getName()}]'}" />
+[{elseif $field->getRealType() == 'number'}]
+                                <input type="number" class="form-control" name="{$name}" id="{$label_attr.for}" step="0.01" value="{$value}" {form_field_attributes form=$form field="[{$field->getName()}]"} placeholder="{intl l='The configuration value [{$field->getName()}]'}" />
+[{elseif $field->getRealType() == 'datetime' or $field->getType() == 'date' or $field->getType() == 'time'}]
+[{assign include_datetime 1}]
+                                <div class='input-group date do-picker-[{$field->getType()}]'>
+                                    <input type="text" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$value}" {form_field_attributes form=$form field="[{$field->getName()}]"} placeholder="{intl l='The configuration value [{$field->getName()}]'}" />
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                </div>
+[{/if}]
+                            </div>
+                            {/form_field}
+[{/foreach}]
+
+                            {include "includes/inner-form-toolbar.html" hide_flags = 1 close_url={url path='/admin/modules'} page_bottom = 1}
+                        </form>
+                    {/form}
+                </div>
+            </div>
+        </div>
+    </div>
+{/block}
+
+{block name="javascript-initialization"}
+[{if $include_datetime}]
+    {javascripts file='assets/js/moment-with-locales.min.js'}
+        <script src="{$asset_url}"></script>
+    {/javascripts}
+
+    {javascripts file='assets/js/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js'}
+        <script src="{$asset_url}"></script>
+    {/javascripts}
+
+    $('.do-picker-datetime').datetimepicker({
+    lang: "{lang attr="code"}",
+    useSeconds: false
+    });
+
+    $('.do-picker-date').datetimepicker({
+    pickTime: false,
+    lang: "{lang attr="code"}",
+    useSeconds: false
+    });
+
+    $('.do-picker-time').datetimepicker({
+    pickDate: false,
+    lang: "{lang attr="code"}",
+    useSeconds: false
+    });
+[{/if}]
+{/block}

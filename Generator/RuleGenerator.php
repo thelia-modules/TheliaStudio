@@ -13,8 +13,8 @@
 namespace TheliaStudio\Generator;
 
 use TheliaStudio\Events\ModuleGenerateEvent;
-use TheliaStudio\Parser\Rule;
-use TheliaStudio\Parser\RuleReader;
+use TheliaStudio\Parser\Entity\Rule;
+use TheliaStudio\Parser\RuleParser;
 
 /**
  * Class RuleGenerator
@@ -25,7 +25,7 @@ class RuleGenerator extends BaseGenerator
 {
     public function generate(ModuleGenerateEvent $event)
     {
-        $ruleReader = new RuleReader();
+        $ruleReader = new RuleParser();
 
         /** @var \SplFileInfo $rule */
         foreach ($this->findInPath($event->getResourcesPath(), "/\.rule$/") as $rule) {
@@ -53,5 +53,10 @@ class RuleGenerator extends BaseGenerator
         }
 
         @$this->writeFile($destination, $source);
+    }
+
+    public function getName()
+    {
+        return "rule";
     }
 }

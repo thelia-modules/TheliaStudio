@@ -52,7 +52,7 @@
 [{foreach from=$table->getColumns() item=column}]
 [{if $column->getName() != 'id'}]
                                     {form_field form=$form field="[{$column->getName()}]"}
-                                        <div class="form-group"">
+                                        <div class="form-group">
                                             <label class="control-label" for="{$label_attr.for}">
                                                 {$label}
                                                 {if $required}<span class="required">*</span>{/if}
@@ -65,7 +65,7 @@
 [{elseif $column->getFormType() == 'text'}]
                                                 <input type="text" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$[{$column->getNameAsSQL()}]}" {form_field_attributes form=$form field="[{$column->getName()}]"} placeholder="{intl l='The [{$table->getTableName()}] [{$column->getName()}]'}" />
 [{elseif    $column->getFormType() == 'integer'}]
-                                                <input type="integer" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$[{$column->getNameAsSQL()}]}" {form_field_attributes form=$form field="[{$column->getName()}]"} placeholder="{intl l='The [{$table->getTableName()}] [{$column->getName()}]'}" />
+                                                <input type="number" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$[{$column->getNameAsSQL()}]}" {form_field_attributes form=$form field="[{$column->getName()}]"} placeholder="{intl l='The [{$table->getTableName()}] [{$column->getName()}]'}" />
 [{elseif $column->getFormType() == 'number'}]
                                                 <input type="number" class="form-control" name="{$name}" id="{$label_attr.for}" step="0.01" value="{$[{$column->getNameAsSQL()}]}" {form_field_attributes form=$form field="[{$column->getName()}]"} placeholder="{intl l='The [{$table->getTableName()}] [{$column->getName()}]'}" />
 [{elseif $column->getFormType() == 'datetime' or $column->getFormType() == 'date' or $column->getFormType() == 'time'}]

@@ -36,14 +36,17 @@ class ModuleGenerateEvent extends Event
     protected $resourcesPath;
 
     /**
-     * @var \TheliaStudio\Parser\Table[]
+     * @var \TheliaStudio\Parser\Entity\Table[]
      */
     protected $entities;
 
-    public function __construct($moduleCode, $tables)
+    protected $generators;
+
+    public function __construct($moduleCode, $tables = [], $generators = [])
     {
         $this->moduleCode = $moduleCode;
         $this->tables = $tables;
+        $this->generators = $generators;
     }
 
     /**
@@ -70,7 +73,11 @@ class ModuleGenerateEvent extends Event
      */
     public function getTables()
     {
-        return $this->tables;
+        if (is_array($this->tables)) {
+            return $this->tables;
+        }
+
+        return $this->fromStringToArray($this->tables);
     }
 
     /**
@@ -85,7 +92,7 @@ class ModuleGenerateEvent extends Event
     }
 
     /**
-     * @return \TheliaStudio\Parser\Table[]
+     * @return \TheliaStudio\Parser\Entity\Table[]
      */
     public function getEntities()
     {
@@ -93,7 +100,7 @@ class ModuleGenerateEvent extends Event
     }
 
     /**
-     * @param  \TheliaStudio\Parser\Table[] $entites
+     * @param  \TheliaStudio\Parser\Entity\Table[] $entites
      * @return $this
      */
     public function setEntities(array $entities)
@@ -158,5 +165,39 @@ class ModuleGenerateEvent extends Event
         $this->resourcesPath = $resourcesPath;
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getGenerators()
+    {
+        if (is_array($this->generators)) {
+            return $this->generators;
+        }
+        return $this->fromStringToArray($this->generators);
+    }
+
+    /**
+     * @param mixed $generators
+     * @return $this
+     */
+    public function setGenerators($generators)
+    {
+        $this->generators = $generators;
+        return $this;
+    }
+
+    public function fromStringToArray($entry)
+    {
+        $entry = trim($entry);
+
+        if (null === $entry || '' === $entry) {
+            $entry = array();
+        } else {
+            $entry = array_map("trim", explode(",", $entry));
+        }
+
+        return $entry;
     }
 }

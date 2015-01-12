@@ -1,0 +1,15 @@
+{
+  "file": "thelia.sql",
+  "rules": {
+    "replace": [
+      [
+        "/DROP TABLE[^;]+;.*\n*/",
+        ""
+      ],
+      [
+        "/CREATE TABLE/",
+        "CREATE TABLE IF NOT EXISTS"
+      ]
+    ]
+  }
+}

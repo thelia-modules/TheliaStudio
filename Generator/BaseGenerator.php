@@ -57,7 +57,27 @@ abstract class BaseGenerator implements EventSubscriberInterface
         }
     }
 
-    abstract public function generate(ModuleGenerateEvent $event);
+    public function doGenerate(ModuleGenerateEvent $event)
+    {
+        $generators = $event->getGenerators();
+
+        if (empty($generators) || in_array($this->getName(), $generators)) {
+            $this->generate($event);
+        }
+    }
+
+    /**
+     * @param ModuleGenerateEvent $event
+     * @return mixed
+     */
+    abstract protected function generate(ModuleGenerateEvent $event);
+
+    /**
+     * @return string
+     *
+     * Get the generator name
+     */
+    abstract protected function getName();
 
     /**
      * Returns an array of event names this subscriber wants to listen to.
@@ -81,6 +101,6 @@ abstract class BaseGenerator implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return [TheliaStudioEvents::RUN_GENERATORS => ["generate", static::$eventPriority]];
+        return [TheliaStudioEvents::RUN_GENERATORS => ["doGenerate", static::$eventPriority]];
     }
 }

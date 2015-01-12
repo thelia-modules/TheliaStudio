@@ -10,31 +10,14 @@
 /* file that was distributed with this source code.                                  */
 /*************************************************************************************/
 
-namespace TheliaStudio\Generator;
+namespace {$moduleCode}\Controller;
 
-use TheliaStudio\Events\ModuleGenerateEvent;
-use Symfony\Component\Finder\Finder;
+use {$moduleCode}\Controller\Base\{$moduleCode}ConfigController as Base{$moduleCode}ConfigController;
 
 /**
- * Class RawCopyGenerator
- * @package TheliaStudio\Generator
- * @author Benjamin Perche <bperche9@gmail.com>
+ * Class {$moduleCode}ConfigController
+ * @package {$moduleCode}\Controller
  */
-class RawCopyGenerator extends BaseGenerator
+class {$moduleCode}ConfigController extends Base{$moduleCode}ConfigController
 {
-    public function generate(ModuleGenerateEvent $event)
-    {
-        /** @var \SplFileInfo $file */
-        foreach (Finder::create()->files()->in($event->getResourcesPath()."raw-copy") as $file) {
-            $relativePath = $relativePath = str_replace($event->getResourcesPath() . "raw-copy", "", $file->getRealPath());
-            $completePath = $event->getModulePath() . $relativePath;
-
-            @copy($file->getRealPath(), $completePath);
-        }
-    }
-
-    public function getName()
-    {
-        return "copy";
-    }
 }

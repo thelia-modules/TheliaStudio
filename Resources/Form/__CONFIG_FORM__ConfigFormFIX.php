@@ -10,31 +10,22 @@
 /* file that was distributed with this source code.                                  */
 /*************************************************************************************/
 
-namespace TheliaStudio\Generator;
+namespace {$moduleCode}\Form;
 
-use TheliaStudio\Events\ModuleGenerateEvent;
-use Symfony\Component\Finder\Finder;
+use {$moduleCode}\Form\Base\{$moduleCode}ConfigForm as Base{$moduleCode}ConfigForm;
 
 /**
- * Class RawCopyGenerator
- * @package TheliaStudio\Generator
- * @author Benjamin Perche <bperche9@gmail.com>
+ * Class {$moduleCode}ConfigForm
+ * @package {$moduleCode}\Form\Base
  */
-class RawCopyGenerator extends BaseGenerator
+class {$moduleCode}ConfigForm extends Base{$moduleCode}ConfigForm
 {
-    public function generate(ModuleGenerateEvent $event)
+    public function getTranslationKeys()
     {
-        /** @var \SplFileInfo $file */
-        foreach (Finder::create()->files()->in($event->getResourcesPath()."raw-copy") as $file) {
-            $relativePath = $relativePath = str_replace($event->getResourcesPath() . "raw-copy", "", $file->getRealPath());
-            $completePath = $event->getModulePath() . $relativePath;
-
-            @copy($file->getRealPath(), $completePath);
-        }
-    }
-
-    public function getName()
-    {
-        return "copy";
+        return array(
+{foreach from=$form item=field}
+            "{$field->getName()}" => "{$field->getName()|ucfirst|replace:'_':' '}",
+{/foreach}
+        );
     }
 }

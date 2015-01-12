@@ -62,4 +62,9 @@ class ModulePhpGenerator extends BaseGenerator
             $this->writeFile($completeFilePath, $fetchedTemplate, true);
         }
     }
+
+    public function getName()
+    {
+        return "module_php";
+    }
 }

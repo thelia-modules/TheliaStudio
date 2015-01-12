@@ -12,12 +12,14 @@
 
 namespace TheliaStudio\Parser;
 
+use TheliaStudio\Parser\Entity\Rule;
+
 /**
  * Class RuleReader
  * @package TheliaStudio\Parser
  * @author Benjamin Perche <bperche9@gmail.com>
  */
-class RuleReader
+class RuleParser
 {
     public function readRules($filePath)
     {

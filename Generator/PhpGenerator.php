@@ -14,7 +14,7 @@ namespace TheliaStudio\Generator;
 
 use Thelia\Core\Template\ParserInterface;
 use TheliaStudio\Events\ModuleGenerateEvent;
-use TheliaStudio\Parser\Table;
+use TheliaStudio\Parser\Entity\Table;
 
 /**
  * Class PhpGenerator
@@ -71,5 +71,10 @@ class PhpGenerator extends BaseGenerator
         foreach ($event->getEntities() as $entity) {
             $this->processPhp($entity, $templates, $event->getResourcesPath(), $event->getModuleCode());
         }
+    }
+
+    public function getName()
+    {
+        return "php";
     }
 }

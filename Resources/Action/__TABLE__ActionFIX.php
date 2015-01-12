@@ -3,7 +3,7 @@
 
 namespace {$moduleCode}\Action;
 
-use {$moduleCode}\Action\Base\{$table->getTableName()} as  Base{$table->getTableName()}Action;
+use {$moduleCode}\Action\Base\{$table->getTableName()}Action as  Base{$table->getTableName()}Action;
 
 /**
  * Class {$table->getTableName()}Action

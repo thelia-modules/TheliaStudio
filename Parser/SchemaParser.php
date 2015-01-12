@@ -13,6 +13,8 @@
 namespace TheliaStudio\Parser;
 
 use Symfony\Component\DependencyInjection\SimpleXMLElement;
+use TheliaStudio\Parser\Entity\Column;
+use TheliaStudio\Parser\Entity\Table;
 
 /**
  * Class SchemaParser

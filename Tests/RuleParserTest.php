@@ -12,18 +12,18 @@
 
 namespace TheliaStudio\Tests;
 
-use TheliaStudio\Parser\RuleReader;
+use TheliaStudio\Parser\RuleParser;
 
 /**
  * Class RuleReaderTest
  * @package TheliaStudio\Tests
  * @author Benjamin Perche <bperche9@gmail.com>
  */
-class RuleReaderTest extends \PHPUnit_Framework_TestCase
+class RuleParserTest extends \PHPUnit_Framework_TestCase
 {
     public function testReadValidRule()
     {
-        $reader = new RuleReader();
+        $reader = new RuleParser();
         $rule = $reader->readRules(__DIR__.DS."fixtures".DS."valid.rule");
 
         $this->assertEquals("thelia.sql", $rule->getSource());
@@ -42,13 +42,13 @@ class RuleReaderTest extends \PHPUnit_Framework_TestCase
      */
     public function testThrowExceptionIfNoFileKey()
     {
-        $reader = new RuleReader();
+        $reader = new RuleParser();
         $reader->readRules(__DIR__.DS."fixtures".DS."nofile.rule");
     }
 
     public function testIsEmptyIfTheJsonIsNotValid()
     {
-        $reader = new RuleReader();
+        $reader = new RuleParser();
         $rule = $reader->readRules(__DIR__.DS."fixtures".DS."broken.rule");
 
         $this->assertEmpty($rule->getSource());

@@ -10,9 +10,10 @@
 /* file that was distributed with this source code.                                  */
 /*************************************************************************************/
 
-namespace TheliaStudio\Parser;
+namespace TheliaStudio\Parser\Entity;
 
 use Symfony\Component\DependencyInjection\Container;
+use TheliaStudio\Parser\Entity\Column;
 
 /**
  * Class Table

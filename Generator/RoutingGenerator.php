@@ -16,7 +16,7 @@ use Symfony\Component\DependencyInjection\SimpleXMLElement;
 use TheliaStudio\Events\ModuleGenerateEvent;
 use TheliaStudio\Parser\Entity\Route;
 use TheliaStudio\Parser\RoutingParser;
-use TheliaStudio\Parser\Table;
+use TheliaStudio\Parser\Entity\Table;
 
 /**
  * Class RoutingGenerator
@@ -25,6 +25,8 @@ use TheliaStudio\Parser\Table;
  */
 class RoutingGenerator extends BaseGenerator
 {
+    use RoutingGeneratorTrait;
+
     public function generate(ModuleGenerateEvent $event)
     {
         $this->processRouting($event->getEntities(), $event->getModulePath());
@@ -32,17 +34,7 @@ class RoutingGenerator extends BaseGenerator
 
     protected function processRouting(array $tables, $modulePath)
     {
-        $routingData = @file_get_contents($routingPath = $modulePath."Config".DS."routing.xml");
-
-        if (false === $routingData) {
-            $routingData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><routes xmlns=\"http://symfony.com/schema/routing\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd\"></routes>";
-        }
-
-        $routingParser = new RoutingParser();
-        $xml = new SimpleXMLElement($routingData);
-
-        /** @var \TheliaStudio\Parser\Entity\Route[] $routes */
-        $routes = $routingParser->parseRoutes($xml);
+        list($xml, $routingPath, $routes) = $this->parseRoutingXml($modulePath);
 
         $newRoutes = $this->generateRouting($tables, basename($modulePath));
 
@@ -54,42 +46,12 @@ class RoutingGenerator extends BaseGenerator
         /**
          * Then write
          */
-        $this->writeRouting($routing, $routingPath, $xml);
-    }
-
-    /**
-     * @param Route[]          $routes
-     * @param $routingPath
-     * @param SimpleXMLElement $xml
-     */
-    protected function writeRouting(array $routes, $routingPath, SimpleXMLElement $xml)
-    {
-        foreach ($routes as $route) {
-            /** @var SimpleXmlElement $element */
-            $element = $xml->addChild("route");
-
-            $element->addAttribute("id", $route->getId());
-            $element->addAttribute("path", $route->getPath());
-
-            if ($route->getMethods()) {
-                $element->addAttribute("methods", $route->getMethods());
-            }
-
-            foreach ($route->getDefaults() as $key => $value) {
-                $default = $element->addChild("default", $value);
-                $default->addAttribute("key", $key);
-            }
-
-            foreach ($route->getRequirements() as $key => $value) {
-                $requirement = $element->addChild("requirement", $value);
-                $requirement->addAttribute("key", $key);
-            }
-        }
-
+        $this->addRoutesToXml($routing, $xml);
         $this->saveXml($xml, $routingPath);
     }
+
     /**
-     * @param  Table[] $tables
+     * @param  \TheliaStudio\Parser\Entity\Table[] $tables
      * @return array
      */
     public function generateRouting(array $tables, $moduleCode)
@@ -98,9 +60,9 @@ class RoutingGenerator extends BaseGenerator
 
         foreach ($tables as $table) {
             // List
-            $routes[$table->getRawTableName().".list"] = new Route(
-                $table->getRawTableName().".list",
-                "/admin/module/".$moduleCode."/".$table->getRawTableName(),
+            $routes[$moduleCode . "." . $table->getRawTableName() . ".list"] = new Route(
+                $moduleCode . "." . $table->getRawTableName() . ".list",
+                "/admin/module/".$moduleCode."/".$moduleCode . "." . $table->getRawTableName(),
                 "get",
                 [
                     "_controller" => $moduleCode.":".$table->getTableName().":default"
@@ -108,9 +70,9 @@ class RoutingGenerator extends BaseGenerator
             );
 
             // Create
-            $routes[$table->getRawTableName().".create"] = new Route(
-                $table->getRawTableName().".create",
-                "/admin/module/".$moduleCode."/".$table->getRawTableName(),
+            $routes[$moduleCode . "." . $table->getRawTableName() . ".create"] = new Route(
+                $moduleCode . "." . $table->getRawTableName() . ".create",
+                "/admin/module/".$moduleCode."/".$moduleCode . "." . $table->getRawTableName(),
                 "post",
                 [
                     "_controller" => $moduleCode.":".$table->getTableName().":create"
@@ -118,9 +80,9 @@ class RoutingGenerator extends BaseGenerator
             );
 
             // View
-            $routes[$table->getRawTableName().".view"] = new Route(
-                $table->getRawTableName().".view",
-                "/admin/module/".$moduleCode."/".$table->getRawTableName()."/edit",
+            $routes[$moduleCode . "." . $table->getRawTableName() . ".view"] = new Route(
+                $moduleCode . "." . $table->getRawTableName() . ".view",
+                "/admin/module/".$moduleCode."/".$moduleCode . "." . $table->getRawTableName() . "/edit",
                 "get",
                 [
                     "_controller" => $moduleCode.":".$table->getTableName().":update"
@@ -128,9 +90,9 @@ class RoutingGenerator extends BaseGenerator
             );
 
             // Edit
-            $routes[$table->getRawTableName().".edit"] = new Route(
-                $table->getRawTableName().".edit",
-                "/admin/module/".$moduleCode."/".$table->getRawTableName()."/edit",
+            $routes[$moduleCode . "." . $table->getRawTableName() . ".edit"] = new Route(
+                $moduleCode . "." . $table->getRawTableName() . ".edit",
+                "/admin/module/".$moduleCode."/".$moduleCode . "." . $table->getRawTableName() . "/edit",
                 "post",
                 [
                     "_controller" => $moduleCode.":".$table->getTableName().":processUpdate"
@@ -138,9 +100,9 @@ class RoutingGenerator extends BaseGenerator
             );
 
             // Delete
-            $routes[$table->getRawTableName().".delete"] = new Route(
-                $table->getRawTableName().".delete",
-                "/admin/module/".$moduleCode."/".$table->getRawTableName(),
+            $routes[$moduleCode . "." . $table->getRawTableName() . ".delete"] = new Route(
+                $moduleCode . "." . $table->getRawTableName() . ".delete",
+                "/admin/module/".$moduleCode."/".$moduleCode . "." . $table->getRawTableName(),
                 "post",
                 [
                     "_controller" => $moduleCode.":".$table->getTableName().":delete"
@@ -149,9 +111,9 @@ class RoutingGenerator extends BaseGenerator
 
             // Update position
             if ($table->hasPosition()) {
-                $routes[$table->getRawTableName().".update_position"] = new Route(
-                    $table->getRawTableName().".update_position",
-                    "/admin/module/".$moduleCode."/".$table->getRawTableName()."/updatePosition",
+                $routes[$moduleCode . "." . $table->getRawTableName() . ".update_position"] = new Route(
+                    $moduleCode . "." . $table->getRawTableName() . ".update_position",
+                    "/admin/module/".$moduleCode."/".$moduleCode . "." . $table->getRawTableName() . "/updatePosition",
                     "get",
                     [
                         "_controller" => $moduleCode.":".$table->getTableName().":updatePosition"
@@ -161,9 +123,9 @@ class RoutingGenerator extends BaseGenerator
 
             // Toggle visibility
             if ($table->hasVisible()) {
-                $routes[$table->getRawTableName().".toggle_visibility"] = new Route(
-                    $table->getRawTableName().".toggle_visibility",
-                    "/admin/module/".$moduleCode."/".$table->getRawTableName()."/toggleVisibility",
+                $routes[$moduleCode . "." . $table->getRawTableName() . ".toggle_visibility"] = new Route(
+                    $moduleCode . "." . $table->getRawTableName() . ".toggle_visibility",
+                    "/admin/module/".$moduleCode."/".$moduleCode . "." . $table->getRawTableName() . "/toggleVisibility",
                     "get",
                     [
                         "_controller" => $moduleCode.":".$table->getTableName().":setToggleVisibility"
@@ -173,5 +135,10 @@ class RoutingGenerator extends BaseGenerator
         }
 
         return $routes;
+    }
+
+    public function getName()
+    {
+        return "routing";
     }
 }

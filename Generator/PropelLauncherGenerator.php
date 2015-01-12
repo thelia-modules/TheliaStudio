@@ -90,4 +90,9 @@ class PropelLauncherGenerator extends BaseGenerator
             );
         }
     }
+
+    public function getName()
+    {
+        return "propel";
+    }
 }

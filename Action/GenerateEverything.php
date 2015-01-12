@@ -21,7 +21,7 @@ use TheliaStudio\Events\ModuleGenerateEvent;
 use TheliaStudio\Events\TheliaStudioEvents;
 use TheliaStudio\Parser\Entity\Config;
 use TheliaStudio\Parser\SchemaParser;
-use TheliaStudio\Parser\Table;
+use TheliaStudio\Parser\Entity\Table;
 use TheliaStudio\TheliaStudio;
 
 /**
@@ -99,20 +99,12 @@ class GenerateEverything implements EventSubscriberInterface
     }
     /**
      * @param $modulePath
-     * @return \TheliaStudio\Parser\Table[]
+     * @return \TheliaStudio\Parser\Entity\Table[]
      */
     protected function buildEntities($modulePath, $whiteList)
     {
         $entities = array();
         $schemaFile = $modulePath."Config".DS."schema.xml";
-
-        $whiteList = trim($whiteList);
-
-        if (null === $whiteList || '' === $whiteList) {
-            $whiteList = array();
-        } else {
-            $whiteList = array_map("trim", explode(",", $whiteList));
-        }
 
         if (is_file($schemaFile) && is_readable($schemaFile)) {
             $xml = new SimpleXMLElement(file_get_contents($schemaFile));

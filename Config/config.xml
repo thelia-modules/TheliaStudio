@@ -5,6 +5,7 @@
         xsi:schemaLocation="http://thelia.net/schema/dic/config http://thelia.net/schema/dic/config/thelia-1.0.xsd">
     <commands>
         <command class="TheliaStudio\Command\ModuleGenerateEverythingCommand" />
+        <command class="TheliaStudio\Command\ModuleGenerateConfigFormCommand" />
     </commands>
 
     <services>
@@ -47,6 +48,12 @@
         </service>
 
         <service id="thelia_studio.generator.smarty" class="TheliaStudio\Generator\SmartyGenerator" scope="request">
+            <argument type="service" id="thelia.parser" />
+
+            <tag name="kernel.event_subscriber" />
+        </service>
+
+        <service id="thelia_studio.generator.config_form" class="TheliaStudio\Generator\ConfigFormGenerator" scope="request">
             <argument type="service" id="thelia.parser" />
 
             <tag name="kernel.event_subscriber" />
