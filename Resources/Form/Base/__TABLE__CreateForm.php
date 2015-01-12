@@ -22,7 +22,7 @@ class {$table->getTableName()}CreateForm extends BaseForm
         $fieldsIdKeys = $this->getFieldsIdKeys();
 
 {foreach from=$table->getColumns() item=column}
-{if $column->getFormType() && $column->getName() != 'id'}
+{if $column->getFormType() && $column->getName() != 'id' && $column->getName() != 'position'}
         $this->add{$column->getCamelizedName()}Field($translationKeys, $fieldsIdKeys);
 {/if}
 {/foreach}
@@ -47,17 +47,19 @@ class {$table->getTableName()}CreateForm extends BaseForm
 
 {foreach from=$table->getColumns() item=column}
 {assign type {$column->getFormType()}}
-{if $type && $column->getName() != 'id'}
+{if $type && $column->getName() != 'id' && $column->getName() != 'position'}
     protected function add{$column->getCamelizedName()}Field(array $translationKeys, array $fieldsIdKeys)
     {
         $this->formBuilder->add("{$column->getName()}", "{$type}", array(
             "label" => $this->translator->trans($this->readKey("{$column->getName()}", $translationKeys), [], {$moduleCode}::MESSAGE_DOMAIN),
             "label_attr" => ["for" => $this->readKey("{$column->getName()}", $fieldsIdKeys)],
-{if $column->getRequired()}
+{if $type != 'checkbox' && $column->getRequired()}
             "required" => true,
+{else}
+            "required" => false,
 {/if}
             "constraints" => array(
-{if $column->getRequired()}
+{if $type != 'checkbox' && $column->getRequired()}
                 new NotBlank(),
 {/if}
             ),

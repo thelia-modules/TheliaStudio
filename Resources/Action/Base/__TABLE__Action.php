@@ -64,6 +64,8 @@ class {$table->getTableName()}Action extends BaseAction implements EventSubscrib
 
             throw $e;
         }
+
+        $event->set{$table->getTableName()}($model);
     }
 
     protected function get{$table->getTableName()}({$table->getTableName()}Event $event)
@@ -94,19 +96,19 @@ class {$table->getTableName()}Action extends BaseAction implements EventSubscrib
     }
 
 {/if}
-    protected function beforeCreateFormBuild(TheliaFormEvent $event)
+    public function beforeCreateFormBuild(TheliaFormEvent $event)
     {
     }
 
-    protected function beforeUpdateFormBuild(TheliaFormEvent $event)
+    public function beforeUpdateFormBuild(TheliaFormEvent $event)
     {
     }
 
-    protected function afterCreateFormBuild(TheliaFormEvent $event)
+    public function afterCreateFormBuild(TheliaFormEvent $event)
     {
     }
 
-    protected function afterUpdateFormBuild(TheliaFormEvent $event)
+    public function afterUpdateFormBuild(TheliaFormEvent $event)
     {
     }
 

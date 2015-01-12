@@ -13,7 +13,7 @@
 
 {block name="main-content"}
 
-    {form name="[{$table->getRawTableName()}]_update"}
+    {form name="[{$table->getRawTableName()}].update"}
         <div id="wrapper" class="container">
 
             {if $form_error}
@@ -50,7 +50,7 @@
                             <div class="row">
                                 <div class="col-md-12">
 [{foreach from=$table->getColumns() item=column}]
-[{if $column->getName() != 'id'}]
+[{if $column->getName() != 'id' && $column->getName() != 'position'}]
                                     {form_field form=$form field="[{$column->getName()}]"}
                                         <div class="form-group">
                                             <label class="control-label" for="{$label_attr.for}">

@@ -25,7 +25,7 @@
             <div class="table-responsive">
                 <table class="table table-striped table-condensed" id="[{$table->getRawTableName()}]-table">
                     <caption class="clearfix">
-                        {intl l="[{$table->getTableName()}]"}
+                        {intl l="[{$table->getRawTableName()|ucfirst|replace:'_':' '}]"}
 
                         {loop name="auth-create" type="auth" role="ADMIN" resource="admin.module" access="CREATE" module="[{$moduleCode}]"}
                             <div class="pull-right">
@@ -39,6 +39,7 @@
                     <thead>
                     <tr>
 [{foreach from=$table->getColumns() item=column}]
+[{if $column->getName() != 'chapo' && $column->getName() != 'description' && $column->getName() != 'postscriptum'}]
                         <th>
                             {admin_sortable_header
                                 current_order=$order
@@ -48,6 +49,7 @@
                                 label="{intl l='[{$column->getCamelizedName()}]' d='[{$moduleCode|lower}].bo.default'}"
                             }
                         </th>
+[{/if}]
 [{/foreach}]
                         <th>
                             {intl l="Actions"}
@@ -93,10 +95,10 @@
 [{elseif $column->getFormType() == 'checkbox'}]
                             <td>
                                 <div class="make-switch switch-small" data-id="{$ID}" data-on="success" data-off="danger" data-on-label="<i class='glyphicon glyphicon-ok'></i>" data-off-label="<i class='glyphicon glyphicon-remove'></i>">
-                                    <input type="checkbox" disabled readonly {if $[{$column->getNameAsSQL()}]}checked="checked"{/if}>
+                                    <input type="checkbox" disabled readonly {if $[{$column->getNameAsSQL()}]}checked="checked"{/if} />
                                 </div>
                             </td>
-[{else}]
+[{elseif $column->getName() != 'chapo' && $column->getName() != 'description' && $column->getName() != 'postscriptum'}]
                             <td>
                                 {$[{$column->getNameAsSQL()}]}
                             </td>
@@ -121,7 +123,7 @@
                     {/loop}
                     {elseloop rel="[{$table->getLoopType()}]-list"}
                         <tr>
-                            <td colspan="6">
+                            <td colspan="1000">
                                 <div class="alert alert-info">
                                     {intl l="There is no [{$table->getTableName()}]" d="[{$moduleCode|lower}].bo.default"}
                                 </div>
@@ -154,7 +156,7 @@
 
     {* CREATE Modal *}
 
-    {form name="[{$table->getRawTableName()}]_create"}
+    {form name="[{$table->getRawTableName()}].create"}
     {capture "[{$table->getRawTableName()}]_create"}
         {form_hidden_fields form=$form}
 
@@ -167,7 +169,7 @@
         {render_form_field form=$form field="success_url" value={url path='/admin/module/[{$moduleCode}]/[{$table->getRawTableName()}]/edit?[{$table->getRawTableName()}]_id=_ID_'}}
 
 [{foreach from=$table->getColumns() item=column}]
-[{if $column->getName() != 'id'}]
+[{if $column->getName() != 'id' && $column->getName() != 'position'}]
         {form_field form=$form field="[{$column->getName()}]"}
             <div class="form-group"">
                 <label class="control-label" for="{$label_attr.for}">
@@ -178,7 +180,7 @@
                 {form_error form=$form field="[{$column->getName()}]"}{$message}{/form_error}
 
 [{if $column->getFormType() == 'checkbox'}]
-                <input type="checkbox" class="form-control" name="{$name}" id="{$label_attr.for}" {if $[{$column->getNameAsSQL()}]}checked{/if} {form_field_attributes form=$form field="[{$column->getName()}]"} placeholder="{intl l='The [{$table->getTableName()}] [{$column->getName()}]'}" />
+                <input type="checkbox" name="{$name}" id="{$label_attr.for}" {if $[{$column->getNameAsSQL()}]}checked{/if} {form_field_attributes form=$form field="[{$column->getName()}]"} placeholder="{intl l='The [{$table->getTableName()}] [{$column->getName()}]'}" />
 [{elseif $column->getFormType() == 'text'}]
                 <input type="text" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$[{$column->getNameAsSQL()}]}" {form_field_attributes form=$form field="[{$column->getName()}]"} placeholder="{intl l='The [{$table->getTableName()}] [{$column->getName()}]'}" />
 [{elseif $column->getFormType() == 'textarea'}]

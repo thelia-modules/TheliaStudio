@@ -7,6 +7,7 @@ use {$moduleCode}\Model\Base\{$table->getTableName()} as Base{$table->getTableNa
 {if $table->hasPosition()}
 use Thelia\Model\Tools\ModelEventDispatcherTrait;
 use Thelia\Model\Tools\PositionManagementTrait;
+use Propel\Runtime\Connection\ConnectionInterface;
 {/if}
 
 /**
@@ -19,7 +20,7 @@ class {$table->getTableName()} extends Base{$table->getTableName()}
     use ModelEventDispatcherTrait;
     use PositionManagementTrait;
 
-    public function preInsert()
+    public function preInsert(ConnectionInterface $con = null)
     {
         $this->setPosition($this->getNextPosition());
 

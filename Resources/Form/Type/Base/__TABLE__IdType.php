@@ -8,7 +8,7 @@ use {$table->getFullQueryClass()};
 
 /**
  * Class {$table->getTableName()}
- * @package {$moduleCode}\Form
+ * @package {$moduleCode}\Form\Base
  * @author TheliaStudio
  */
 class {$table->getTableName()}IdType extends AbstractIdType

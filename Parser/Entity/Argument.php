@@ -12,28 +12,45 @@
 
 namespace TheliaStudio\Parser\Entity;
 
+
 /**
- * Class Service
+ * Class Argument
  * @package TheliaStudio\Parser\Entity
  * @author Benjamin Perche <bperche9@gmail.com>
  */
-class Service
+class Argument
 {
+    const TYPE_SERVICE = "service";
+    const TYPE_CONSTANT = "constant";
+    const TYPE_STRING = "string";
+
+    protected $type;
     protected $id;
+    protected $value;
 
-    protected $class;
-
-    protected $scope;
-
-    protected $arguments = array();
-
-    protected $tags = array();
-
-    public function __construct($id, $class, $scope = '')
+    public function __construct($value = null, $type = self::TYPE_STRING, $id = null)
     {
+        $this->type = $type;
         $this->id = $id;
-        $this->class = $class;
-        $this->scope = $scope;
+        $this->value = $value;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param mixed $type
+     * @return $this
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+        return $this;
     }
 
     /**
@@ -45,88 +62,30 @@ class Service
     }
 
     /**
-     * @param  mixed $id
+     * @param mixed $id
      * @return $this
      */
     public function setId($id)
     {
         $this->id = $id;
-
         return $this;
     }
 
     /**
      * @return mixed
      */
-    public function getClass()
+    public function getValue()
     {
-        return $this->class;
+        return $this->value;
     }
 
     /**
-     * @param  mixed $class
+     * @param mixed $value
      * @return $this
      */
-    public function setClass($class)
+    public function setValue($value)
     {
-        $this->class = $class;
-
+        $this->value = $value;
         return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getScope()
-    {
-        return $this->scope;
-    }
-
-    /**
-     * @param  mixed $scope
-     * @return $this
-     */
-    public function setScope($scope)
-    {
-        $this->scope = $scope;
-
-        return $this;
-    }
-
-    /**
-     * @return Tag[]
-     */
-    public function getTags()
-    {
-        return $this->tags;
-    }
-
-    /**
-     * @param  array $tags
-     * @return $this
-     */
-    public function setTags(array $tags)
-    {
-        $this->tags = $tags;
-
-        return $this;
-    }
-
-    public function addTag(Tag $tag)
-    {
-        $this->tags[] = $tag;
-    }
-
-    public function addArgument(Argument $argument)
-    {
-        $this->arguments[] = $argument;
-    }
-
-    /**
-     * @return Argument[]
-     */
-    public function getArguments()
-    {
-        return $this->arguments;
     }
 }

@@ -51,8 +51,12 @@ class {$table->getTableName()}Controller extends AbstractCrudController
     /**
      * Return the update form for this object
      */
-    protected function getUpdateForm(array $data = array())
+    protected function getUpdateForm($data = array())
     {
+        if (!is_array($data)) {
+            $data = array();
+        }
+
         return $this->createForm("{$table->getRawTableName()}.update", "form", $data);
     }
 
@@ -65,7 +69,7 @@ class {$table->getTableName()}Controller extends AbstractCrudController
     {
         $data = array(
 {foreach from=$table->getColumns() item=column}
-            "{$column->getName()}" => $object->get{$column->getName()}(),
+            "{$column->getName()}" => {if $column->getFormType() == 'checkbox'}(bool) {/if}$object->get{$column->getName()}(),
 {/foreach}
         );
 
@@ -83,7 +87,7 @@ class {$table->getTableName()}Controller extends AbstractCrudController
         $event = new {$table->getTableName()}Event();
 
 {foreach from=$table->getColumns() item=column}
-{if $column->getName() != 'id'}
+{if $column->getName() != 'id' && $column->getName() != 'position'}
         $event->set{$column->getCamelizedName()}($formData["{$column->getName()}"]);
 {/if}
 {/foreach}
@@ -102,7 +106,9 @@ class {$table->getTableName()}Controller extends AbstractCrudController
         $event = new {$table->getTableName()}Event();
 
 {foreach from=$table->getColumns() item=column}
+{if $column->getName() != 'position'}
         $event->set{$column->getCamelizedName()}($formData["{$column->getName()}"]);
+{/if}
 {/foreach}
 
         return $event;
@@ -216,7 +222,12 @@ class {$table->getTableName()}Controller extends AbstractCrudController
         $id = $this->getRequest()->query->get("{$table->getRawTableName()}_id");
 
         return new RedirectResponse(
-            URL::getInstance()->absoluteUrl("{$table->getEditionPathInfo()}".$id)
+            URL::getInstance()->absoluteUrl(
+                "{$table->getEditionPathInfo()}",
+                [
+                    "{$table->getRawTableName()}_id" => $id,
+                ]
+            )
         );
     }
 

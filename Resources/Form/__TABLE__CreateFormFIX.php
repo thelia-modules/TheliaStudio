@@ -15,7 +15,9 @@ class {$table->getTableName()}CreateForm extends Base{$table->getTableName()}Cre
     {
         return array(
 {foreach from=$table->getColumns() item=column}
+{if $column->getName() != 'id' && $column->getName() != 'position'}
             "{$column->getName()}" => "{$column->getName()|ucfirst|replace:'_':' '}",
+{/if}
 {/foreach}
         );
     }

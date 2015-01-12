@@ -14,6 +14,7 @@ namespace TheliaStudio\Generator;
 
 use Symfony\Component\DependencyInjection\SimpleXMLElement;
 use TheliaStudio\Parser\ConfigParser;
+use TheliaStudio\Parser\Entity\Argument;
 use TheliaStudio\Parser\Entity\Config;
 
 /**
@@ -74,6 +75,22 @@ trait ConfigurationGeneratorTrait
 
                 if ($service->getScope()) {
                     $element->addAttribute("scope", $service->getScope());
+                }
+
+                foreach ($service->getArguments() as $argument) {
+                    $serviceXml = $element->addChild("argument");
+
+                    if (null !== $argument->getId()) {
+                        $serviceXml->addAttribute("id", $argument->getId());
+                    }
+
+                    if (null !== $argument->getType() && Argument::TYPE_STRING !== $argument->getType()) {
+                        $serviceXml->addAttribute("type", $argument->getType());
+                    }
+
+                    if (null !== $argument->getValue()) {
+                        $serviceXml[0] = $argument->getValue();
+                    }
                 }
 
                 foreach ($service->getTags() as $tag) {
