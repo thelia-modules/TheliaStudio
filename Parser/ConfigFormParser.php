@@ -34,7 +34,7 @@ class ConfigFormParser
     }
 
     /**
-     * @param array $entries
+     * @param  array             $entries
      * @return ConfigFormEntry[]
      */
     protected function fromArrayToObjectCollection(array $entries)
@@ -61,7 +61,7 @@ class ConfigFormParser
 
             if (isset($entry["size"]) && is_array($entry["size"])) {
                 $size = $entry["size"];
-                
+
                 if (isset($size["min"]) && is_int($size["min"])) {
                     $configFormEntry->setMinSize($size["min"]);
                 }

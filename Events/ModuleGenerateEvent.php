@@ -175,16 +175,18 @@ class ModuleGenerateEvent extends Event
         if (is_array($this->generators)) {
             return $this->generators;
         }
+
         return $this->fromStringToArray($this->generators);
     }
 
     /**
-     * @param mixed $generators
+     * @param  mixed $generators
      * @return $this
      */
     public function setGenerators($generators)
     {
         $this->generators = $generators;
+
         return $this;
     }
 

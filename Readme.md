@@ -20,11 +20,17 @@ This module adds two commands:
 and
 ```$ php Thelia module:generate:config-form```
 
-3. Generating config form
+3. Generating your module configuration form
 
-For that, you will need to write a new file.
+To do that, you will need to write a new file.
 Create ```config-form.yml``` in your module's Config directory,
 and by respecting the following structure, TheliaStudio will generate everything for you :) :
 - the root node is called 'config'
 - then write your config ```varName: type``` for simple ones.
-    - available types are: text, textarea, integer, float, checkbox. If you
+    - available types are: text, textarea, integer, number, checkbox.
+    - you can add more precise data into the generation:
+        - ```required: false``` if the field isn't required
+        - ```regex``` a validation regex.
+        - ```size``` an array with "min" and "max" keys.
+
+You have an example in Tests/fixtures/config-form.yml

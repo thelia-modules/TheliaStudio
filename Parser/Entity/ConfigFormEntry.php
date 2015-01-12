@@ -12,7 +12,6 @@
 
 namespace TheliaStudio\Parser\Entity;
 
-
 /**
  * Class ConfigFormEntry
  * @package TheliaStudio\Parser\Entity
@@ -43,12 +42,13 @@ class ConfigFormEntry
     }
 
     /**
-     * @param mixed $maxSize
+     * @param  mixed $maxSize
      * @return $this
      */
     public function setMaxSize($maxSize)
     {
         $this->maxSize = $maxSize;
+
         return $this;
     }
 
@@ -61,12 +61,13 @@ class ConfigFormEntry
     }
 
     /**
-     * @param mixed $name
+     * @param  mixed $name
      * @return $this
      */
     public function setName($name)
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -79,12 +80,13 @@ class ConfigFormEntry
     }
 
     /**
-     * @param mixed $type
+     * @param  mixed $type
      * @return $this
      */
     public function setType($type)
     {
         $this->type = $type;
+
         return $this;
     }
 
@@ -97,12 +99,13 @@ class ConfigFormEntry
     }
 
     /**
-     * @param mixed $required
+     * @param  mixed $required
      * @return $this
      */
     public function setRequired($required)
     {
         $this->required = $required;
+
         return $this;
     }
 
@@ -116,16 +119,17 @@ class ConfigFormEntry
 
     public function getFormattedRegex()
     {
-        return '/' . $this->regex . '/';
+        return '/'.$this->regex.'/';
     }
 
     /**
-     * @param mixed $regex
+     * @param  mixed $regex
      * @return $this
      */
     public function setRegex($regex)
     {
         $this->regex = $regex;
+
         return $this;
     }
 
@@ -138,12 +142,13 @@ class ConfigFormEntry
     }
 
     /**
-     * @param mixed $minSize
+     * @param  mixed $minSize
      * @return $this
      */
     public function setMinSize($minSize)
     {
         $this->minSize = $minSize;
+
         return $this;
     }
 
@@ -156,7 +161,7 @@ class ConfigFormEntry
     {
         return preg_replace_callback(
             "/_([a-z])/",
-            function($m) {
+            function ($m) {
                 return strtoupper($m[1]);
             },
             ucfirst($str)

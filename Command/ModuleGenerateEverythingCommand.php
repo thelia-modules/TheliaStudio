@@ -84,7 +84,6 @@ class ModuleGenerateEverythingCommand extends ContainerAwareCommand
                 'Files available in your module directory',
                 '',
             ), 'bg=green;fg=black');
-
         } catch (\Exception $e) {
             $outputArray = explode("\n", $e->getMessage());
             array_push($outputArray, '');
