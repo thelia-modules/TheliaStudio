@@ -51,13 +51,13 @@ class ConfigFormGenerator extends BaseGenerator
         $this->parser->assign("form", $formConfig);
         $this->parser->assign("moduleCode", $event->getModuleCode());
 
-        $this->generateClasses($event->getResourcesPath(), $event->getModulePath());
-        $this->generateTemplates($event->getResourcesPath(), $event->getModulePath());
-        $this->generateConfiguration($event->getModulePath());
-        $this->generateRouting($event->getModulePath());
+        $this->generateClasses($event->getResourcesPath(), $event->getModulePath(), $event->getModuleCode());
+        $this->generateTemplates($event->getResourcesPath(), $event->getModulePath(), $event->getModuleCode());
+        $this->generateConfiguration($event->getModulePath(), $event->getModuleCode());
+        $this->generateRouting($event->getModulePath(), $event->getModuleCode());
     }
 
-    protected function generateClasses($resourcesPath, $modulePath)
+    protected function generateClasses($resourcesPath, $modulePath, $moduleCode)
     {
         $templates = $this->findInPath($resourcesPath, "/__CONFIG_FORM__.*\.php$/");
 
@@ -66,7 +66,7 @@ class ConfigFormGenerator extends BaseGenerator
             $fetchedTemplate = $this->parser->fetch($template->getRealPath());
 
             $relativePath = str_replace($resourcesPath, '', $template->getRealPath());
-            $relativePath = str_replace("__CONFIG_FORM__", basename($modulePath), $relativePath);
+            $relativePath = str_replace("__CONFIG_FORM__", $moduleCode, $relativePath);
             $relativePath = str_replace("FIX", '', $relativePath);
 
             $fullPath = $modulePath . $relativePath;
@@ -75,7 +75,7 @@ class ConfigFormGenerator extends BaseGenerator
         }
     }
 
-    protected function generateTemplates($resourcesPath, $modulePath)
+    protected function generateTemplates($resourcesPath, $modulePath, $moduleCode)
     {
         $templates = $this->findInPath($resourcesPath, "/__CONFIG_FORM__.*\.html/");
 
@@ -90,7 +90,7 @@ class ConfigFormGenerator extends BaseGenerator
             $fetchedTemplate = $this->parser->fetch($template->getRealPath());
 
             $relativePath = str_replace($resourcesPath, '', $template->getRealPath());
-            $relativePath = str_replace("__CONFIG_FORM__", strtolower(basename($modulePath)), $relativePath);
+            $relativePath = str_replace("__CONFIG_FORM__", strtolower($moduleCode), $relativePath);
 
             $fullPath = $modulePath . $relativePath;
 
@@ -105,12 +105,12 @@ class ConfigFormGenerator extends BaseGenerator
      * @param $modulePath
      * @throws \Exception
      */
-    protected function generateConfiguration($modulePath)
+    protected function generateConfiguration($modulePath, $moduleCode)
     {
         /** @var Config $config */
         list($xml, $configPath, $config) = $this->parseConfigXml($modulePath);
 
-        $newConfig = $this->generateConfig(basename($modulePath));
+        $newConfig = $this->generateConfig($moduleCode);
         $config->mergeConfig($newConfig);
 
         $this->addForms($xml, $config);
@@ -129,11 +129,11 @@ class ConfigFormGenerator extends BaseGenerator
         return $config;
     }
 
-    protected function generateRouting($modulePath)
+    protected function generateRouting($modulePath, $moduleCode)
     {
         list($xml, $routingPath, $routes) = $this->parseRoutingXml($modulePath);
 
-        $newRoutes = $this->generateRoutes(basename($modulePath));
+        $newRoutes = $this->generateRoutes($moduleCode);
 
         /**
          * Merge

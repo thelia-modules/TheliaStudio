@@ -82,7 +82,7 @@ class ConfigurationGenerator extends BaseGenerator
      * @param \TheliaStudio\Parser\Entity\Table[] $tables
      * @param $modulePath
      */
-    protected function processConfiguration(array $tables, $modulePath)
+    protected function processConfiguration(array $tables, $modulePath, $moduleCode)
     {
         /** @var Config $config */
         list($xml, $configPath, $config) = $this->parseConfigXml($modulePath);
@@ -90,7 +90,7 @@ class ConfigurationGenerator extends BaseGenerator
         /**
          * Get generated configuration
          */
-        $generatedConfig = $this->generateConfiguration($tables, basename($modulePath));
+        $generatedConfig = $this->generateConfiguration($tables, $moduleCode);
 
         /**
          * Merge it
@@ -120,7 +120,7 @@ class ConfigurationGenerator extends BaseGenerator
 
     public function generate(ModuleGenerateEvent $event)
     {
-        $this->processConfiguration($event->getEntities(), $event->getModulePath());
+        $this->processConfiguration($event->getEntities(), $event->getModulePath(), $event->getModuleCode());
     }
 
     public function getName()

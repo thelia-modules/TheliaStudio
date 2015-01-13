@@ -48,7 +48,7 @@ class PhpGenerator extends BaseGenerator
             $fileName = str_replace("FIX", "", $fileName);
 
             $relativePath = str_replace($resourcesPath, "", $template->getPath().DS);
-            $completeFilePath = THELIA_MODULE_DIR.$moduleCode.DS.$relativePath.DS.$fileName;
+            $completeFilePath = THELIA_MODULE_DIR.$moduleCode . DS . $relativePath.DS.$fileName;
 
             $isFix = false !== strpos($template->getFilename(), "FIX");
             $isI18n = false !== strpos($template->getFilename(), "I18n");

@@ -69,8 +69,8 @@ class SmartyGenerator extends BaseGenerator
             $fetchedTemplate = $this->parser->fetch($template->getRealPath());
             $fileName = str_replace("__TABLE__", str_replace("_", "-", $table->getRawTableName()), $template->getFilename());
 
-            $relativePath = str_replace($resourcesPath, "", $template->getPath().DS);
-            $completeFilePath = THELIA_MODULE_DIR.$moduleCode.DS.$relativePath.DS.$fileName;
+            $relativePath = str_replace($resourcesPath, "", $template->getPath() . DS);
+            $completeFilePath = THELIA_MODULE_DIR . $moduleCode . DS . $relativePath . DS . $fileName;
 
             $this->writeFile($completeFilePath, $fetchedTemplate, false, true);
         }
