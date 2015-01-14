@@ -75,6 +75,34 @@ If you want your table to be correctly integrated into Thelia, you have to respe
 - If the column is a ```BOOLEAN``` or a ```TINYINT``` type, it will be used as a checkbox.
 - If the column is called 'chapo', 'description' or 'postscriptum', it won't be displayed in the table
 
+Here's a typical schema that will work like a charm with TheliaStudio:
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<database defaultIdMethod="native" name="thelia"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="../../../../core/vendor/propel/propel/resources/xsd/database.xsd" >
+    <table name="example_table" namespace="YourModule\Model">
+        <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
+        <column defaultValue="0" name="visible" required="true" type="TINYINT" />
+        <column defaultValue="0" name="position" required="true" type="INTEGER" />
+        <column name="title" size="255" type="VARCHAR" />
+        <column name="description" type="CLOB" />
+        <column name="chapo" type="LONGVARCHAR" />
+        <column name="postscriptum" type="LONGVARCHAR" />
+        <behavior name="timestampable" />
+        <behavior name="i18n">
+            <parameter name="i18n_columns" value="title, description, chapo, postscriptum" />
+        </behavior>
+        <behavior name="versionable">
+            <parameter name="log_created_at" value="true" />
+            <parameter name="log_created_by" value="true" />
+        </behavior>
+    </table>
+    <external-schema filename="local/config/schema.xml" referenceOnly="true" />
+</database>
+
+```
+
 #### 4.2.2 Generating everything
 
 Write your schema.xml, then if needed write your config-form.yml
