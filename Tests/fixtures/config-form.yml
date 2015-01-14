@@ -1,9 +1,9 @@
 config:
-  varName: text
-  varName2: integer
-  varName3:
+  var_name: text
+  var_name2: integer
+  var_name3:
     type:  text
-    required: true
+    required: false
     regex: "a-z+"
     size:
       min: 5
