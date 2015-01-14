@@ -31,7 +31,7 @@ class RuleGenerator extends BaseGenerator
         foreach ($this->findInPath($event->getResourcesPath(), "/\.rule$/") as $rule) {
             $relativePath = str_replace($event->getResourcesPath(), "", $rule->getRealPath());
 
-            $completePath = $event->getModulePath() . $relativePath;
+            $completePath = $event->getModulePath().$relativePath;
             $completePath = substr($completePath, 0, -5); // remove .rule extension
 
             $rule = $ruleReader->readRules($rule->getRealPath());
@@ -41,7 +41,7 @@ class RuleGenerator extends BaseGenerator
 
     protected function processRule(Rule $rule, $destination)
     {
-        $sourceFile = dirname($destination) . DS . $rule->getSource();
+        $sourceFile = dirname($destination).DS.$rule->getSource();
 
         $source = "";
         if (is_file($sourceFile) && is_readable($sourceFile)) {

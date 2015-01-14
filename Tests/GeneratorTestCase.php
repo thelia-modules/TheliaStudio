@@ -50,7 +50,7 @@ class GeneratorTestCase extends  \PHPUnit_Framework_TestCase
         $this->stream = vfsStream::setup("thelia", 0777);
 
         // Copy the module fixtures
-        vfsStream::copyFromFileSystem(__DIR__ . DS . str_replace("/", DS, static::TEST_MODULE_PATH), $this->stream);
+        vfsStream::copyFromFileSystem(__DIR__.DS.str_replace("/", DS, static::TEST_MODULE_PATH), $this->stream);
 
         // Initialize the kernel
         $this->kernel = new Thelia("test", true);
@@ -67,7 +67,7 @@ class GeneratorTestCase extends  \PHPUnit_Framework_TestCase
         $entities = $parser->parseXml(
             new SimpleXMLElement(
                 file_get_contents(
-                    __DIR__ . DS .  str_replace("/", DS, static::TEST_MODULE_PATH) . "Config" . DS . "schema.xml"
+                    __DIR__.DS.str_replace("/", DS, static::TEST_MODULE_PATH)."Config".DS."schema.xml"
                 )
             )
         );
@@ -76,13 +76,13 @@ class GeneratorTestCase extends  \PHPUnit_Framework_TestCase
             ->setKernel($this->kernel)
             ->setModulePath($this->getStreamPath(''))
             ->setEntities($entities)
-            ->setResourcesPath(realpath(__DIR__ . DS . ".." . DS . "Resources")  . DS)
+            ->setResourcesPath(realpath(__DIR__.DS."..".DS."Resources").DS)
         ;
     }
 
     protected function getStreamPath($relativePath)
     {
-        $path = vfsStream::url("thelia") . DS . $relativePath;
+        $path = vfsStream::url("thelia").DS.$relativePath;
 
         return $path;
     }
@@ -98,7 +98,7 @@ class GeneratorTestCase extends  \PHPUnit_Framework_TestCase
 
     protected function loadClassFromVfs($relativePath, $loadBase = true)
     {
-        if (class_exists("TheliaStudioTestModule\\" . str_replace("/", "\\", $relativePath))) {
+        if (class_exists("TheliaStudioTestModule\\".str_replace("/", "\\", $relativePath))) {
             return;
         }
 
@@ -107,7 +107,7 @@ class GeneratorTestCase extends  \PHPUnit_Framework_TestCase
             $this->loadClassFromVfs($baseRelativePath, false);
         }
 
-        $classPath = $this->getStreamPath($relativePath . ".php");
+        $classPath = $this->getStreamPath($relativePath.".php");
         $this->assertFileExists($classPath);
 
         include $classPath;

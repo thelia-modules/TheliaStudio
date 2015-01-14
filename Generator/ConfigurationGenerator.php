@@ -41,24 +41,24 @@ class ConfigurationGenerator extends BaseGenerator
             // Add loop
             $config->addLoop(new Loop(
                 $table->getLoopType(),
-                $moduleCode . "\\Loop\\" . $table->getTableName()
+                $moduleCode."\\Loop\\".$table->getTableName()
             ));
 
             // Add forms
             $config->addForm(new Form(
-                $table->getRawTableName() . ".create",
-                $moduleCode ."\\Form\\" . $table->getTableName() . "CreateForm"
+                $table->getRawTableName().".create",
+                $moduleCode."\\Form\\".$table->getTableName()."CreateForm"
             ));
 
             $config->addForm(new Form(
-                $table->getRawTableName() . ".update",
-                $moduleCode . "\\Form\\" . $table->getTableName() . "UpdateForm"
+                $table->getRawTableName().".update",
+                $moduleCode."\\Form\\".$table->getTableName()."UpdateForm"
             ));
 
             // Add action
             $service = new Service(
-                "action." . strtolower($moduleCode) . "." . $table->getRawTableName() . "_table",
-                $moduleCode . "\\Action\\" . $table->getTableName() . "Action"
+                "action.".strtolower($moduleCode).".".$table->getRawTableName()."_table",
+                $moduleCode."\\Action\\".$table->getTableName()."Action"
             );
 
             $service->addTag(new Tag("kernel.event_subscriber"));
@@ -66,8 +66,8 @@ class ConfigurationGenerator extends BaseGenerator
 
             // Add form type
             $formType = new Service(
-                strtolower($moduleCode) . ".form.type." . $table->getRawTableName() . "_id",
-                $moduleCode . "\\Form\\Type\\" . $table->getTableName() . "IdType"
+                strtolower($moduleCode).".form.type.".$table->getRawTableName()."_id",
+                $moduleCode."\\Form\\Type\\".$table->getTableName()."IdType"
             );
 
             $formType->addArgument(new Argument(null, Argument::TYPE_SERVICE, "thelia.translator"));

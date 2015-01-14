@@ -24,7 +24,7 @@ trait RoutingGeneratorTrait
 {
     protected function parseRoutingXml($modulePath)
     {
-        $routingData = @file_get_contents($routingPath = $modulePath . "Config" . DS . "routing.xml");
+        $routingData = @file_get_contents($routingPath = $modulePath."Config".DS."routing.xml");
 
         if (false === $routingData) {
             $routingData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><routes xmlns=\"http://symfony.com/schema/routing\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd\"></routes>";
@@ -41,7 +41,7 @@ trait RoutingGeneratorTrait
 
     /**
      * @param \TheliaStudio\Parser\Entity\Route[] $routes
-     * @param SimpleXMLElement $xml
+     * @param SimpleXMLElement                    $xml
      */
     protected function addRoutesToXml(array $routes, SimpleXMLElement $xml)
     {

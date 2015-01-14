@@ -48,7 +48,7 @@ class ModulePhpGeneratorTest extends GeneratorTestCase
         /** @var \org\bovigo\vfs\vfsStreamFile $file */
         $configDir = $this->stream->getChild("Config");
         $file = vfsStream::newFile("create.sql")->at($configDir);
-        $file->setContent(file_get_contents(__DIR__ . "/../" . static::TEST_MODULE_PATH . "Config" . DS . "thelia.sql"));
+        $file->setContent(file_get_contents(__DIR__."/../".static::TEST_MODULE_PATH."Config".DS."thelia.sql"));
 
         vfsStream::newFile("insert.sql")->at($configDir);
 

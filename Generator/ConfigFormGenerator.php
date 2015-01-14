@@ -41,7 +41,7 @@ class ConfigFormGenerator extends BaseGenerator
         $this->parser = $parser;
     }
     /**
-     * @param ModuleGenerateEvent $event
+     * @param  ModuleGenerateEvent $event
      * @return mixed
      */
     protected function generate(ModuleGenerateEvent $event)
@@ -69,7 +69,7 @@ class ConfigFormGenerator extends BaseGenerator
             $relativePath = str_replace("__CONFIG_FORM__", $moduleCode, $relativePath);
             $relativePath = str_replace("FIX", '', $relativePath);
 
-            $fullPath = $modulePath . $relativePath;
+            $fullPath = $modulePath.$relativePath;
 
             $this->writeFile($fullPath, $fetchedTemplate, false === strpos($template->getFilename(), "FIX"), true);
         }
@@ -92,7 +92,7 @@ class ConfigFormGenerator extends BaseGenerator
             $relativePath = str_replace($resourcesPath, '', $template->getRealPath());
             $relativePath = str_replace("__CONFIG_FORM__", strtolower($moduleCode), $relativePath);
 
-            $fullPath = $modulePath . $relativePath;
+            $fullPath = $modulePath.$relativePath;
 
             $this->writeFile($fullPath, $fetchedTemplate, false, true);
         }
@@ -123,8 +123,8 @@ class ConfigFormGenerator extends BaseGenerator
         $config = new Config();
 
         $config->addForm(new Form(
-            strtolower($moduleCode) . ".configuration",
-            $moduleCode . "\\Form\\" . $moduleCode . "ConfigForm")
+            strtolower($moduleCode).".configuration",
+            $moduleCode."\\Form\\".$moduleCode."ConfigForm")
         );
 
         return $config;
@@ -153,21 +153,21 @@ class ConfigFormGenerator extends BaseGenerator
         $routes = array();
         $lowModuleCode = strtolower($moduleCode);
 
-        $routes[$lowModuleCode . ".configuration.default"] = new Route(
-            $lowModuleCode . ".configuration.default",
-            '/admin/module/' . $moduleCode,
+        $routes[$lowModuleCode.".configuration.default"] = new Route(
+            $lowModuleCode.".configuration.default",
+            '/admin/module/'.$moduleCode,
             'get',
             [
-                "_controller" => $moduleCode . ":" . $moduleCode . "Config:default",
+                "_controller" => $moduleCode.":".$moduleCode."Config:default",
             ]
         );
 
-        $routes[$lowModuleCode . ".configuration.save"] = new Route(
-            $lowModuleCode . ".configuration.save",
-            '/admin/module/' . $moduleCode,
+        $routes[$lowModuleCode.".configuration.save"] = new Route(
+            $lowModuleCode.".configuration.save",
+            '/admin/module/'.$moduleCode,
             'post',
             [
-                "_controller" => $moduleCode . ":" . $moduleCode . "Config:save",
+                "_controller" => $moduleCode.":".$moduleCode."Config:save",
             ]
         );
 
@@ -176,9 +176,10 @@ class ConfigFormGenerator extends BaseGenerator
 
     protected function readConfigFormFile($modulePath)
     {
-        $fullPath = $modulePath . "Config" . DS . static::CONFIG_FORM_FILE;
+        $fullPath = $modulePath."Config".DS.static::CONFIG_FORM_FILE;
 
         $parser = new ConfigFormParser();
+
         return $parser->loadFromYaml($fullPath);
     }
 

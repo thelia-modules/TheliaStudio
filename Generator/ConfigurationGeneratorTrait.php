@@ -109,7 +109,7 @@ trait ConfigurationGeneratorTrait
         /**
          * Get current configuration
          */
-        $configData = @file_get_contents($configPath = $modulePath . "Config" . DS . "config.xml");
+        $configData = @file_get_contents($configPath = $modulePath."Config".DS."config.xml");
 
         if (false === $configData) {
             throw new \Exception("missing file 'config.xml'");

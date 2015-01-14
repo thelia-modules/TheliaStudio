@@ -12,7 +12,6 @@
 
 namespace TheliaStudio\Parser\Entity;
 
-
 /**
  * Class Argument
  * @package TheliaStudio\Parser\Entity
@@ -44,12 +43,13 @@ class Argument
     }
 
     /**
-     * @param mixed $type
+     * @param  mixed $type
      * @return $this
      */
     public function setType($type)
     {
         $this->type = $type;
+
         return $this;
     }
 
@@ -62,12 +62,13 @@ class Argument
     }
 
     /**
-     * @param mixed $id
+     * @param  mixed $id
      * @return $this
      */
     public function setId($id)
     {
         $this->id = $id;
+
         return $this;
     }
 
@@ -80,12 +81,13 @@ class Argument
     }
 
     /**
-     * @param mixed $value
+     * @param  mixed $value
      * @return $this
      */
     public function setValue($value)
     {
         $this->value = $value;
+
         return $this;
     }
 }

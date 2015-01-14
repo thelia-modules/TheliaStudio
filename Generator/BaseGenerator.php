@@ -67,7 +67,7 @@ abstract class BaseGenerator implements EventSubscriberInterface
     }
 
     /**
-     * @param ModuleGenerateEvent $event
+     * @param  ModuleGenerateEvent $event
      * @return mixed
      */
     abstract protected function generate(ModuleGenerateEvent $event);

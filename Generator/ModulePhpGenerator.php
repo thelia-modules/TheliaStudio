@@ -55,7 +55,7 @@ class ModulePhpGenerator extends BaseGenerator
             $fileName = str_replace("__MODULE__", $moduleCode, $template->getFilename());
 
             $relativePath = str_replace($resourcesPath, "", $template->getPath().DS);
-            $completeFilePath = $modulePath . $relativePath . DS . $fileName;
+            $completeFilePath = $modulePath.$relativePath.DS.$fileName;
 
             $fetchedTemplate = $this->parser->fetch($template->getRealPath());
 

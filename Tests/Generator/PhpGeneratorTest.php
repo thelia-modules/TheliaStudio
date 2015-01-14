@@ -104,13 +104,13 @@ class PhpGeneratorTest extends GeneratorTestCase
             $this->assertTrue($reflection->hasProperty($propriety), "The class doesn't have the propriety $propriety");
             $this->assertTrue(
                 $reflection->hasMethod(
-                    "get" . Container::camelize($propriety)
+                    "get".Container::camelize($propriety)
                 ),
                 "The class doesn't have the method 'get".Container::camelize($propriety)."'"
             );
             $this->assertTrue(
                 $reflection->hasMethod(
-                    "set" . Container::camelize($propriety)
+                    "set".Container::camelize($propriety)
                 ),
                 "The class doesn't have the method 'get".Container::camelize($propriety)."'"
             );

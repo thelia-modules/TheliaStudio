@@ -64,7 +64,7 @@ class GenerateEverything implements EventSubscriberInterface
         $moduleCode = $event->getModuleCode();
         $modulePath = THELIA_MODULE_DIR.$moduleCode.DS;
 
-        $resourcesPath = ConfigQuery::read(TheliaStudio::RESOURCE_PATH_CONFIG_NAME) . DS;
+        $resourcesPath = ConfigQuery::read(TheliaStudio::RESOURCE_PATH_CONFIG_NAME).DS;
 
         if (!is_dir($resourcesPath) || !is_readable($resourcesPath)) {
             throw new FileNotFoundException(sprintf(
@@ -104,7 +104,7 @@ class GenerateEverything implements EventSubscriberInterface
     protected function buildEntities($modulePath, $whiteList)
     {
         $entities = array();
-        $schemaFile = $modulePath . "Config" . DS . "schema.xml";
+        $schemaFile = $modulePath."Config".DS."schema.xml";
 
         if (is_file($schemaFile) && is_readable($schemaFile)) {
             $xml = new SimpleXMLElement(file_get_contents($schemaFile));

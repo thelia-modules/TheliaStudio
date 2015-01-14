@@ -26,8 +26,8 @@ class RawCopyGenerator extends BaseGenerator
     {
         /** @var \SplFileInfo $file */
         foreach (Finder::create()->files()->in($event->getResourcesPath()."raw-copy") as $file) {
-            $relativePath = $relativePath = str_replace($event->getResourcesPath() . "raw-copy", "", $file->getRealPath());
-            $completePath = $event->getModulePath() . $relativePath;
+            $relativePath = $relativePath = str_replace($event->getResourcesPath()."raw-copy", "", $file->getRealPath());
+            $completePath = $event->getModulePath().$relativePath;
 
             @copy($file->getRealPath(), $completePath);
         }
