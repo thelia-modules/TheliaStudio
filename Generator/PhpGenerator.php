@@ -39,7 +39,7 @@ class PhpGenerator extends BaseGenerator
      * @param $resourcesPath
      * @param $moduleCode
      */
-    protected function processPhp(Table $table, $templates, $resourcesPath, $moduleCode)
+    protected function processPhp(Table $table, $templates, $resourcesPath, $moduleCode, $modulePath)
     {
         $this->parser->assign("table", $table);
 
@@ -48,7 +48,7 @@ class PhpGenerator extends BaseGenerator
             $fileName = str_replace("FIX", "", $fileName);
 
             $relativePath = str_replace($resourcesPath, "", $template->getPath().DS);
-            $completeFilePath = THELIA_MODULE_DIR.$moduleCode . DS . $relativePath.DS.$fileName;
+            $completeFilePath = $modulePath . DS . $relativePath . DS . $fileName;
 
             $isFix = false !== strpos($template->getFilename(), "FIX");
             $isI18n = false !== strpos($template->getFilename(), "I18n");
@@ -69,7 +69,13 @@ class PhpGenerator extends BaseGenerator
         $this->parser->assign("tables", $event->getEntities());
 
         foreach ($event->getEntities() as $entity) {
-            $this->processPhp($entity, $templates, $event->getResourcesPath(), $event->getModuleCode());
+            $this->processPhp(
+                $entity,
+                $templates,
+                $event->getResourcesPath(),
+                $event->getModuleCode(),
+                $event->getModulePath()
+            );
         }
     }
 

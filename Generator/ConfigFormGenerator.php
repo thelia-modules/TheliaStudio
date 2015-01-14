@@ -113,6 +113,7 @@ class ConfigFormGenerator extends BaseGenerator
         $newConfig = $this->generateConfig($moduleCode);
         $config->mergeConfig($newConfig);
 
+        $this->initializeConfig($xml);
         $this->addForms($xml, $config);
         $this->saveXml($xml, $configPath);
     }

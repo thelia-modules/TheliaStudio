@@ -14,11 +14,11 @@ namespace TheliaStudio\Tests;
 
 use org\bovigo\vfs\vfsStream;
 use Symfony\Component\DependencyInjection\SimpleXMLElement;
+use Thelia\Core\Template\ParserContext;
 use Thelia\Core\Thelia;
-use Thelia\Model\ConfigQuery;
+use TheliaSmarty\Template\SmartyParser;
 use TheliaStudio\Events\ModuleGenerateEvent;
 use TheliaStudio\Parser\SchemaParser;
-use TheliaStudio\TheliaStudio;
 
 /**
  * Class GeneratorTestCase
@@ -85,5 +85,31 @@ class GeneratorTestCase extends  \PHPUnit_Framework_TestCase
         $path = vfsStream::url("thelia") . DS . $relativePath;
 
         return $path;
+    }
+
+    protected function getSmarty()
+    {
+        return new SmartyParser(
+            $this->getMock("Thelia\Core\HttpFoundation\Request"),
+            $this->getMock("Symfony\Component\EventDispatcher\EventDispatcher"),
+            new ParserContext($this->getMock("Thelia\Core\HttpFoundation\Request"))
+        );
+    }
+
+    protected function loadClassFromVfs($relativePath, $loadBase = true)
+    {
+        if (class_exists("TheliaStudioTestModule\\" . str_replace("/", "\\", $relativePath))) {
+            return;
+        }
+
+        if ($loadBase) {
+            $baseRelativePath = preg_replace("#^(([a-z]+/)*)([a-z]*)#i", "$1Base/$3", $relativePath);
+            $this->loadClassFromVfs($baseRelativePath, false);
+        }
+
+        $classPath = $this->getStreamPath($relativePath . ".php");
+        $this->assertFileExists($classPath);
+
+        include $classPath;
     }
 }

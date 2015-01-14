@@ -29,14 +29,14 @@ class RoutingGenerator extends BaseGenerator
 
     public function generate(ModuleGenerateEvent $event)
     {
-        $this->processRouting($event->getEntities(), $event->getModulePath());
+        $this->processRouting($event->getEntities(), $event->getModulePath(), $event->getModuleCode());
     }
 
-    protected function processRouting(array $tables, $modulePath)
+    protected function processRouting(array $tables, $modulePath, $moduleCode)
     {
         list($xml, $routingPath, $routes) = $this->parseRoutingXml($modulePath);
 
-        $newRoutes = $this->generateRouting($tables, basename($modulePath));
+        $newRoutes = $this->generateRouting($tables, strtolower($moduleCode));
 
         /**
          * Merge

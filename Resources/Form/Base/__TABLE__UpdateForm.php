@@ -3,7 +3,7 @@
 
 namespace {$moduleCode}\Form\Base;
 
-use Thelia\Form\BaseForm;
+use {$moduleCode}\Form\{$table->getTableName()}CreateForm as Child{$table->getTableName()}CreateForm;
 use {$moduleCode}\Form\Type\{$table->getTableName()}IdType;
 
 /**
@@ -11,7 +11,7 @@ use {$moduleCode}\Form\Type\{$table->getTableName()}IdType;
  * @package {$moduleCode}\Form
  * @author TheliaStudio
  */
-class {$table->getTableName()}UpdateForm extends {$table->getTableName()}CreateForm
+class {$table->getTableName()}UpdateForm extends Child{$table->getTableName()}CreateForm
 {
     const FORM_NAME = "{$table->getRawTableName()}_update";
 

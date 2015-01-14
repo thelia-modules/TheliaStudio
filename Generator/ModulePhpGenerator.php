@@ -39,7 +39,7 @@ class ModulePhpGenerator extends BaseGenerator
         $this->parser->assign("moduleCode", $event->getModuleCode());
         $this->parser->assign("tables", $event->getEntities());
 
-        $this->processModule($templates, $event->getResourcesPath(), $event->getModuleCode());
+        $this->processModule($templates, $event->getResourcesPath(), $event->getModulePath(), $event->getModuleCode());
     }
 
     /**
@@ -49,13 +49,13 @@ class ModulePhpGenerator extends BaseGenerator
      * @throws \Exception
      * @throws \SmartyException
      */
-    protected function processModule($templates, $resourcesPath, $moduleCode)
+    protected function processModule($templates, $resourcesPath, $modulePath, $moduleCode)
     {
         foreach ($templates as $template) {
             $fileName = str_replace("__MODULE__", $moduleCode, $template->getFilename());
 
             $relativePath = str_replace($resourcesPath, "", $template->getPath().DS);
-            $completeFilePath = THELIA_MODULE_DIR.$moduleCode.DS.$relativePath.DS.$fileName;
+            $completeFilePath = $modulePath . $relativePath . DS . $fileName;
 
             $fetchedTemplate = $this->parser->fetch($template->getRealPath());
 
