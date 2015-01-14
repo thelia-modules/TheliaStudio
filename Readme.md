@@ -19,7 +19,7 @@ or by requiring it with composer:
 ---
 
 This module adds two commands:
-```$ php Thelia module:generate:everything```
+```$ php Thelia module:generate:all```
 and
 ```$ php Thelia module:generate:config-form```
 
