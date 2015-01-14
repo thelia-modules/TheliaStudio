@@ -7,8 +7,8 @@ This module allows you to generate all the repetitive classes and templates you 
 1. Installation
 ---
 
-Install it as a thelia module, that module by downloading the zip archive and extracting it in ```thelia/local/modules```, by uploading it with the backoffice
-and by requiring it with composer:
+Install it as a thelia module by downloading the zip archive and extracting it in ```thelia/local/modules``` or by uploading it with the backoffice,
+or by requiring it with composer:
 ```json
 "require": {
     "thelia/thelia-studio-module": "~1.0"
