@@ -38,7 +38,20 @@ and by respecting the following structure, TheliaStudio will generate everything
         - ```regex``` a validation regex.
         - ```size``` an array with "min" and "max" keys.
 
-You have an example in Tests/fixtures/config-form.yml
+Here's an example:
+```yaml
+config:
+  var_name: text
+  var_name2: integer
+  var_name3: checkbox
+  var_name4:
+    type:  text
+    required: false
+    regex: "a-z+"
+    size:
+      min: 5
+      max: 20
+```
 
 4. How to use it ?
 ---
