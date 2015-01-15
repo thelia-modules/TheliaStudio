@@ -34,7 +34,7 @@ class RoutingGenerator extends BaseGenerator
     {
         list($xml, $routingPath, $routes) = $this->parseRoutingXml($modulePath);
 
-        $newRoutes = $this->generateRouting($tables, strtolower($moduleCode));
+        $newRoutes = $this->generateRouting($tables, $moduleCode);
 
         /**
          * Merge
@@ -55,11 +55,12 @@ class RoutingGenerator extends BaseGenerator
     public function generateRouting(array $tables, $moduleCode)
     {
         $routes = array();
+        $lowerCode = strtolower($moduleCode);
 
         foreach ($tables as $table) {
             // List
-            $routes[$moduleCode.".".$table->getRawTableName().".list"] = new Route(
-                $moduleCode.".".$table->getRawTableName().".list",
+            $routes[$lowerCode.".".$table->getRawTableName().".list"] = new Route(
+                $lowerCode.".".$table->getRawTableName().".list",
                 "/admin/module/".$moduleCode."/".$table->getRawTableName(),
                 "get",
                 [
@@ -68,8 +69,8 @@ class RoutingGenerator extends BaseGenerator
             );
 
             // Create
-            $routes[$moduleCode.".".$table->getRawTableName().".create"] = new Route(
-                $moduleCode.".".$table->getRawTableName().".create",
+            $routes[$lowerCode.".".$table->getRawTableName().".create"] = new Route(
+                $lowerCode.".".$table->getRawTableName().".create",
                 "/admin/module/".$moduleCode."/".$table->getRawTableName(),
                 "post",
                 [
@@ -78,8 +79,8 @@ class RoutingGenerator extends BaseGenerator
             );
 
             // View
-            $routes[$moduleCode.".".$table->getRawTableName().".view"] = new Route(
-                $moduleCode.".".$table->getRawTableName().".view",
+            $routes[$lowerCode.".".$table->getRawTableName().".view"] = new Route(
+                $lowerCode.".".$table->getRawTableName().".view",
                 "/admin/module/".$moduleCode."/".$table->getRawTableName()."/edit",
                 "get",
                 [
@@ -88,8 +89,8 @@ class RoutingGenerator extends BaseGenerator
             );
 
             // Edit
-            $routes[$moduleCode.".".$table->getRawTableName().".edit"] = new Route(
-                $moduleCode.".".$table->getRawTableName().".edit",
+            $routes[$lowerCode.".".$table->getRawTableName().".edit"] = new Route(
+                $lowerCode.".".$table->getRawTableName().".edit",
                 "/admin/module/".$moduleCode."/".$table->getRawTableName()."/edit",
                 "post",
                 [
@@ -98,8 +99,8 @@ class RoutingGenerator extends BaseGenerator
             );
 
             // Delete
-            $routes[$moduleCode.".".$table->getRawTableName().".delete"] = new Route(
-                $moduleCode.".".$table->getRawTableName().".delete",
+            $routes[$lowerCode.".".$table->getRawTableName().".delete"] = new Route(
+                $lowerCode.".".$table->getRawTableName().".delete",
                 "/admin/module/".$moduleCode."/".$table->getRawTableName(),
                 "post",
                 [
@@ -109,8 +110,8 @@ class RoutingGenerator extends BaseGenerator
 
             // Update position
             if ($table->hasPosition()) {
-                $routes[$moduleCode.".".$table->getRawTableName().".update_position"] = new Route(
-                    $moduleCode.".".$table->getRawTableName().".update_position",
+                $routes[$lowerCode.".".$table->getRawTableName().".update_position"] = new Route(
+                    $lowerCode.".".$table->getRawTableName().".update_position",
                     "/admin/module/".$moduleCode."/".$table->getRawTableName()."/updatePosition",
                     "get",
                     [
@@ -121,8 +122,8 @@ class RoutingGenerator extends BaseGenerator
 
             // Toggle visibility
             if ($table->hasVisible()) {
-                $routes[$moduleCode.".".$table->getRawTableName().".toggle_visibility"] = new Route(
-                    $moduleCode.".".$table->getRawTableName().".toggle_visibility",
+                $routes[$lowerCode.".".$table->getRawTableName().".toggle_visibility"] = new Route(
+                    $lowerCode.".".$table->getRawTableName().".toggle_visibility",
                     "/admin/module/".$moduleCode."/".$table->getRawTableName()."/toggleVisibility",
                     "get",
                     [
