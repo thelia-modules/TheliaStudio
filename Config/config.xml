@@ -4,7 +4,7 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://thelia.net/schema/dic/config http://thelia.net/schema/dic/config/thelia-1.0.xsd">
     <commands>
-        <command class="TheliaStudio\Command\ModuleGenerateEverythingCommand" />
+        <command class="TheliaStudio\Command\ModuleGenerateAllCommand" />
         <command class="TheliaStudio\Command\ModuleGenerateConfigFormCommand" />
     </commands>
 
