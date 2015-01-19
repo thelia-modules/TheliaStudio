@@ -11,7 +11,7 @@ Install it as a thelia module by downloading the zip archive and extracting it i
 or by requiring it with composer:
 ```json
 "require": {
-    "thelia/thelia-studio-module": "~1.1"
+    "thelia/thelia-studio-module": "~1.2"
 }
 ```
 
