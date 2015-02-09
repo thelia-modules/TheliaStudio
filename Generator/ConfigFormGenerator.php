@@ -115,6 +115,12 @@ class ConfigFormGenerator extends BaseGenerator
 
         $this->initializeConfig($xml);
         $this->addForms($xml, $config);
+
+        // For now delete hooks node if it has no child
+        if (!$xml->hooks->children()) {
+            unset($xml->hooks);
+        }
+
         $this->saveXml($xml, $configPath);
     }
 
