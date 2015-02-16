@@ -48,6 +48,10 @@ class ConfigFormGenerator extends BaseGenerator
     {
         $formConfig = $this->readConfigFormFile($event->getModulePath());
 
+        if (empty($formConfig)) {
+            return;
+        }
+
         $this->parser->assign("form", $formConfig);
         $this->parser->assign("moduleCode", $event->getModuleCode());
 
