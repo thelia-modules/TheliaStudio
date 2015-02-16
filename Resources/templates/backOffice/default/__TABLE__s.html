@@ -180,19 +180,19 @@
                 {form_error form=$form field="[{$column->getName()}]"}{$message}{/form_error}
 
 [{if $column->getFormType() == 'checkbox'}]
-                <input type="checkbox" name="{$name}" id="{$label_attr.for}" {if $[{$column->getNameAsSQL()}]}checked{/if} {form_field_attributes form=$form field="[{$column->getName()}]"} placeholder="{intl l='The [{$table->getTableName()}] [{$column->getName()}]'}" />
+                <input type="checkbox" name="{$name}" id="{$label_attr.for}" {if $[{$column->getNameAsSQL()}]}checked{/if} placeholder="{intl l='The [{$table->getTableName()}] [{$column->getName()}]'}" />
 [{elseif $column->getFormType() == 'text'}]
-                <input type="text" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$[{$column->getNameAsSQL()}]}" {form_field_attributes form=$form field="[{$column->getName()}]"} placeholder="{intl l='The [{$table->getTableName()}] [{$column->getName()}]'}" />
+                <input type="text" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$[{$column->getNameAsSQL()}]}" placeholder="{intl l='The [{$table->getTableName()}] [{$column->getName()}]'}" />
 [{elseif $column->getFormType() == 'textarea'}]
-                <textarea class="form-control" name="{$name}" id="{$label_attr.for}"{form_field_attributes form=$form field="[{$column->getName()}]"} placeholder="{intl l='The [{$table->getTableName()}] [{$column->getName()}]'}">{$[{$column->getNameAsSQL()}]}</textarea>
+                <textarea class="form-control" name="{$name}" id="{$label_attr.for}"placeholder="{intl l='The [{$table->getTableName()}] [{$column->getName()}]'}">{$[{$column->getNameAsSQL()}]}</textarea>
 [{elseif $column->getFormType() == 'integer'}]
-                <input type="integer" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$[{$column->getNameAsSQL()}]}" {form_field_attributes form=$form field="[{$column->getName()}]"} placeholder="{intl l='The [{$table->getTableName()}] [{$column->getName()}]'}" />
+                <input type="integer" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$[{$column->getNameAsSQL()}]}" placeholder="{intl l='The [{$table->getTableName()}] [{$column->getName()}]'}" />
 [{elseif $column->getFormType() == 'number'}]
-                <input type="number" class="form-control" name="{$name}" id="{$label_attr.for}" step="0.01" value="{$[{$column->getNameAsSQL()}]}" {form_field_attributes form=$form field="[{$column->getName()}]"} placeholder="{intl l='The [{$table->getTableName()}] [{$column->getName()}]'}" />
+                <input type="number" class="form-control" name="{$name}" id="{$label_attr.for}" step="0.01" value="{$[{$column->getNameAsSQL()}]}" placeholder="{intl l='The [{$table->getTableName()}] [{$column->getName()}]'}" />
 [{elseif $column->getFormType() == 'datetime' or $column->getFormType() == 'date' or $column->getFormType() == 'time'}]
 [{assign include_datetime 1}]
                     <div class='input-group date do-picker-[{$column->getFormType()}]'>
-                        <input type="text" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$[{$column->getNameAsSQL()}]}" {form_field_attributes form=$form field="[{$column->getName()}]"} placeholder="{intl l='The [{$table->getTableName()}] [{$column->getName()}]'}" />
+                        <input type="text" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$[{$column->getNameAsSQL()}]}" placeholder="{intl l='The [{$table->getTableName()}] [{$column->getName()}]'}" />
                         <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
                     </span>
                 </div>
@@ -240,12 +240,12 @@
 {/block}
 
 {block name="javascript-initialization"}
-[{if $table->hasPosition()}]
+[{if $table->hasVisible()}]
     {javascripts file='assets/js/bootstrap-switch/bootstrap-switch.js'}
         <script src="{$asset_url}"></script>
     {/javascripts}
 [{/if}]
-[{if $table->hasVisible()}]
+[{if $table->hasPosition()}]
     {javascripts file='assets/js/bootstrap-editable/bootstrap-editable.js'}
         <script src="{$asset_url}"></script>
     {/javascripts}

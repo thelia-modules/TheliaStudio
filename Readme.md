@@ -106,7 +106,7 @@ Here's a typical schema that will work like a charm with TheliaStudio:
 #### 4.2.2 Generating everything
 
 Write your schema.xml, then if needed write your config-form.yml
-You can now launch ```$ php Thelia module:generate:everything```, your can use the --table option to specify the tables you want to generate.
+You can now launch ```$ php Thelia module:generate:all```, your can use the --table option to specify the tables you want to generate.
 
 Go to the ```Form``` directory and change the form names that you want.
 You can change the generated templates as you want, as the generator integrates everything, everywhere, even if it's not needed.

@@ -53,19 +53,19 @@
                                 {form_error form=$form field="[{$field->getName()}]"}{$message}{/form_error}
 
 [{if $field->getRealType() == 'checkbox'}]
-                                <input type="checkbox" name="{$name}" id="{$label_attr.for}" {if $value}checked{/if} {form_field_attributes form=$form field="[{$field->getName()}]"} placeholder="{intl l='The configuration value [{$field->getName()}]'}" />
+                                <input type="checkbox" name="{$name}" id="{$label_attr.for}" {if $value}checked{/if} placeholder="{intl l='The configuration value [{$field->getName()}]'}" />
 [{elseif $field->getRealType() == 'text'}]
-                                <input type="text" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$value}" {form_field_attributes form=$form field="[{$field->getName()}]"} placeholder="{intl l='The configuration value [{$field->getName()}]'}" />
+                                <input type="text" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$value}" placeholder="{intl l='The configuration value [{$field->getName()}]'}" />
 [{elseif $field->getRealType() == 'textarea'}]
-                                <textarea class="form-control" name="{$name}" id="{$label_attr.for}" {form_field_attributes form=$form field="[{$field->getName()}]"} placeholder="{intl l='The configuration value [{$field->getName()}]'}">{$value}</textarea>
+                                <textarea class="form-control" name="{$name}" id="{$label_attr.for}" placeholder="{intl l='The configuration value [{$field->getName()}]'}">{$value}</textarea>
 [{elseif    $field->getRealType() == 'integer'}]
-                                <input type="number" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$value}" {form_field_attributes form=$form field="[{$field->getName()}]"} placeholder="{intl l='The configuration value [{$field->getName()}]'}" />
+                                <input type="number" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$value}" placeholder="{intl l='The configuration value [{$field->getName()}]'}" />
 [{elseif $field->getRealType() == 'number'}]
-                                <input type="number" class="form-control" name="{$name}" id="{$label_attr.for}" step="0.01" value="{$value}" {form_field_attributes form=$form field="[{$field->getName()}]"} placeholder="{intl l='The configuration value [{$field->getName()}]'}" />
+                                <input type="number" class="form-control" name="{$name}" id="{$label_attr.for}" step="0.01" value="{$value}" placeholder="{intl l='The configuration value [{$field->getName()}]'}" />
 [{elseif $field->getRealType() == 'datetime' or $field->getType() == 'date' or $field->getType() == 'time'}]
 [{assign include_datetime 1}]
                                 <div class='input-group date do-picker-[{$field->getType()}]'>
-                                    <input type="text" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$value}" {form_field_attributes form=$form field="[{$field->getName()}]"} placeholder="{intl l='The configuration value [{$field->getName()}]'}" />
+                                    <input type="text" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$value}" placeholder="{intl l='The configuration value [{$field->getName()}]'}" />
                                     <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
                                     </span>
                                 </div>
