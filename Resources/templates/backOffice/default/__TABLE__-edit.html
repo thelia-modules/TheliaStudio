@@ -61,19 +61,19 @@
                                             {form_error form=$form field="[{$column->getName()}]"}{$message}{/form_error}
 
 [{if $column->getFormType() == 'checkbox'}]
-                                                <input type="checkbox" class="form-control" name="{$name}" id="{$label_attr.for}" {if $[{$column->getNameAsSQL()}]}checked{/if} {form_field_attributes form=$form field="[{$column->getName()}]"} placeholder="{intl l='The [{$table->getTableName()}] [{$column->getName()}]'}" />
+                                                <input type="checkbox" class="form-control" name="{$name}" id="{$label_attr.for}" {if $[{$column->getNameAsSQL()}]}checked{/if} placeholder="{intl l='The [{$table->getTableName()}] [{$column->getName()}]'}" />
 [{elseif $column->getFormType() == 'text'}]
-                                                <input type="text" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$[{$column->getNameAsSQL()}]}" {form_field_attributes form=$form field="[{$column->getName()}]"} placeholder="{intl l='The [{$table->getTableName()}] [{$column->getName()}]'}" />
+                                                <input type="text" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$[{$column->getNameAsSQL()}]}" placeholder="{intl l='The [{$table->getTableName()}] [{$column->getName()}]'}" />
 [{elseif $column->getFormType() == 'textarea'}]
-                                                <textarea class="form-control" name="{$name}" id="{$label_attr.for}" {form_field_attributes form=$form field="[{$column->getName()}]"} placeholder="{intl l='The [{$table->getTableName()}] [{$column->getName()}]'}">{$[{$column->getNameAsSQL()}]}</textarea>
+                                                <textarea class="form-control" name="{$name}" id="{$label_attr.for}" placeholder="{intl l='The [{$table->getTableName()}] [{$column->getName()}]'}">{$[{$column->getNameAsSQL()}]}</textarea>
 [{elseif    $column->getFormType() == 'integer'}]
-                                                <input type="number" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$[{$column->getNameAsSQL()}]}" {form_field_attributes form=$form field="[{$column->getName()}]"} placeholder="{intl l='The [{$table->getTableName()}] [{$column->getName()}]'}" />
+                                                <input type="number" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$[{$column->getNameAsSQL()}]}" placeholder="{intl l='The [{$table->getTableName()}] [{$column->getName()}]'}" />
 [{elseif $column->getFormType() == 'number'}]
-                                                <input type="number" class="form-control" name="{$name}" id="{$label_attr.for}" step="0.01" value="{$[{$column->getNameAsSQL()}]}" {form_field_attributes form=$form field="[{$column->getName()}]"} placeholder="{intl l='The [{$table->getTableName()}] [{$column->getName()}]'}" />
+                                                <input type="number" class="form-control" name="{$name}" id="{$label_attr.for}" step="0.01" value="{$[{$column->getNameAsSQL()}]}" placeholder="{intl l='The [{$table->getTableName()}] [{$column->getName()}]'}" />
 [{elseif $column->getFormType() == 'datetime' or $column->getFormType() == 'date' or $column->getFormType() == 'time'}]
 [{assign include_datetime 1}]
-                                                <div class='input-group date do-picker-[{$column->getFormType()}]'>
-                                                    <input type="text" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$[{$column->getNameAsSQL()}]}" {form_field_attributes form=$form field="[{$column->getName()}]"} placeholder="{intl l='The [{$table->getTableName()}] [{$column->getName()}]'}" />
+                                                <div class='input-group date'>
+                                                    <input type="text" class="form-control do-picker-[{$column->getFormType()}]" name="{$name}" id="{$label_attr.for}" value="{$[{$column->getNameAsSQL()}]}" placeholder="{intl l='The [{$table->getTableName()}] [{$column->getName()}]'}" />
                                                     <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
                                                     </span>
                                                 </div>
@@ -119,21 +119,23 @@
         <script src="{$asset_url}"></script>
     {/javascripts}
 
-    $('.do-picker-datetime').datetimepicker({
-        lang: "{lang attr="code"}",
-        useSeconds: false
-    });
+    <script>
+        $('.do-picker-datetime').datetimepicker({
+            lang: "{lang attr="code"}",
+            useSeconds: false
+        });
 
-    $('.do-picker-date').datetimepicker({
-        pickTime: false,
-        lang: "{lang attr="code"}",
-        useSeconds: false
-    });
+        $('.do-picker-date').datetimepicker({
+            pickTime: false,
+            lang: "{lang attr="code"}",
+            useSeconds: false
+        });
 
-    $('.do-picker-time').datetimepicker({
-        pickDate: false,
-        lang: "{lang attr="code"}",
-        useSeconds: false
-    });
+        $('.do-picker-time').datetimepicker({
+            pickDate: false,
+            lang: "{lang attr="code"}",
+            useSeconds: false
+        });
+    </script>
 [{/if}]
 {/block}
