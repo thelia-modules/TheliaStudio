@@ -20,7 +20,7 @@ use {$table->getFullQueryClass()};
  */
 class {$table->getTableName()} extends Base{if $table->hasI18nBehavior()}I18n{/if}Loop implements PropelSearchLoopInterface
 {
-{if $table->hasI18nBehavior()}
+{if $table->hasTimestampableBehavior()}
     protected $timestampable = true;
 {/if}
 {if $table->hasBehavior('versionable')}
