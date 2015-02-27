@@ -187,4 +187,9 @@ class Table
     {
         return str_replace("_", "-", strtolower($this->tableName));
     }
+
+    public function getUppercaseName()
+    {
+        return strtoupper($this->tableName);
+    }
 }

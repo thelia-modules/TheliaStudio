@@ -53,13 +53,18 @@ class ModulePhpGenerator extends BaseGenerator
     {
         foreach ($templates as $template) {
             $fileName = str_replace("__MODULE__", $moduleCode, $template->getFilename());
+            $fileName = str_replace("FIX", "", $fileName);
 
             $relativePath = str_replace($resourcesPath, "", $template->getPath().DS);
             $completeFilePath = $modulePath.$relativePath.DS.$fileName;
 
-            $fetchedTemplate = $this->parser->fetch($template->getRealPath());
+            $isFix = false !== strpos($template->getFilename(), "FIX");
 
-            $this->writeFile($completeFilePath, $fetchedTemplate, true);
+            if ((!$isFix && !file_exists($completeFilePath)) || $isFix) {
+                $fetchedTemplate = $this->parser->fetch($template->getRealPath());
+
+                $this->writeFile($completeFilePath, $fetchedTemplate, true);
+            }
         }
     }
 
