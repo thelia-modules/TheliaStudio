@@ -60,7 +60,25 @@ class ModulePhpGenerator extends BaseGenerator
 
             $isFix = false !== strpos($template->getFilename(), "FIX");
 
-            if ((!$isFix && !file_exists($completeFilePath)) || $isFix) {
+            // Expect special rule for Module\Module
+            $isModuleClass = $modulePath.$relativePath.DS.$moduleCode.".php" === $completeFilePath;
+
+            if (($isFix && !file_exists($completeFilePath)) || !$isFix) {
+                if ($isModuleClass && is_file($completeFilePath)) {
+                    require $completeFilePath;
+                    $caught = false;
+
+                    try {
+                        $reflection = new \ReflectionClass("$moduleCode\\$moduleCode");
+                    } catch (\ReflectionException $e) {
+                        $caught = true; // The class is not valid
+                    }
+
+                    if (!$caught && $reflection->hasConstant("MESSAGE_DOMAIN")) {
+                        continue; // If the class already have the constant, don't override it
+                    }
+                }
+
                 $fetchedTemplate = $this->parser->fetch($template->getRealPath());
 
                 $this->writeFile($completeFilePath, $fetchedTemplate, true);
