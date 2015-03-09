@@ -81,7 +81,7 @@ class ModulePhpGenerator extends BaseGenerator
 
                 $fetchedTemplate = $this->parser->fetch($template->getRealPath());
 
-                $this->writeFile($completeFilePath, $fetchedTemplate, true);
+                $this->writeFile($completeFilePath, $fetchedTemplate, true, true);
             }
         }
     }

@@ -30,11 +30,12 @@ abstract class BaseGenerator implements EventSubscriberInterface
     /** @var \TheliaStudio\Events\ModuleGenerateEvent */
     protected $event;
 
+    protected $resourcesPath;
+
     protected function findInPath($resourcesPath, $name)
     {
         $finder = Finder::create()
             ->files()
-            ->in($resourcesPath)
             ->name($name)
             ->exclude(["includes", "raw-copy"])
         ;
@@ -42,10 +43,20 @@ abstract class BaseGenerator implements EventSubscriberInterface
         $directories = $this->event->getDirectories();
 
         if (is_array($directories) && !empty($directories)) {
-            $finder->directories($directories);
+            $this->resourcesPath = $resourcesPath;
+            $directories = array_map([$this, "appendResourcePath"], $directories);
+
+            $finder->in($directories);
+        } else {
+            $finder->in($resourcesPath);
         }
 
         return $finder;
+    }
+
+    public function appendResourcePath($value)
+    {
+        return $this->resourcesPath.DS.$value;
     }
 
     protected function saveXml(SimpleXMLElement $xml, $path)
