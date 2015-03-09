@@ -51,6 +51,12 @@ class ModuleGenerateAllCommand extends ContainerAwareCommand
                 InputArgument::OPTIONAL,
                 "Only use those generators"
             )
+            ->addOption(
+                "directories",
+                "d",
+                InputArgument::OPTIONAL,
+                "Only generate file for the directories"
+            )
         ;
     }
 
@@ -74,7 +80,8 @@ class ModuleGenerateAllCommand extends ContainerAwareCommand
                     new ModuleGenerateEvent(
                         $input->getArgument("moduleCode"),
                         $input->getOption("tables"),
-                        $input->getOption("generators")
+                        $input->getOption("generators"),
+                        $input->getOption("directories")
                     )
                 );
 
@@ -89,7 +96,7 @@ class ModuleGenerateAllCommand extends ContainerAwareCommand
             array_push($outputArray, '');
             array_unshift($outputArray, '');
 
-            $output->renderBlock($outputArray, 'bg=red; fg=white');
+            $output->renderBlock($outputArray, 'bg=red;fg=white');
         }
     }
 }

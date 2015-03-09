@@ -27,14 +27,25 @@ abstract class BaseGenerator implements EventSubscriberInterface
 {
     protected static $eventPriority = 128;
 
+    /** @var \TheliaStudio\Events\ModuleGenerateEvent */
+    protected $event;
+
     protected function findInPath($resourcesPath, $name)
     {
-        return Finder::create()
+        $finder = Finder::create()
             ->files()
             ->in($resourcesPath)
             ->name($name)
             ->exclude(["includes", "raw-copy"])
         ;
+
+        $directories = $this->event->getDirectories();
+
+        if (is_array($directories) && !empty($directories)) {
+            $finder->directories($directories);
+        }
+
+        return $finder;
     }
 
     protected function saveXml(SimpleXMLElement $xml, $path)
@@ -60,6 +71,7 @@ abstract class BaseGenerator implements EventSubscriberInterface
     public function doGenerate(ModuleGenerateEvent $event)
     {
         $generators = $event->getGenerators();
+        $this->event = $event;
 
         if (empty($generators) || in_array($this->getName(), $generators)) {
             $this->generate($event);
