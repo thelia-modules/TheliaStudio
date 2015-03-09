@@ -14,6 +14,7 @@ use Thelia\Install\Database;
 class {$moduleCode} extends BaseModule
 {
     const MESSAGE_DOMAIN = "{$moduleCode|lower}";
+    const ROUTER = "router.{$moduleCode|lower}";
 
     public function postActivation(ConnectionInterface $con = null)
     {
