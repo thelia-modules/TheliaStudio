@@ -3,6 +3,8 @@
 - Fix timestampable loop parameter generation
 - Add full module events class
 - Add filter on ```module:generate:all``` command to only generate for some directories
+- Fix module config form generation
+- Only generate the module class if the ```MESSAGE_DOMAIN``` is not present in the class
 
 1.3
 ---
