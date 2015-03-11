@@ -59,7 +59,7 @@ class ModuleGenerateConfigFormCommand extends  ContainerAwareCommand
             $container->get("event_dispatcher")
                 ->dispatch(
                     TheliaStudioEvents::LAUNCH_MODULE_BUILD,
-                    new ModuleGenerateEvent($input->getArgument("moduleCode"), [], ['config-form'])
+                    new ModuleGenerateEvent($input->getArgument("moduleCode"), [], ['config-form', 'module_php'])
                 );
 
             $output->renderBlock(array(
@@ -73,7 +73,7 @@ class ModuleGenerateConfigFormCommand extends  ContainerAwareCommand
             array_push($outputArray, '');
             array_unshift($outputArray, '');
 
-            $output->renderBlock($outputArray, 'bg=red; fg=white');
+            $output->renderBlock($outputArray, 'bg=red;fg=white');
         }
     }
 }

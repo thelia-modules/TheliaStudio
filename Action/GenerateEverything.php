@@ -79,7 +79,6 @@ class GenerateEverything implements EventSubscriberInterface
             $entities = $this->buildEntities($modulePath, $event->getTables());
 
             $event
-                ->setModuleCode($moduleCode)
                 ->setModulePath($modulePath)
                 ->setResourcesPath($resourcesPath)
                 ->setEntities($entities)

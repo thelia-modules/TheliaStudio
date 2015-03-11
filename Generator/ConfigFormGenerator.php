@@ -125,6 +125,10 @@ class ConfigFormGenerator extends BaseGenerator
             unset($xml->hooks);
         }
 
+        if (!$xml->services->children()) {
+            unset($xml->services);
+        }
+
         $this->saveXml($xml, $configPath);
     }
 

@@ -42,11 +42,14 @@ class ModuleGenerateEvent extends Event
 
     protected $generators;
 
-    public function __construct($moduleCode, $tables = [], $generators = [])
+    protected $directories;
+
+    public function __construct($moduleCode, $tables = [], $generators = [], $directories = null)
     {
         $this->moduleCode = $moduleCode;
         $this->tables = $tables;
         $this->generators = $generators;
+        $this->directories = $directories;
     }
 
     /**
@@ -187,6 +190,28 @@ class ModuleGenerateEvent extends Event
     {
         $this->generators = $generators;
 
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDirectories()
+    {
+        if (is_array($this->directories)) {
+            return $this->directories;
+        }
+
+        return $this->fromStringToArray($this->directories);
+    }
+
+    /**
+     * @param mixed $directories
+     * @return $this
+     */
+    public function setDirectories($directories)
+    {
+        $this->directories = $directories;
         return $this;
     }
 
