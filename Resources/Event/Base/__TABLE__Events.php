@@ -3,7 +3,7 @@
 
 namespace {$moduleCode}\Event\Base;
 
-use {$moduleCode}\Event\{$moduleCode}Events;
+use {$moduleCode}\Event\{$moduleCode}Events as Child{$moduleCode}Events;
 
 /*
  * Class {$table->getTableName()}Events
@@ -12,13 +12,13 @@ use {$moduleCode}\Event\{$moduleCode}Events;
  */
 class {$table->getTableName()}Events
 {
-    const CREATE = {$moduleCode}Events::{$table->getUppercaseName()}_CREATE;
-    const UPDATE = {$moduleCode}Events::{$table->getUppercaseName()}_UPDATE;
-    const DELETE = {$moduleCode}Events::{$table->getUppercaseName()}_DELETE;
+    const CREATE = Child{$moduleCode}Events::{$table->getUppercaseName()}_CREATE;
+    const UPDATE = Child{$moduleCode}Events::{$table->getUppercaseName()}_UPDATE;
+    const DELETE = Child{$moduleCode}Events::{$table->getUppercaseName()}_DELETE;
 {if $table->hasPosition()}
-    const UPDATE_POSITION = {$moduleCode}Events::{$table->getUppercaseName()}_UPDATE_POSITION;
+    const UPDATE_POSITION = Child{$moduleCode}Events::{$table->getUppercaseName()}_UPDATE_POSITION;
 {/if}
 {if $table->hasVisible()}
-    const TOGGLE_VISIBILITY = {$moduleCode}Events::{$table->getUppercaseName()}_TOGGLE_VISIBILITY;
+    const TOGGLE_VISIBILITY = Child{$moduleCode}Events::{$table->getUppercaseName()}_TOGGLE_VISIBILITY;
 {/if}
 }
