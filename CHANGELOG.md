@@ -1,3 +1,7 @@
+1.4.1
+---
+- Fix double class in same namespace ( Event/Base )
+
 1.4
 ---
 - Fix timestampable loop parameter generation
