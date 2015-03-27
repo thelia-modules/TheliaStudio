@@ -26,6 +26,8 @@ class ConfigFormEntry
     protected $regex;
     protected $minSize;
     protected $maxSize;
+    protected $label;
+    protected $help;
 
     public function __construct($name, $type)
     {
@@ -148,6 +150,42 @@ class ConfigFormEntry
     public function setMinSize($minSize)
     {
         $this->minSize = $minSize;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getHelp()
+    {
+        return $this->help;
+    }
+
+    /**
+     * @param mixed $help
+     */
+    public function setHelp($help)
+    {
+        $this->help = $help;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLabel()
+    {
+        return (null !== $this->label) ? $this->label : ucfirst(str_replace('_', ' ', $this->name));
+    }
+
+    /**
+     * @param mixed $label
+     */
+    public function setLabel($label)
+    {
+        $this->label = $label;
 
         return $this;
     }

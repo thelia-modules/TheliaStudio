@@ -55,6 +55,14 @@ class ConfigFormParser
                 ->setRequired(isset($entry["required"]) ? (bool) $entry["required"] : true)
             ;
 
+            if (isset($entry["label"])) {
+                $configFormEntry->setLabel($entry["label"]);
+            }
+
+            if (isset($entry["help"])) {
+                $configFormEntry->setHelp($entry["help"]);
+            }
+
             if (isset($entry["regex"])) {
                 $configFormEntry->setRegex($entry["regex"]);
             }
