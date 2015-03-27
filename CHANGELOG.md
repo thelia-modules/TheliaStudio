@@ -1,3 +1,8 @@
+1.5
+---
+- Add fields label and help for config form item
+- Add possibility to translate config form field
+
 1.4.1
 ---
 - Fix double class in same namespace ( Event/Base )
