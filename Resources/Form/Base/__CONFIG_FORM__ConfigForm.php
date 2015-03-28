@@ -68,8 +68,11 @@ class {$moduleCode}ConfigForm extends BaseForm
     {
         $this->formBuilder
             ->add("{$field->getName()}", "{$field->getRealType()}", array(
-                "label" => $this->translator->trans($this->readKey("{$field->getName()}", $translationKeys), [], {$moduleCode}::MESSAGE_DOMAIN),
-                "label_attr" => ["for" => $this->readKey("{$field->getName()}", $fieldsIdKeys)],
+                "label" => $this->readKey("{$field->getName()}", $translationKeys),
+                "label_attr" => [
+                    "for" => $this->readKey("{$field->getName()}", $fieldsIdKeys),
+                    "help" => $this->readKey("help.{$field->getName()}", $translationKeys)
+                ],
 {if $field->getRealType() != 'checkbox' && $field->isRequired()}
                 "required" => true,
 {else}

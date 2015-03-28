@@ -34,9 +34,11 @@ and by respecting the following structure, TheliaStudio will generate everything
 - then write your config ```varName: type``` for simple ones.
     - available types are: text, textarea, integer, number, checkbox.
     - you can add more precise data into the generation:
+        - ```label: My Var``` to customize the name of the field displayed in the configuration page
         - ```required: false``` if the field isn't required
         - ```regex``` a validation regex.
         - ```size``` an array with "min" and "max" keys.
+        - ```help: Help for my var``` a help message for the field displayed in the configuration page
 
 Here's an example:
 ```yaml
@@ -45,6 +47,8 @@ config:
   var_name2: integer
   var_name3: checkbox
   var_name4:
+    label: My Variable
+    help: Help for variable ... 
     type:  text
     required: false
     regex: "a-z+"
