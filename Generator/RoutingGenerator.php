@@ -101,7 +101,7 @@ class RoutingGenerator extends BaseGenerator
             // Delete
             $routes[$lowerCode.".".$table->getRawTableName().".delete"] = new Route(
                 $lowerCode.".".$table->getRawTableName().".delete",
-                "/admin/module/".$moduleCode."/".$table->getRawTableName() . "/delete",
+                "/admin/module/".$moduleCode."/".$table->getRawTableName()."/delete",
                 "post",
                 [
                     "_controller" => $moduleCode.":".$table->getTableName().":delete"

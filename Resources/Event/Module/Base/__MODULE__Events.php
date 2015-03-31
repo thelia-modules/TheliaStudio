@@ -1,11 +1,11 @@
 <?php
 {include "../../includes/header.php"}
 
-namespace {$moduleCode}\Event\Base;
+namespace {$moduleCode}\Event\Module\Base;
 
 /**
  * Class {$moduleCode}Events
- * @package {$moduleCode}\Event\Base
+ * @package {$moduleCode}\Event\Module\Base
  * @author TheliaStudio
  */
 class {$moduleCode}Events

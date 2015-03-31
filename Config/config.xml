@@ -6,6 +6,7 @@
     <commands>
         <command class="TheliaStudio\Command\ModuleGenerateAllCommand" />
         <command class="TheliaStudio\Command\ModuleGenerateConfigFormCommand" />
+        <command class="TheliaStudio\Command\ModuleGenerateLoopCommand" />
     </commands>
 
     <services>
