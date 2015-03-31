@@ -3,7 +3,7 @@
 
 namespace {$moduleCode}\Event\Base;
 
-use {$moduleCode}\Event\{$moduleCode}Events as Child{$moduleCode}Events;
+use {$moduleCode}\Event\Module\{$moduleCode}Events as Child{$moduleCode}Events;
 
 /*
  * Class {$table->getTableName()}Events
