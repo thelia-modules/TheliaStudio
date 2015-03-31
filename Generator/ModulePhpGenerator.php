@@ -65,7 +65,6 @@ class ModulePhpGenerator extends BaseGenerator
 
             if (($isFix && !file_exists($completeFilePath)) || !$isFix) {
                 if ($isModuleClass && is_file($completeFilePath)) {
-                    require $completeFilePath;
                     $caught = false;
 
                     try {
