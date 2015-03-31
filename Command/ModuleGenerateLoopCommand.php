@@ -11,6 +11,7 @@
 /*************************************************************************************/
 
 namespace TheliaStudio\Command;
+
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Thelia\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
@@ -20,7 +21,6 @@ use Thelia\Core\HttpFoundation\Request;
 use Thelia\Core\HttpFoundation\Session\Session;
 use TheliaStudio\Events\ModuleGenerateEvent;
 use TheliaStudio\Events\TheliaStudioEvents;
-
 
 /**
  * Class ModuleGenerateLoopCommand
@@ -49,8 +49,8 @@ class ModuleGenerateLoopCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param InputInterface $input
-     * @param OutputInterface $output
+     * @param  InputInterface  $input
+     * @param  OutputInterface $output
      * @return int|null|void
      */
     protected function execute(InputInterface $input, OutputInterface $output)
