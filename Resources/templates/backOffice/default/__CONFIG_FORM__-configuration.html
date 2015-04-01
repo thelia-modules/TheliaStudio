@@ -44,7 +44,7 @@
 
 [{foreach from=$form item=field}]
                             {form_field form=$form field="[{$field->getName()}]"}
-                            <div class="form-group">
+                            <div class="form-group {if $error}has-error{/if}">
                                 <label class="control-label" for="{$label_attr.for}">
 [{if $field->getRealType() == 'checkbox'}]
                                     <input type="checkbox" name="{$name}" id="{$label_attr.for}" {if $value}checked{/if} placeholder="{intl l='The configuration value [{$field->getName()}]' d="[{$moduleCode|lower}].bo.default"}" />
