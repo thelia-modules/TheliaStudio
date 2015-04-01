@@ -3,7 +3,7 @@
 
 namespace {$moduleCode}\Event\Module;
 
-use {$moduleCode}\Event\Base\{$moduleCode}Events as Base{$moduleCode}Events;
+use {$moduleCode}\Event\Module\Base\{$moduleCode}Events as Base{$moduleCode}Events;
 
 /**
  * Class {$moduleCode}Events
