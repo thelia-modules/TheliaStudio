@@ -4,7 +4,7 @@
   "type": "thelia-module",
   "require": {
     "thelia/installer": "~1.1",
-    "thelia/smarty-module": "~1.1"
+    "thelia/smarty-module": "*"
   },
   "require-dev": {
     "phpunit/phpunit": "~4.1",
