@@ -6,6 +6,8 @@ namespace {$moduleCode}\Controller\Base;
 use {$moduleCode}\{$moduleCode};
 use Thelia\Controller\Admin\BaseAdminController;
 use Thelia\Form\Exception\FormValidationException;
+use Thelia\Core\Security\Resource\AdminResources;
+use Thelia\Core\Security\AccessManager;
 use {$moduleCode}\Model\Config\{$moduleCode}ConfigValue;
 
 /**
@@ -17,11 +19,19 @@ class {$moduleCode}ConfigController extends BaseAdminController
 {
     public function defaultAction()
     {
+        if (null !== $response = $this->checkAuth([AdminResources::MODULE], ["{$moduleCode|lower}"], AccessManager::VIEW)) {
+            return $response;
+        }
+
         return $this->render("{$moduleCode|lower}-configuration");
     }
 
     public function saveAction()
     {
+        if (null !== $response = $this->checkAuth([AdminResources::MODULE], ["{$moduleCode|lower}"], AccessManager::UPDATE)) {
+            return $response;
+        }
+
         $baseForm = $this->createForm("{$moduleCode|lower}.configuration");
 
         $errorMessage = null;
