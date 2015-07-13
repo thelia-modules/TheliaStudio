@@ -47,7 +47,7 @@
                             <div class="form-group {if $error}has-error{/if}">
                                 <label class="control-label" for="{$label_attr.for}">
 [{if $field->getRealType() == 'checkbox'}]
-                                    <input type="checkbox" name="{$name}" id="{$label_attr.for}" {if $value}checked{/if} placeholder="{intl l='The configuration value [{$field->getName()}]' d="[{$moduleCode|lower}].bo.default"}" />
+                                    <input type="checkbox" name="{$name}" id="{$label_attr.for}" {if $value}checked{/if} placeholder="{intl l='The configuration value [{$field->getName()}]' d="[{$moduleCode|lower}].bo.default"}" {if $required}aria-required="true" required{/if}/>
 [{/if}]
                                     {$label}
                                     {if $required}<span class="required">*</span>{/if}
@@ -59,17 +59,17 @@
                                 </label>
 
 [{if $field->getRealType() == 'text'}]
-                                <input type="text" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$value}" placeholder="{intl l='The configuration value [{$field->getName()}]' d="[{$moduleCode|lower}].bo.default"}" />
+                                <input type="text" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$value}" placeholder="{intl l='The configuration value [{$field->getName()}]' d="[{$moduleCode|lower}].bo.default"}" {if $required}aria-required="true" required{/if}/>
 [{elseif $field->getRealType() == 'textarea'}]
-                                <textarea class="form-control" name="{$name}" id="{$label_attr.for}" placeholder="{intl l='The configuration value [{$field->getName()}]' d="[{$moduleCode|lower}].bo.default"}">{$value}</textarea>
+                                <textarea class="form-control" name="{$name}" id="{$label_attr.for}" placeholder="{intl l='The configuration value [{$field->getName()}]' d="[{$moduleCode|lower}].bo.default"}" {if $required}aria-required="true" required{/if}>{$value}</textarea>
 [{elseif    $field->getRealType() == 'integer'}]
-                                <input type="number" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$value}" placeholder="{intl l='The configuration value [{$field->getName()}]' d="[{$moduleCode|lower}].bo.default"}" />
+                                <input type="number" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$value}" placeholder="{intl l='The configuration value [{$field->getName()}]' d="[{$moduleCode|lower}].bo.default"}" {if $required}aria-required="true" required{/if}/>
 [{elseif $field->getRealType() == 'number'}]
-                                <input type="number" class="form-control" name="{$name}" id="{$label_attr.for}" step="0.01" value="{$value}" placeholder="{intl l='The configuration value [{$field->getName()}]' d="[{$moduleCode|lower}].bo.default"}" />
+                                <input type="number" class="form-control" name="{$name}" id="{$label_attr.for}" step="0.01" value="{$value}" placeholder="{intl l='The configuration value [{$field->getName()}]' d="[{$moduleCode|lower}].bo.default"}" {if $required}aria-required="true" required{/if}/>
 [{elseif $field->getRealType() == 'datetime' or $field->getType() == 'date' or $field->getType() == 'time'}]
 [{assign include_datetime 1}]
                                 <div class='input-group date do-picker-[{$field->getType()}]'>
-                                    <input type="text" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$value}" placeholder="{intl l='The configuration value [{$field->getName()}]' d="[{$moduleCode|lower}].bo.default"}" />
+                                    <input type="text" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$value}" placeholder="{intl l='The configuration value [{$field->getName()}]' d="[{$moduleCode|lower}].bo.default"}" {if $required}aria-required="true" required{/if}/>
                                     <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
                                     </span>
                                 </div>
