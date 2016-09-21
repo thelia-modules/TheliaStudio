@@ -10,7 +10,7 @@
     </commands>
 
     <services>
-        <service id="action.thelia_studio.generate_everything" class="TheliaStudio\Action\GenerateEverything" scope="request">
+        <service id="action.thelia_studio.generate_everything" class="TheliaStudio\Action\GenerateEverything">
             <argument type="service" id="kernel" />
 
             <tag name="kernel.event_subscriber" />
@@ -20,13 +20,13 @@
             <tag name="kernel.event_subscriber" />
         </service>
 
-        <service id="thelia_studio.generator.module_php" class="TheliaStudio\Generator\ModulePhpGenerator" scope="request">
+        <service id="thelia_studio.generator.module_php" class="TheliaStudio\Generator\ModulePhpGenerator">
             <argument type="service" id="thelia.parser" />
 
             <tag name="kernel.event_subscriber" />
         </service>
 
-        <service id="thelia_studio.generator.php" class="TheliaStudio\Generator\PhpGenerator" scope="request">
+        <service id="thelia_studio.generator.php" class="TheliaStudio\Generator\PhpGenerator">
             <argument type="service" id="thelia.parser" />
 
             <tag name="kernel.event_subscriber" />
@@ -48,13 +48,13 @@
             <tag name="kernel.event_subscriber" />
         </service>
 
-        <service id="thelia_studio.generator.smarty" class="TheliaStudio\Generator\SmartyGenerator" scope="request">
+        <service id="thelia_studio.generator.smarty" class="TheliaStudio\Generator\SmartyGenerator">
             <argument type="service" id="thelia.parser" />
 
             <tag name="kernel.event_subscriber" />
         </service>
 
-        <service id="thelia_studio.generator.config_form" class="TheliaStudio\Generator\ConfigFormGenerator" scope="request">
+        <service id="thelia_studio.generator.config_form" class="TheliaStudio\Generator\ConfigFormGenerator">
             <argument type="service" id="thelia.parser" />
 
             <tag name="kernel.event_subscriber" />
