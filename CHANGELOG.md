@@ -1,4 +1,8 @@
-1.5
+1.4.4
+---
+- Thelia 2.3 compatibility
+
+1.4.x
 ---
 - Add fields label and help for config form item
 - Add possibility to translate config form field
