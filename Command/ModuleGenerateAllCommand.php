@@ -71,8 +71,6 @@ class ModuleGenerateAllCommand extends ContainerAwareCommand
         $container->set("request", new Request());
         $container->get("request")->setSession(new Session(new MockArraySessionStorage()));
 
-        $container->enterScope("request");
-
         try {
             $container->get("event_dispatcher")
                 ->dispatch(
