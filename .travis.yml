@@ -1,0 +1,36 @@
+language: php
+
+php:
+  - 5.4
+  - 5.5
+  - 5.6
+
+env:
+  - THELIA_VERSION=2.1.1
+  - THELIA_VERSION=2.1.2
+  - THELIA_VERSION=2.1
+  - THELIA_VERSION=master
+
+before_script:
+  - sudo apt-get update -qq
+  - sudo apt-get install -y language-pack-fr language-pack-fr-base
+  - cd ..
+  - git clone https://github.com/thelia/thelia
+  - mv TheliaStudio thelia/local/modules
+  - cd thelia
+  - git checkout $THELIA_VERSION
+  - phpenv config-add travis.php.ini
+  - composer self-update
+  - composer install --prefer-dist --dev
+  - sh -c "mysql -uroot -e 'SET FOREIGN_KEY_CHECKS = 0; DROP DATABASE IF EXISTS thelia;SET FOREIGN_KEY_CHECKS = 1;'; fi"
+  - php Thelia thelia:install --db_host=localhost --db_username=root --db_name=thelia
+  - php setup/faker.php
+  - php Thelia module:refresh
+  - php Thelia module:activate Colissimo
+  - php Thelia module:activate Cheque
+  - php Thelia module:activate HookTest
+  - php Thelia module:activate VirtualProductDelivery
+  - php Thelia module:activate TheliaStudio
+  - php Thelia admin:create --login_name thelia2 --password thelia2 --last_name thelia2 --first_name thelia2
+
+script: phpunit --bootstrap core/vendor/autoload.php local/modules/TheliaStudio/Tests
