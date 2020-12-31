@@ -36,14 +36,14 @@
                             {include "includes/inner-form-toolbar.html" hide_flags = 1 close_url={url path='/admin/modules'}}
                             <br/>
 
-                            {form_field form=$form field="success_url"}
+                            {form_field field="success_url"}
                             <input type="hidden" name="{$name}" value="{url path='/admin/modules'}" />
                             {/form_field}
 
-                            {form_hidden_fields form=$form}
+                            {form_hidden_fields}
 
 [{foreach from=$form item=field}]
-                            {form_field form=$form field="[{$field->getName()}]"}
+                            {form_field field="[{$field->getName()}]"}
                             <div class="form-group {if $error}has-error{/if}">
                                 <label class="control-label" for="{$label_attr.for}">
 [{if $field->getRealType() == 'checkbox'}]
@@ -52,7 +52,7 @@
                                     {$label}
                                     {if $required}<span class="required">*</span>{/if}
 
-                                    {form_error form=$form field="[{$field->getName()}]"}
+                                    {form_error field="[{$field->getName()}]"}
                                     <br />
                                     <span class="error">{$message}</span>
                                     {/form_error}

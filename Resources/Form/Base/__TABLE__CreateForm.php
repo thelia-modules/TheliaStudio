@@ -50,25 +50,38 @@ class {$table->getTableName()}CreateForm extends BaseForm
 {if $type && $column->getName() != 'id' && $column->getName() != 'position'}
     protected function add{$column->getCamelizedName()}Field(array $translationKeys, array $fieldsIdKeys)
     {
-        $this->formBuilder->add("{$column->getName()}", "{$type}", array(
+        $this->formBuilder->add(
+            "{$column->getName()}",
+            "{$type}",
+            $this->get{$column->getCamelizedName()}FieldOptions($translationKeys, $fieldsIdKeys)
+        );
+    }
+
+    protected function get{$column->getCamelizedName()}FieldOptions(array $translationKeys, array $fieldsIdKeys)
+    {
+        return [
             "label" => $this->translator->trans($this->readKey("{$column->getName()}", $translationKeys), [], {$moduleCode}::MESSAGE_DOMAIN),
-            "label_attr" => ["for" => $this->readKey("{$column->getName()}", $fieldsIdKeys)],
+            "label_attr" => [
+                "for" => $this->readKey("{$column->getName()}", $fieldsIdKeys),
+                "help" => $this->translator->trans($this->readKey("help.{$column->getName()}", $translationKeys), [], {$moduleCode}::MESSAGE_DOMAIN)
+            ],
 {if $type != 'checkbox' && $column->getRequired()}
             "required" => true,
 {else}
             "required" => false,
 {/if}
-            "constraints" => array(
+            "constraints" => [
 {if $type != 'checkbox' && $column->getRequired()}
                 new NotBlank(),
 {/if}
-            ),
-            "attr" => array(
+            ],
+            "attr" => [
 {if $type == "number"}
                 "step" => "0.01",
 {/if}
-            )
-        ));
+             "placeholder" => $this->translator->trans($this->readKey("placeholder.{$column->getName()}", $translationKeys), [], {$moduleCode}::MESSAGE_DOMAIN),
+            ]
+        ];
     }
 
 {/if}

@@ -26,39 +26,39 @@
                 </div>
 
                 <div class="form-container">
-                    <form method="POST" action="{$current_url}" {form_enctype form=$form} class="clearfix" >
+                    <form method="POST" action="{$current_url}" {form_enctype} class="clearfix" >
 
                         {include "includes/inner-form-toolbar.html"
                         close_url = {url path="/admin/module/[{$moduleCode}]/[{$table->getRawTableName()}]"}
                         }
 
-                        {form_field form=$form field="id"}
+                        {form_field field="id"}
                         {assign "[{$table->getRawTableName()}]_id" $value}
                             <input type="hidden" name="{$name}" value="{$value}"/>
                         {/form_field}
 [{if $table->hasI18nBehavior()}]
-                        {form_field form=$form field="locale"}
+                        {form_field field="locale"}
                             <input type="hidden" name="{$name}" value="{$edit_language_locale}"/>
                         {/form_field}
 [{/if}]
-                        {form_field form=$form field="success_url"}
+                        {form_field field="success_url"}
                             <input type="hidden" name="{$name}" value="{url path='/admin/module/[{$moduleCode}]'}/[{$table->getRawTableName()}]"/>
                         {/form_field}
-                        {form_hidden_fields form=$form}
+                        {form_hidden_fields}
 
                         {loop name="[{$table->getRawTableName()}]_update" type="[{$table->getLoopType()}]" backend_context="yes" id=$[{$table->getRawTableName()}]_id lang=$edit_language_id}
                             <div class="row">
                                 <div class="col-md-12">
 [{foreach from=$table->getColumns() item=column}]
 [{if $column->getName() != 'id' && $column->getName() != 'position' && $column->getName() != 'visible'}]
-                                    {form_field form=$form field="[{$column->getName()}]"}
+                                    {form_field field="[{$column->getName()}]"}
                                         <div class="form-group">
                                             <label class="control-label" for="{$label_attr.for}">
                                                 {$label}
                                                 {if $required}<span class="required">*</span>{/if}
                                             </label>
 
-                                            {form_error form=$form field="[{$column->getName()}]"}{$message}{/form_error}
+                                            {form_error field="[{$column->getName()}]"}{$message}{/form_error}
 
 [{if $column->getFormType() == 'checkbox'}]
                                                 <input type="checkbox" class="form-control" name="{$name}" id="{$label_attr.for}" {if $[{$column->getNameAsSQL()}]}checked{/if} placeholder="{intl l='The [{$table->getTableName()}] [{$column->getName()}]'}" />

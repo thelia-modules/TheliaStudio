@@ -158,26 +158,26 @@
 
     {form name="[{$table->getRawTableName()}].create"}
     {capture "[{$table->getRawTableName()}]_create"}
-        {form_hidden_fields form=$form}
+        {form_hidden_fields}
 
 [{if $table->hasI18nBehavior()}]
-        {form_field form=$form field="locale"}
+        {form_field field="locale"}
             <input type="hidden" name="{$name}" value="{$edit_language_locale}" />
         {/form_field}
 [{/if}]
 
-        {render_form_field form=$form field="success_url" value={url path='/admin/module/[{$moduleCode}]/[{$table->getRawTableName()}]/edit?[{$table->getRawTableName()}]_id=_ID_'}}
+        {render_form_field field="success_url" value={url path='/admin/module/[{$moduleCode}]/[{$table->getRawTableName()}]/edit?[{$table->getRawTableName()}]_id=_ID_'}}
 
 [{foreach from=$table->getColumns() item=column}]
 [{if $column->getName() != 'id' && $column->getName() != 'position'}]
-        {form_field form=$form field="[{$column->getName()}]"}
+        {form_field field="[{$column->getName()}]"}
             <div class="form-group">
                 <label class="control-label" for="{$label_attr.for}">
                     {$label}
                     {if $required}<span class="required">*</span>{/if}
                 </label>
 
-                {form_error form=$form field="[{$column->getName()}]"}{$message}{/form_error}
+                {form_error field="[{$column->getName()}]"}{$message}{/form_error}
 
 [{if $column->getFormType() == 'checkbox'}]
                 <input type="checkbox" name="{$name}" id="{$label_attr.for}" {if $[{$column->getNameAsSQL()}]}checked{/if} placeholder="{intl l='The [{$table->getTableName()}] [{$column->getName()}]'}" />
@@ -214,7 +214,7 @@
         dialog_cancel_label = {intl l="Cancel"}
 
         form_action        = {$current_url}
-        form_enctype       = {form_enctype form=$form}
+        form_enctype       = {form_enctype}
     }
     {/form}
 
