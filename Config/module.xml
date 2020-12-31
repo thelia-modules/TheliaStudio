@@ -1,38 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module xmlns="http://thelia.net/schema/dic/module"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://thelia.net/schema/dic/module http://thelia.net/schema/dic/module/module-2_1.xsd">
+        xsi:schemaLocation="http://thelia.net/schema/dic/module http://thelia.net/schema/dic/module/module-2_2.xsd">
     <fullnamespace>TheliaStudio\TheliaStudio</fullnamespace>
     <descriptive locale="en_US">
         <title>Tools for Thelia developers</title>
-        <!--
-        <subtitle></subtitle>
-        <description></description>
-        <postscriptum></postscriptum>
-        -->
     </descriptive>
     <descriptive locale="fr_FR">
         <title>Outils pour les développeurs Thelia</title>
     </descriptive>
-    <!-- <logo></logo> -->
     <languages>
         <language>en_US</language>
         <language>fr_FR</language>
     </languages>
-    <version>1.4.4</version>
-    <author>
-        <name>Benjamin Perche</name>
-        <email>bperche9@gmail.com</email>
-    </author>
+    <version>1.4.5</version>
+    <authors>
+        <author>
+            <name>Benjamin Perche</name>
+            <email>bperche9@gmail.com</email>
+        </author>
+        <author>
+            <name>Franck Allimant</name>
+            <company>OpenStudio</company>
+            <email>fallimant@openstudio.fr</email>
+            <website>www.openstudio.fr</website>
+        </author>
+    </authors>
     <type>classic</type>
-    <!--
-    module dependencies
-    <required>
-        <module version="&gt;=0.1">Front</module>
-        <module version="~1.0">HookCart</module>
-        <module version="&gt;0.2">HookSearch</module>
-    </required>
-    -->
-    <thelia>2.1.0</thelia>
-    <stability>other</stability>
+    <thelia>2.3.0</thelia>
+    <stability>prod</stability>
 </module>
