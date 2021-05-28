@@ -21,4 +21,7 @@ class {$table->getTableName()}Events
 {if $table->hasVisible()}
     const TOGGLE_VISIBILITY = Child{$moduleCode}Events::{$table->getUppercaseName()}_TOGGLE_VISIBILITY;
 {/if}
+{if $table->hasSeo()}
+    const UPDATE_SEO = Child{$moduleCode}Events::{$table->getUppercaseName()}_UPDATE_SEO;
+{/if}
 }

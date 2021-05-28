@@ -4,9 +4,9 @@
 namespace {$moduleCode}\Controller\Base;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Thelia\Controller\Admin\AbstractCrudController;
-use Thelia\Core\Security\Resource\AdminResources;
+use Thelia\Controller\Admin\{if $table->hasSeo()}AbstractSeoCrudController{else}AbstractCrudController{/if};
 use Thelia\Tools\URL;
+use Thelia\Core\Security\Resource\AdminResources;
 use {$moduleCode}\Event\{$table->getTableName()}Event;
 use {$moduleCode}\Event\{$table->getTableName()}Events;
 use {$table->getFullQueryClass()};
@@ -22,7 +22,8 @@ use Thelia\Core\Event\UpdatePositionEvent;
  * @package {$moduleCode}\Controller\Base
  * @author TheliaStudio
  */
-class {$table->getTableName()}Controller extends AbstractCrudController
+class {$table->getTableName()}Controller extends {if $table->hasSeo()}AbstractSeoCrudController{else}AbstractCrudController{/if}
+
 {
     public function __construct()
     {
@@ -36,6 +37,7 @@ class {$table->getTableName()}Controller extends AbstractCrudController
             {$table->getTableName()}Events::DELETE,
             {if $table->hasVisible()}{$table->getTableName()}Events::TOGGLE_VISIBILITY{else}null{/if},
             {if $table->hasPosition()}{$table->getTableName()}Events::UPDATE_POSITION{else}null{/if},
+            {if $table->hasSeo()}{$table->getTableName()}Events::UPDATE_SEO{else}null{/if},
             "{$moduleCode}"
         );
     }
@@ -67,9 +69,16 @@ class {$table->getTableName()}Controller extends AbstractCrudController
      */
     protected function hydrateObjectForm($object)
     {
+{if $table->hasSeo()}
+        // Hydrate the "SEO" tab form
+        $this->hydrateSeoForm($object);
+{/if}
+
         $data = array(
 {foreach from=$table->getColumns() item=column}
-            "{$column->getName()}" => {if $column->getFormType() == 'checkbox'}(bool) {/if}$object->get{$column->getCamelizedName()}(),
+    {if ! $table->isExcludedColumn($column) && $column->getName() !== 'position'}
+        "{$column->getName()}" => {if $column->getFormType() == 'checkbox'}(bool) {/if}$object->get{$column->getCamelizedName()}(),
+    {/if}
 {/foreach}
         );
 
@@ -87,7 +96,7 @@ class {$table->getTableName()}Controller extends AbstractCrudController
         $event = new {$table->getTableName()}Event();
 
 {foreach from=$table->getColumns() item=column}
-{if $column->getName() != 'id' && $column->getName() != 'position'}
+{if $column->getName() != 'id' && $column->getName() != 'position' && ! $table->isExcludedColumn($column)}
         $event->set{$column->getCamelizedName()}($formData["{$column->getName()}"]);
 {/if}
 {/foreach}
@@ -106,7 +115,7 @@ class {$table->getTableName()}Controller extends AbstractCrudController
         $event = new {$table->getTableName()}Event();
 
 {foreach from=$table->getColumns() item=column}
-{if $column->getName() != 'position'}
+{if $column->getName() != 'position' && ! $table->isExcludedColumn($column)}
         $event->set{$column->getCamelizedName()}($formData["{$column->getName()}"]);
 {/if}
 {/foreach}
@@ -151,9 +160,15 @@ class {$table->getTableName()}Controller extends AbstractCrudController
      */
     protected function getExistingObject()
     {
-        return {$table->getQueryClass()}::create()
-            ->findPk($this->getRequest()->query->get("{$table->getRawTableName()}_id"))
-        ;
+        $object = {$table->getQueryClass()}::create()
+        ->findPk($this->getRequest()->query->get("{$table->getRawTableName()}_id"))
+    ;
+
+        if (null !== $object && method_exists($object, 'setLocale')) {
+            $object->setLocale($this->getCurrentEditionLocale());
+        }
+
+        return $object;
     }
 
     /**
@@ -219,15 +234,28 @@ class {$table->getTableName()}Controller extends AbstractCrudController
      */
     protected function redirectToEditionTemplate()
     {
+        $currentTab = '';
+{if $table->hasSeo()}
+        // If we come from the SEO tab, the object ID is in the 'current_id' variable
+        if (null !== $id = $this->getRequest()->get("current_id")) {
+            $currentTab = 'seo';
+        }
+
+        if (null === $id) {
+            $id = $this->getRequest()->query->get("{$table->getRawTableName()}_id");
+        }
+{else}
         $id = $this->getRequest()->query->get("{$table->getRawTableName()}_id");
+{/if}
+
+        $args = [ "{$table->getRawTableName()}_id" => $id ];
+
+        if (! empty($currentTab)) {
+            $args['current_tab'] = $currentTab;
+        }
 
         return new RedirectResponse(
-            URL::getInstance()->absoluteUrl(
-                "{$table->getEditionPathInfo()}",
-                [
-                    "{$table->getRawTableName()}_id" => $id,
-                ]
-            )
+            URL::getInstance()->absoluteUrl("{$table->getEditionPathInfo()}", $args)
         );
     }
 
@@ -249,7 +277,7 @@ class {$table->getTableName()}Controller extends AbstractCrudController
     }
 {/if}
 {if $table->hasPosition()}
-    
+
     protected function createUpdatePositionEvent($positionChangeMode, $positionValue)
     {
         return new UpdatePositionEvent(

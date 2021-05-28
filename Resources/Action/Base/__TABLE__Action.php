@@ -1,6 +1,7 @@
 <?php
 {include "../../includes/header.php"}
 
+
 namespace {$moduleCode}\Action\Base;
 
 use {$moduleCode}\Model\Map\{$table->getTableName()}TableMap;
@@ -8,6 +9,7 @@ use {$moduleCode}\Event\{$table->getTableName()}Event;
 use {$moduleCode}\Event\{$table->getTableName()}Events;
 use {$table->getFullQueryClass()};
 use {$table->getFullModelClass()};
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Thelia\Action\BaseAction;
 use Thelia\Core\Event\ToggleVisibilityEvent;
 use Thelia\Core\Event\UpdatePositionEvent;
@@ -15,6 +17,8 @@ use Propel\Runtime\Propel;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Thelia\Core\Event\TheliaEvents;
 use \Thelia\Core\Event\TheliaFormEvent;
+{if $table->hasSeo()}use Thelia\Core\Event\UpdateSeoEvent;{/if}
+
 
 /**
  * Class {$table->getTableName()}Action
@@ -23,6 +27,21 @@ use \Thelia\Core\Event\TheliaFormEvent;
  */
 class {$table->getTableName()}Action extends BaseAction implements EventSubscriberInterface
 {
+{if $table->hasSeo()}
+    /**
+     * Change Folder SEO
+     *
+     * @param UpdateSeoEvent $event
+     * @param $eventName
+     * @param EventDispatcherInterface $dispatcher
+     * @return Object
+     */
+    public function updateSeo(UpdateSeoEvent $event, $eventName, EventDispatcherInterface $dispatcher)
+    {
+        return $this->genericUpdateSeo({$table->getQueryClass()}::create(), $event, $dispatcher);
+    }
+{/if}
+
     public function create({$table->getTableName()}Event $event)
     {
         $this->createOrUpdate($event, new {$table->getModelClass()}());
@@ -51,9 +70,11 @@ class {$table->getTableName()}Action extends BaseAction implements EventSubscrib
 
 {/if}
 {foreach from=$table->getColumns() item=column}
+{if ! $table->isExcludedColumn($column)}
             if (null !== ${$column->getCamelizedName()|lcfirst} = $event->get{$column->getCamelizedName()}()) {
                 $model->set{$column->getCamelizedName()}(${$column->getCamelizedName()|lcfirst});
             }
+{/if}
 
 {/foreach}
             $model->save($con);
@@ -135,19 +156,22 @@ class {$table->getTableName()}Action extends BaseAction implements EventSubscrib
     public static function getSubscribedEvents()
     {
         return array(
-            {$table->getTableName()}Events::CREATE => array("create", 128),
-            {$table->getTableName()}Events::UPDATE => array("update", 128),
-            {$table->getTableName()}Events::DELETE => array("delete", 128),
+            {$table->getTableName()}Events::CREATE => ["create", 128],
+            {$table->getTableName()}Events::UPDATE => ["update", 128],
+            {$table->getTableName()}Events::DELETE => ["delete", 128],
 {if $table->hasPosition()}
-            {$table->getTableName()}Events::UPDATE_POSITION => array("updatePosition", 128),
+            {$table->getTableName()}Events::UPDATE_POSITION => ["updatePosition", 128],
 {/if}
 {if $table->hasVisible()}
-            {$table->getTableName()}Events::TOGGLE_VISIBILITY => array("toggleVisibility", 128),
+            {$table->getTableName()}Events::TOGGLE_VISIBILITY => ["toggleVisibility", 128],
 {/if}
-            TheliaEvents::FORM_BEFORE_BUILD . ".{$table->getRawTableName()}_create" => array("beforeCreateFormBuild", 128),
-            TheliaEvents::FORM_BEFORE_BUILD . ".{$table->getRawTableName()}_update" => array("beforeUpdateFormBuild", 128),
-            TheliaEvents::FORM_AFTER_BUILD . ".{$table->getRawTableName()}_create" => array("afterCreateFormBuild", 128),
-            TheliaEvents::FORM_AFTER_BUILD . ".{$table->getRawTableName()}_update" => array("afterUpdateFormBuild", 128),
+{if $table->hasSeo()}
+            {$table->getTableName()}Events::UPDATE_SEO => ["updateSeo", 128],
+{/if}
+            TheliaEvents::FORM_BEFORE_BUILD . ".{$table->getRawTableName()}_create" => ["beforeCreateFormBuild", 128],
+            TheliaEvents::FORM_BEFORE_BUILD . ".{$table->getRawTableName()}_update" => ["beforeUpdateFormBuild", 128],
+            TheliaEvents::FORM_AFTER_BUILD . ".{$table->getRawTableName()}_create" => ["afterCreateFormBuild", 128],
+            TheliaEvents::FORM_AFTER_BUILD . ".{$table->getRawTableName()}_update" => ["afterUpdateFormBuild", 128],
         );
     }
 }

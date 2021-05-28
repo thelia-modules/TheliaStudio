@@ -20,5 +20,8 @@ class {$moduleCode}Events
 {if $table->hasVisible()}
     const {$table->getUppercaseName()}_TOGGLE_VISIBILITY = "action.{$table->getRawTableName()}.toggle_visilibity";
 {/if}
+{if $table->hasSeo()}
+    const {$table->getUppercaseName()}_UPDATE_SEO = "action.{$table->getRawTableName()}.updae_seo";
+{/if}
 {/foreach}
 }

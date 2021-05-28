@@ -5,7 +5,7 @@
     {$admin_current_location = 'tools'}
 {/block}
 
-{block name="page-title"}{intl l='[{$table->getTableName()}]'}{/block}
+{block name="page-title"}{intl l='[{$table->getTableName()}]' d="[{$moduleCode|lower}].bo.default"}{/block}
 
 {block name="check-resource"}admin.module{/block}
 {block name="check-access"}update{/block}
@@ -16,6 +16,13 @@
     {form name="[{$table->getRawTableName()}].update"}
         <div id="wrapper" class="container">
 
+        <ul class="breadcrumb">
+            <li><a href="{url path='/admin/home'}">{intl l="Home"}</a></li>
+            <li><a href="{url path='/admin/modules'}">{intl l="Modules"}</a></li>
+            <li><a href="{url path='/admin/module/[{$moduleCode}]/[{$table->getRawTableName()}]'}">{intl l='[{$table->getTableName()}]s'}</a></li>
+            <li>{intl l='Edit a [{$table->getTableName()}]'}</li>
+        </ul>
+
             {if $form_error}
                 <div class="alert alert-danger">{$form_error_message}</div>
             {/if}
@@ -24,6 +31,17 @@
                 <div class="title title-without-tabs">
                     {intl l="[{$table->getTableName()}] edit" d="[{$moduleCode|lower}].bo.default"}
                 </div>
+[{if $table->hasSeo()}]
+                <ul class="nav nav-tabs" id="tabbed-menu">
+                    <li class="active">
+                        <a href="#general" data-toggle="tab">{intl l="General description" d="[{$moduleCode|lower}].bo.default"}</a>
+                    </li>
+                    <li><a href="#seo" data-toggle="tab">{intl l="SEO" d="[{$moduleCode|lower}].bo.default"}</a></li>
+                </ul>
+
+                <div class="tab-content">
+                    <div class="tab-pane fade active in" id="general">
+[{/if}]
 
                 <div class="form-container">
                     <form method="POST" action="{$current_url}" {form_enctype} class="clearfix" >
@@ -50,7 +68,7 @@
                             <div class="row">
                                 <div class="col-md-12">
 [{foreach from=$table->getColumns() item=column}]
-[{if $column->getName() != 'id' && $column->getName() != 'position' && $column->getName() != 'visible'}]
+[{if $column->getName() != 'id' && $column->getName() != 'position' && ! $table->isExcludedColumn($column)}]
                                     {form_field field="[{$column->getName()}]"}
                                         <div class="form-group">
                                             <label class="control-label" for="{$label_attr.for}">
@@ -61,19 +79,26 @@
                                             {form_error field="[{$column->getName()}]"}{$message}{/form_error}
 
 [{if $column->getFormType() == 'checkbox'}]
-                                                <input type="checkbox" class="form-control" name="{$name}" id="{$label_attr.for}" {if $[{$column->getNameAsSQL()}]}checked{/if} placeholder="{intl l='The [{$table->getTableName()}] [{$column->getName()}]'}" />
+                                                <input type="checkbox" class="form-control" name="{$name}" id="{$label_attr.for}" {if $[{$column->getNameAsSQL()}]}checked{/if} placeholder="{intl l='The [{$table->getTableName()}] [{$column->getName()}]' d="[{$moduleCode|lower}].bo.default"}" />
 [{elseif $column->getFormType() == 'text'}]
-                                                <input type="text" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$[{$column->getNameAsSQL()}]}" placeholder="{intl l='The [{$table->getTableName()}] [{$column->getName()}]'}" />
+                                                <input type="text" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$[{$column->getNameAsSQL()}]}" placeholder="{intl l='The [{$table->getTableName()}] [{$column->getName()}]' d="[{$moduleCode|lower}].bo.default"}" />
 [{elseif $column->getFormType() == 'textarea'}]
-                                                <textarea class="form-control" name="{$name}" id="{$label_attr.for}" placeholder="{intl l='The [{$table->getTableName()}] [{$column->getName()}]'}">{$[{$column->getNameAsSQL()}]}</textarea>
+                                                <textarea class="form-control" name="{$name}" id="{$label_attr.for}" placeholder="{intl l='The [{$table->getTableName()}] [{$column->getName()}]' d="[{$moduleCode|lower}].bo.default"}">{$[{$column->getNameAsSQL()}]}</textarea>
 [{elseif    $column->getFormType() == 'integer'}]
-                                                <input type="number" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$[{$column->getNameAsSQL()}]}" placeholder="{intl l='The [{$table->getTableName()}] [{$column->getName()}]'}" />
+                                                <input type="number" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$[{$column->getNameAsSQL()}]}" placeholder="{intl l='The [{$table->getTableName()}] [{$column->getName()}]' d="[{$moduleCode|lower}].bo.default"}" />
 [{elseif $column->getFormType() == 'number'}]
-                                                <input type="number" class="form-control" name="{$name}" id="{$label_attr.for}" step="0.01" value="{$[{$column->getNameAsSQL()}]}" placeholder="{intl l='The [{$table->getTableName()}] [{$column->getName()}]'}" />
+                                                <input type="number" class="form-control" name="{$name}" id="{$label_attr.for}" step="0.01" value="{$[{$column->getNameAsSQL()}]}" placeholder="{intl l='The [{$table->getTableName()}] [{$column->getName()}]' d="[{$moduleCode|lower}].bo.default"}" />
 [{elseif $column->getFormType() == 'datetime' or $column->getFormType() == 'date' or $column->getFormType() == 'time'}]
 [{assign include_datetime 1}]
+[{if $column->getFormType() == 'date'}]
+    [{$formattedValue = "{format_date date=$[{$column->getNameAsSQL()}] output='date'}"}]
+[{elseif $column->getFormType() == 'time'}]
+    [{$formattedValue = "{format_date date=$[{$column->getNameAsSQL()}] output='time'}"}]
+[{elseif $column->getFormType() == 'datetime'}]
+    [{$formattedValue = "{format_date date=$[{$column->getNameAsSQL()}]}"}]
+[{/if}]
                                                 <div class='input-group date'>
-                                                    <input type="text" class="form-control do-picker-[{$column->getFormType()}]" name="{$name}" id="{$label_attr.for}" value="{$[{$column->getNameAsSQL()}]}" placeholder="{intl l='The [{$table->getTableName()}] [{$column->getName()}]'}" />
+                                                    <input type="text" class="form-control do-picker-[{$column->getFormType()}]" name="{$name}" id="{$label_attr.for}" value="[{$formattedValue nofilter}]" placeholder="{intl l='The [{$table->getTableName()}] [{$column->getName()}]' d="[{$moduleCode|lower}].bo.default"}" />
                                                     <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
                                                     </span>
                                                 </div>
@@ -102,14 +127,41 @@
                             </div>
                         {/loop}
 
+
                     </form>
                 </div>
+[{if $table->hasSeo()}]
+                </div>
+                <div class="tab-pane fade" id="seo">
+                    {include file = "includes/seo-tab.html"
+                    formAction  = {url path='/admin/module/[{$moduleCode}]/[{$table->getRawTableName()}]/seo/save'}
+                    pageUrl     = {url path='/admin/module/[{$moduleCode}]/[{$table->getRawTableName()}]/edit' [{$table->getRawTableName()}]_id=$[{$table->getRawTableName()}]_id}
+                    closeUrl    = {url path="/admin/module/[{$moduleCode}]/[{$table->getRawTableName()}]"}
+                    success_url = {url path='/admin/module/[{$moduleCode}]/[{$table->getRawTableName()}]/edit' [{$table->getRawTableName()}]_id=$[{$table->getRawTableName()}]_id current_tab='seo'}
+                    current_id  = $[{$table->getRawTableName()}]_id
+                    seoType     = '[{$table->getRawTableName()}]'
+                    parentId    = $[{$table->getRawTableName()}]_id
+                    }
+                </div>
+            </div>
+        </div>
+[{/if}]
             </div>
         </div>
     {/form}
 {/block}
 
 {block name="javascript-initialization"}
+<script>
+    // Show proper tab, if defined
+    {if empty($current_tab)}
+        {$current_tab = $smarty.get.current_tab}
+    {/if}
+    {if ! empty($current_tab)}
+        $('#tabbed-menu a[href="#{$current_tab}"]').tab('show')
+    {/if}
+</script>
+
 [{if $include_datetime}]
     {javascripts file='assets/js/moment-with-locales.min.js'}
         <script src="{$asset_url}"></script>
@@ -121,21 +173,21 @@
 
     <script>
         $('.do-picker-datetime').datetimepicker({
-            lang: "{lang attr="code"}",
-            useSeconds: false
-        });
+            locale: "{lang attr="code"}",
+            ignoreReadonly: true
+         });
 
         $('.do-picker-date').datetimepicker({
-            pickTime: false,
-            lang: "{lang attr="code"}",
-            useSeconds: false
+            locale: "{lang attr="code"}",
+            format: 'L',
+            ignoreReadonly: true
         });
 
         $('.do-picker-time').datetimepicker({
-            pickDate: false,
-            lang: "{lang attr="code"}",
-            useSeconds: false
+            locale: "{lang attr="code"}",
+            format: 'LT',
+            ignoreReadonly: true
         });
-    </script>
+</script>
 [{/if}]
 {/block}

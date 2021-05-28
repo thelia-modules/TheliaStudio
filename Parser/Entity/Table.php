@@ -49,6 +49,22 @@ class Table
         return $this->has($name) ? $this->columns[$name] : $default;
     }
 
+    /**
+     * @param $column
+     * @return bool
+     */
+    public function isExcludedColumn(Column $column)
+    {
+        static $excludedSeoColumns = [
+            'url',
+            'meta_title',
+            'meta_description',
+            'meta_keywords'
+        ];
+
+        return $this->hasSeo() && in_array($column->getName(), $excludedSeoColumns);
+    }
+
     public function has($name)
     {
         return isset($this->columns[$name]);
@@ -59,9 +75,22 @@ class Table
         return $this->has("position");
     }
 
+    public function hasSeo()
+    {
+        return
+            $this->has('url')
+            &&
+            $this->has('meta_title')
+            &&
+            $this->has('meta_description')
+            &&
+            $this->has('meta_keywords')
+            ;
+    }
+
     public function hasVisible()
     {
-        return $this->has("visible");
+        return $this->has('visible');
     }
 
     public function addBehavior($name)
@@ -191,5 +220,10 @@ class Table
     public function getUppercaseName()
     {
         return strtoupper($this->tableName);
+    }
+
+    public function getLowercaseName()
+    {
+        return strtolower($this->tableName);
     }
 }

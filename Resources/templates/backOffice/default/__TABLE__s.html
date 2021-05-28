@@ -20,6 +20,12 @@
             </div>
         {/if}
 
+        <ul class="breadcrumb">
+            <li><a href="{url path='/admin/home'}">{intl l="Home"}</a></li>
+            <li><a href="{url path='/admin/modules'}">{intl l="Modules"}</a></li>
+            <li><a href="{url path='/admin/module/[{$moduleCode}]/[{$table->getRawTableName()}]'}">{intl l='[{$table->getTableName()}]s'}</a></li>
+        </ul>
+
         <!-- [{$table->getTableName()}] list -->
         <div class="general-block-decorator">
             <div class="table-responsive">
@@ -39,7 +45,7 @@
                     <thead>
                     <tr>
 [{foreach from=$table->getColumns() item=column}]
-[{if $column->getName() != 'chapo' && $column->getName() != 'description' && $column->getName() != 'postscriptum'}]
+[{if $column->getName() != 'chapo' && $column->getName() != 'description' && $column->getName() != 'postscriptum'  && ! $table->isExcludedColumn($column)}]
                         <th>
                             {admin_sortable_header
                                 current_order=$order
@@ -98,26 +104,45 @@
                                     <input type="checkbox" disabled readonly {if $[{$column->getNameAsSQL()}]}checked="checked"{/if} />
                                 </div>
                             </td>
-[{elseif $column->getName() != 'chapo' && $column->getName() != 'description' && $column->getName() != 'postscriptum'}]
+[{elseif $column->getFormType() == 'date'}]
+                            <td>
+                                {format_date date=$[{$column->getNameAsSQL()}] output="date"}
+                            </td>
+[{elseif $column->getFormType() == 'time'}]
+                            <td>
+                                {format_date date=$[{$column->getNameAsSQL()}] output="time"}
+                            </td>
+[{elseif $column->getFormType() == 'datetime'}]
+                            <td>
+                                {format_date date=$[{$column->getNameAsSQL()}]}
+                            </td>
+[{elseif $column->getName() != 'chapo' && $column->getName() != 'description' && $column->getName() != 'postscriptum' && ! $table->isExcludedColumn($column)}]
                             <td>
                                 {$[{$column->getNameAsSQL()}]}
                             </td>
 [{/if}]
 [{/foreach}]
                             {* Actions *}
-                            <td>
-                                <div class="btn-group">
-                                    {loop name="auth-edit" type="auth" role="ADMIN" resource="admin.module" access="UPDATE" module="[{$moduleCode}]"}
-                                        <a class="btn btn-default btn-xs" title="{intl l='Edit this [{$table->getTableName()}]' d='[{$moduleCode|lower}].bo.default'}"  href="{url path='/admin/module/[{$moduleCode}]/[{$table->getRawTableName()}]/edit' [{$table->getRawTableName()}]_id=$ID}">
-                                            <i class="glyphicon glyphicon-edit"></i>
-                                        </a>
-                                    {/loop}
-                                    {loop name="auth-delete" type="auth" role="ADMIN" resource="admin.module" access="DELETE" module="[{$moduleCode}]"}
-                                        <a class="btn btn-default btn-xs [{$table->getRawTableName()}]-delete" title="{intl l='Delete this [{$table->getTableName()}]' d='[{$moduleCode|lower}].bo.default'}" data-target="#[{$table->getRawTableName()}]-delete" data-toggle="modal" data-id="{$ID}">
-                                            <i class="glyphicon glyphicon-trash"></i>
-                                        </a>
-                                    {/loop}
-                                </div>
+                            <td class="text-nowrap">
+                                {include file='renderer/buttons.html' buttons=[
+                                    [
+                                        'type' => 'edit',
+                                        'title' => {intl l='Edit this [{$table->getTableName()}]' d='[{$moduleCode|lower}].bo.default'},
+                                        'href' => {url path='/admin/module/[{$moduleCode}]/[{$table->getRawTableName()}]/edit' [{$table->getRawTableName()}]_id=$ID},
+                                        'auth' => ['resource' => 'admin.module', 'module' => '[{$moduleCode}]']
+                                    ],
+                                    [
+                                        'type' => 'delete',
+                                        'class' => '[{$table->getRawTableName()}]-delete',
+                                        'title' => {intl l='Delete this [{$table->getTableName()}]' d='[{$moduleCode|lower}].bo.default'},
+                                        'href' => '#[{$table->getRawTableName()}]-delete',
+                                        'data' => [
+                                            'id' => $ID,
+                                            'toggle' => 'modal'
+                                        ],
+                                        'auth' => ['resource' => 'admin.module', 'module' => '[{$moduleCode}]']
+                                    ]
+                                ]}
                             </td>
                         </tr>
                     {/loop}
@@ -169,36 +194,13 @@
         {render_form_field field="success_url" value={url path='/admin/module/[{$moduleCode}]/[{$table->getRawTableName()}]/edit?[{$table->getRawTableName()}]_id=_ID_'}}
 
 [{foreach from=$table->getColumns() item=column}]
-[{if $column->getName() != 'id' && $column->getName() != 'position'}]
-        {form_field field="[{$column->getName()}]"}
-            <div class="form-group">
-                <label class="control-label" for="{$label_attr.for}">
-                    {$label}
-                    {if $required}<span class="required">*</span>{/if}
-                </label>
-
-                {form_error field="[{$column->getName()}]"}{$message}{/form_error}
-
-[{if $column->getFormType() == 'checkbox'}]
-                <input type="checkbox" name="{$name}" id="{$label_attr.for}" {if $[{$column->getNameAsSQL()}]}checked{/if} placeholder="{intl l='The [{$table->getTableName()}] [{$column->getName()}]'}" />
-[{elseif $column->getFormType() == 'text'}]
-                <input type="text" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$[{$column->getNameAsSQL()}]}" placeholder="{intl l='The [{$table->getTableName()}] [{$column->getName()}]'}" />
-[{elseif $column->getFormType() == 'textarea'}]
-                <textarea class="form-control" name="{$name}" id="{$label_attr.for}"placeholder="{intl l='The [{$table->getTableName()}] [{$column->getName()}]'}">{$[{$column->getNameAsSQL()}]}</textarea>
-[{elseif $column->getFormType() == 'integer'}]
-                <input type="integer" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$[{$column->getNameAsSQL()}]}" placeholder="{intl l='The [{$table->getTableName()}] [{$column->getName()}]'}" />
-[{elseif $column->getFormType() == 'number'}]
-                <input type="number" class="form-control" name="{$name}" id="{$label_attr.for}" step="0.01" value="{$[{$column->getNameAsSQL()}]}" placeholder="{intl l='The [{$table->getTableName()}] [{$column->getName()}]'}" />
+[{if $column->getName() != 'id' && $column->getName() != 'position' && ! $table->isExcludedColumn($column)}]
+        {render_form_field field="[{$column->getName()}]"}
 [{elseif $column->getFormType() == 'datetime' or $column->getFormType() == 'date' or $column->getFormType() == 'time'}]
 [{assign include_datetime 1}]
-                    <div class='input-group date do-picker-[{$column->getFormType()}]'>
-                        <input type="text" class="form-control" name="{$name}" id="{$label_attr.for}" value="{$[{$column->getNameAsSQL()}]}" placeholder="{intl l='The [{$table->getTableName()}] [{$column->getName()}]'}" />
-                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-                </div>
-[{/if}]
-            </div>
-        {/form_field}
+        {custom_render_form_field field="[{$column->getName()}]"}
+            <input type="text" {form_field_attributes field="[{$column->getName()}]" extra_classes="do-picker-[{$column->getFormType()}]"} />
+        {/custom_render_form_field}
 [{/if}]
 [{/foreach}]
     {/capture}
@@ -293,4 +295,32 @@
 [{/if}]
         });
     </script>
+[{if $include_datetime}]
+    {javascripts file='assets/js/moment-with-locales.min.js'}
+        <script src="{$asset_url}"></script>
+    {/javascripts}
+
+    {javascripts file='assets/js/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js'}
+        <script src="{$asset_url}"></script>
+    {/javascripts}
+
+    <script>
+        $('.do-picker-datetime').datetimepicker({
+            locale: "{lang attr="code"}",
+            ignoreReadonly: true
+         });
+
+        $('.do-picker-date').datetimepicker({
+            locale: "{lang attr="code"}",
+            format: 'L',
+            ignoreReadonly: true
+        });
+
+        $('.do-picker-time').datetimepicker({
+            locale: "{lang attr="code"}",
+            format: 'LT',
+            ignoreReadonly: true
+        });
+    </script>
+[{/if}]
 {/block}

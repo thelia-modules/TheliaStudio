@@ -131,6 +131,18 @@ class RoutingGenerator extends BaseGenerator
                     ]
                 );
             }
+
+            // Seao
+            if ($table->hasSeo()) {
+                $routes[$lowerCode.".".$table->getRawTableName().".update_seo"] = new Route(
+                    $lowerCode.".".$table->getRawTableName().".update_seo",
+                    "/admin/module/".$moduleCode."/".$table->getRawTableName()."/seo/save",
+                    "post",
+                    [
+                        "_controller" => $moduleCode.":".$table->getTableName().":processUpdateSeo"
+                    ]
+                );
+            }
         }
 
         return $routes;

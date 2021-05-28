@@ -1,6 +1,7 @@
 <?php
 {include "../../includes/header.php"}
 
+
 namespace {$moduleCode}\Event\Base;
 
 use Thelia\Core\Event\ActionEvent;
@@ -14,7 +15,9 @@ use {$table->getFullModelClass()};
 class {$table->getTableName()}Event extends ActionEvent
 {
 {foreach from=$table->getColumns() item=column}
+{if ! $table->isExcludedColumn($column)}
     protected ${$column->getCamelizedName()|lcfirst};
+{/if}
 {/foreach}
     protected ${$table->getTableName()|lcfirst};
 {if $table->hasI18nBehavior()}
@@ -34,6 +37,7 @@ class {$table->getTableName()}Event extends ActionEvent
 {/if}
 
 {foreach from=$table->getColumns() item=column}
+    {if ! $table->isExcludedColumn($column)}
     public function get{$column->getCamelizedName()}()
     {
         return $this->{$column->getCamelizedName()|lcfirst};
@@ -45,7 +49,7 @@ class {$table->getTableName()}Event extends ActionEvent
 
         return $this;
     }
-
+    {/if}
 {/foreach}
     public function get{$table->getTableName()}()
     {

@@ -4,12 +4,15 @@
 namespace {$moduleCode}\Model;
 
 use {$moduleCode}\Model\Base\{$table->getTableName()} as Base{$table->getTableName()};
-{if $table->hasPosition() || $table->hasVisible()}
+{if $table->hasPosition() || $table->hasVisible() || $table->hasSeo()}
 use Thelia\Model\Tools\ModelEventDispatcherTrait;
 {/if}
 {if $table->hasPosition()}
 use Thelia\Model\Tools\PositionManagementTrait;
 use Propel\Runtime\Connection\ConnectionInterface;
+{/if}
+{if $table->hasSeo()}
+use Thelia\Model\Tools\UrlRewritingTrait;
 {/if}
 
 /**
@@ -18,8 +21,11 @@ use Propel\Runtime\Connection\ConnectionInterface;
  */
 class {$table->getTableName()} extends Base{$table->getTableName()}
 {
-{if $table->hasPosition() || $table->hasVisible()}
+{if $table->hasPosition() || $table->hasVisible() || $table->hasSeo()}
     use ModelEventDispatcherTrait;
+{/if}
+{if $table->hasSeo()}
+    use UrlRewritingTrait;
 {/if}
 {if $table->hasPosition()}
     use PositionManagementTrait;
@@ -29,6 +35,13 @@ class {$table->getTableName()} extends Base{$table->getTableName()}
         $this->setPosition($this->getNextPosition());
 
         return true;
+    }
+{/if}
+
+{if $table->hasSeo()}
+    public function getRewrittenUrlViewName()
+    {
+        return '{$table->getLowercaseName()}';
     }
 {/if}
 }

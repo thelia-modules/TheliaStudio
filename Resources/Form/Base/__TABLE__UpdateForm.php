@@ -21,9 +21,6 @@ class {$table->getTableName()}UpdateForm extends Child{$table->getTableName()}Cr
 
         $this->formBuilder
             ->add("id", {$table->getTableName()}IdType::TYPE_NAME)
-{if $table->hasVisible()}
-            ->remove("visible")
-{/if}
         ;
     }
 }

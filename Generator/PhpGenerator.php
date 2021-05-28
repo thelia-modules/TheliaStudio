@@ -53,7 +53,7 @@ class PhpGenerator extends BaseGenerator
             $isFix = false !== strpos($template->getFilename(), "FIX");
             $isI18n = false !== strpos($template->getFilename(), "I18n");
 
-            if ((($isFix && !file_exists($completeFilePath)) || !$isFix) && ($isI18n && $table->hasI18nBehavior() || !$isI18n)) {
+            if ((($isFix && !file_exists($completeFilePath)) || !$isFix) && ( ($isI18n && $table->hasI18nBehavior()) || !$isI18n)) {
                 $fetchedTemplate = $this->parser->fetch($template->getRealPath());
 
                 $this->writeFile($completeFilePath, $fetchedTemplate, true, true);

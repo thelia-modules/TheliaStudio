@@ -56,12 +56,12 @@ class ModulePhpGenerator extends BaseGenerator
             $fileName = str_replace("FIX", "", $fileName);
 
             $relativePath = str_replace($resourcesPath, "", $template->getPath().DS);
-            $completeFilePath = $modulePath.$relativePath.DS.$fileName;
+            $completeFilePath = $modulePath.$relativePath.$fileName;
 
             $isFix = false !== strpos($template->getFilename(), "FIX");
 
             // Expect special rule for Module\Module
-            $isModuleClass = $modulePath.$relativePath.DS.$moduleCode.".php" === $completeFilePath;
+            $isModuleClass = $modulePath.$relativePath.$moduleCode.".php" === $completeFilePath;
 
             if (($isFix && !file_exists($completeFilePath)) || !$isFix) {
                 if ($isModuleClass && is_file($completeFilePath)) {
