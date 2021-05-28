@@ -1,7 +1,6 @@
 1.4.6
 ---
 - Added automatic standard SEO support to the module. This support is enabled on a table if this table has all the following columns :
-  - url
   - meta_title
   - meta_description
   - meta_keywords

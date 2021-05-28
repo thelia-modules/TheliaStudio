@@ -78,8 +78,6 @@ class Table
     public function hasSeo()
     {
         return
-            $this->has('url')
-            &&
             $this->has('meta_title')
             &&
             $this->has('meta_description')

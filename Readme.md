@@ -120,8 +120,7 @@ You can change the generated templates as you want, as the generator integrates 
 The module will generate the appropriate code for managing 'position' and 'visible' fields if the table has
 columns with these names.
 
-The module will automaticaly generate the code for managing standard Thelia SEO fields if the table has the following columns :
-- url
+The module will automaticaly generate the code for managing standard Thelia SEO fields (including a rewriten URL)  if the table has the following columns :
 - meta_title
 - meta_description
 - meta_keywords

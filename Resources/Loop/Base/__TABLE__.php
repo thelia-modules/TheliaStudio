@@ -42,6 +42,9 @@ class {$table->getTableName()} extends Base{if $table->hasI18nBehavior()}I18n{/i
 {foreach from=$table->getColumns() item=column}
                 ->set("{$column->getNameAsSQL()}", $entry->get{if $column->isI18n()}VirtualColumn("i18n_{$column->getNameAsSQL()}"){else}{$column->getCamelizedName()}(){/if})
 {/foreach}
+{if $table->hasSeo()}
+                ->set('URL', $entry->getUrl($this->locale))
+{/if}
             ;
 
             $this->addMoreResults($row, $entry);
