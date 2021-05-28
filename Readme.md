@@ -115,6 +115,17 @@ You can now launch ```$ php Thelia module:generate:all```, your can use the --ta
 Go to the ```Form``` directory and change the form names that you want.
 You can change the generated templates as you want, as the generator integrates everything, everywhere, even if it's not needed.
 
+#### 4.2.3 Automatic support for some standard Thelia features
+
+The module will generate the appropriate code for managing 'position' and 'visible' fields if the table has
+columns with these names.
+
+The module will automaticaly generate the code for managing standard Thelia SEO fields if the table has the following columns :
+- url
+- meta_title
+- meta_description
+- meta_keywords
+
 5. Access to the generated pages
 ---
 

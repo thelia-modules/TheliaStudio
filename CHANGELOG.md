@@ -1,3 +1,14 @@
+1.4.6
+---
+- Added automatic standard SEO support to the module. This support is enabled on a table if this table has all the following columns :
+  - url
+  - meta_title
+  - meta_description
+  - meta_keywords
+
+- "model" files are no longer overwritten if they already exist.
+
+
 1.4.4
 ---
 - Thelia 2.3 compatibility
