@@ -1,3 +1,15 @@
+1.4.9
+---
+- Added a data transformer to the text and textarea form fields to allow the storage of an empty field in the database when a value has been previously defined.
+
+1.4.8
+---
+- "url" column declaration no longer required for automatic SEO management
+
+1.4.7
+---
+- This release fixes a typo in composer.json
+
 1.4.6
 ---
 - Added automatic standard SEO support to the module. This support is enabled on a table if this table has all the following columns :

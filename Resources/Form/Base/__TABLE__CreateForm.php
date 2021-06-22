@@ -4,6 +4,7 @@
 namespace {$moduleCode}\Form\Base;
 
 use {$moduleCode}\{$moduleCode};
+use {$moduleCode}\Form\Transformers\NullToEmptyTransformer;
 use Thelia\Form\BaseForm;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
@@ -47,14 +48,21 @@ class {$table->getTableName()}CreateForm extends BaseForm
 
 {foreach from=$table->getColumns() item=column}
 {assign type {$column->getFormType()}}
+{assign dataTransformer {$column->getDataTransformerClassName()}}
 {if $type && $column->getName() != 'id' && $column->getName() != 'position'}
     protected function add{$column->getCamelizedName()}Field(array $translationKeys, array $fieldsIdKeys)
     {
-        $this->formBuilder->add(
+        $field = $this->formBuilder->create(
             "{$column->getName()}",
             "{$type}",
             $this->get{$column->getCamelizedName()}FieldOptions($translationKeys, $fieldsIdKeys)
         );
+
+        {if ! empty($dataTransformer)}
+        $field->addModelTransformer(new {$dataTransformer}());
+        {/if}
+
+        $this->formBuilder->add($field);
     }
 
     protected function get{$column->getCamelizedName()}FieldOptions(array $translationKeys, array $fieldsIdKeys)

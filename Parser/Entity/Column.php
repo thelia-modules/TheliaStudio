@@ -43,15 +43,19 @@ class Column
         "ARRAY" => "array",
     );
 
+    /**
+     * An array to map datra type to [ form_type, data_transformer (or null if non) ]
+     * @var array
+     */
     private static $formTypes = array(
-        "bool" => "checkbox",
-        "int" => "integer",
-        "double" => "number",
-        "text" => "text",
-        "textarea" => "textarea",
-        "date" => "date",
-        "time" => "time",
-        "datetime" => "datetime",
+        "bool" => [ "checkbox", null ],
+        "int" => [ "integer", null ],
+        "double" => [ "number", null ],
+        "text" => [ "text", "NullToEmptyTransformer" ],
+        "textarea" => [ "textarea", "NullToEmptyTransformer" ],
+        "date" => [ "date", null ],
+        "time" => [ "time", null ],
+        "datetime" => [ "datetime", null ],
     );
 
     protected $name;
@@ -78,7 +82,16 @@ class Column
     public function getFormType($default = null)
     {
         if (isset(static::$formTypes[$this->getPhpType()])) {
-            return static::$formTypes[$this->getPhpType()];
+            return static::$formTypes[$this->getPhpType()][0];
+        }
+
+        return $default;
+    }
+
+    public function getDataTransformerClassName($default = null)
+    {
+        if (isset(static::$formTypes[$this->getPhpType()])) {
+            return static::$formTypes[$this->getPhpType()][1];
         }
 
         return $default;

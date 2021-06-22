@@ -46,6 +46,7 @@ class PhpGenerator extends BaseGenerator
         foreach ($templates as $template) {
             $fileName = str_replace("__TABLE__", $table->getTableName(), $template->getFilename());
             $fileName = str_replace("FIX", "", $fileName);
+            $fileName = str_replace("__PARSE__", "", $fileName);
 
             $relativePath = str_replace($resourcesPath, "", $template->getPath().DS);
             $completeFilePath = $modulePath.DS.$relativePath.DS.$fileName;
@@ -63,7 +64,7 @@ class PhpGenerator extends BaseGenerator
 
     public function generate(ModuleGenerateEvent $event)
     {
-        $templates = $this->findInPath($event->getResourcesPath(), "/__TABLE__.*\.php$/");
+        $templates = $this->findInPath($event->getResourcesPath(), "/__(TABLE|PARSE)__.*\.php$/");
 
         $this->parser->assign("moduleCode", $event->getModuleCode());
         $this->parser->assign("tables", $event->getEntities());
