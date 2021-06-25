@@ -28,7 +28,7 @@ use TheliaStudio\Output\NullOutput;
  */
 class PropelLauncherGenerator extends BaseGenerator
 {
-    protected static $eventPriority = 255; // Be sure to come first
+    protected static $eventPriority = 1; // Be sure to come last
 
     public function generate(ModuleGenerateEvent $event)
     {

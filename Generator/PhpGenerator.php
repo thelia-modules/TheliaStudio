@@ -49,7 +49,7 @@ class PhpGenerator extends BaseGenerator
             $fileName = str_replace("__PARSE__", "", $fileName);
 
             $relativePath = str_replace($resourcesPath, "", $template->getPath().DS);
-            $completeFilePath = $modulePath.DS.$relativePath.DS.$fileName;
+            $completeFilePath = $modulePath.$relativePath.$fileName;
 
             $isFix = false !== strpos($template->getFilename(), "FIX");
             $isI18n = false !== strpos($template->getFilename(), "I18n");
