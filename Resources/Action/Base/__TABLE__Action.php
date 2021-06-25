@@ -42,24 +42,24 @@ class {$table->getTableName()}Action extends BaseAction implements EventSubscrib
     }
 {/if}
 
-    public function create({$table->getTableName()}Event $event)
+    public function create({$table->getTableName()}Event $event, $eventName, EventDispatcherInterface $dispatcher)
     {
-        $this->createOrUpdate($event, new {$table->getModelClass()}());
+        $this->createOrUpdate($event, new {$table->getModelClass()}(), $dispatcher);
     }
 
-    public function update({$table->getTableName()}Event $event)
+    public function update({$table->getTableName()}Event $event, $eventName, EventDispatcherInterface $dispatcher)
     {
         $model = $this->get{$table->getTableName()}($event);
 
-        $this->createOrUpdate($event, $model);
+        $this->createOrUpdate($event, $model, $dispatcher);
     }
 
-    public function delete({$table->getTableName()}Event $event)
+    public function delete({$table->getTableName()}Event $event, $eventName, EventDispatcherInterface $dispatcher)
     {
-        $this->get{$table->getTableName()}($event)->delete();
+        $this->get{$table->getTableName()}($event)->setDispatcher($dispatcher)->delete();
     }
 
-    protected function createOrUpdate({$table->getTableName()}Event $event, {$table->getModelClass()} $model)
+    protected function createOrUpdate({$table->getTableName()}Event $event, {$table->getModelClass()} $model, EventDispatcherInterface $dispatcher)
     {
         $con = Propel::getConnection({$table->getTableName()}TableMap::DATABASE_NAME);
         $con->beginTransaction();
@@ -77,7 +77,7 @@ class {$table->getTableName()}Action extends BaseAction implements EventSubscrib
 {/if}
 
 {/foreach}
-            $model->save($con);
+            $model->setDispatcher($dispatcher)->save($con);
 
             $con->commit();
         } catch (\Exception $e) {

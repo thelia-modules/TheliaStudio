@@ -1,3 +1,7 @@
+1.4.10
+---
+- Event dispatcher is now injected int the model.
+
 1.4.9
 ---
 - Added a data transformer to the text and textarea form fields to allow the storage of an empty field in the database when a value has been previously defined.
