@@ -1,3 +1,6 @@
+1.4.11
+---
+- Fix for model class generation.
 1.4.10
 ---
 - Event dispatcher is now injected int the model.

@@ -4,9 +4,7 @@
 namespace {$moduleCode}\Model;
 
 use {$moduleCode}\Model\Base\{$table->getTableName()} as Base{$table->getTableName()};
-{if $table->hasPosition() || $table->hasVisible() || $table->hasSeo()}
 use Thelia\Model\Tools\ModelEventDispatcherTrait;
-{/if}
 {if $table->hasPosition()}
 use Thelia\Model\Tools\PositionManagementTrait;
 use Propel\Runtime\Connection\ConnectionInterface;
@@ -21,9 +19,7 @@ use Thelia\Model\Tools\UrlRewritingTrait;
  */
 class {$table->getTableName()} extends Base{$table->getTableName()}
 {
-{if $table->hasPosition() || $table->hasVisible() || $table->hasSeo()}
     use ModelEventDispatcherTrait;
-{/if}
 {if $table->hasSeo()}
     use UrlRewritingTrait;
 {/if}
